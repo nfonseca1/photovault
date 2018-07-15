@@ -1,53 +1,76 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-
+var express               = require("express"),
+    mongoose              = require("mongoose"),
+    passport              = require("passport"),
+    bodyParser            = require("body-parser"),
+    User                  = require("./models/user"),
+    LocalStrategy         = require("passport-local"),
+    passportLocalMongoose = require("passport-local-mongoose")
+    
 mongoose.connect("mongodb://localhost/photoVault");
+var app = express();
+
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(require("express-session")({
+    secret: "If you only knew the power of the dark side.",
+    resave: false,
+    saveUninitialized: false
+}));
 
-var userSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    username: String,
-    email: String,
-    password: String
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
-var User = mongoose.model("user", userSchema);
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
+//============
+// ROUTES
+//============
 
 app.get("/", function(req, res){
     res.render("index.ejs");
-})
+});
 
-app.get("/home", function(req, res){
-    res.render("home.ejs");
-})
+app.get("/home",isLoggedIn, function(req, res){
+   res.render("home.ejs");
+});
 
-app.post("/home", function(req, res){
-    var newUser = {
+app.post("/", function(req, res){
+    User.register(new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         username: req.body.username,
-        email: req.body.email,
-        password: req.body.password1
-    }
-    User.create(newUser, function(err, user){
-        if (err) {
-            console.log(err)
+        email: req.body.email
+    }), req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render('index.ejs');
         }
-        else {
-            console.log("new user " + user)
-            res.redirect("/home");
-        }
-    })
-})
+        passport.authenticate("local")(req, res, function(){
+           res.redirect("/home");
+        });
+    });
+});
 
-app.get("*", function(req, res){
-    res.send("Whoops, looks like this page doesn't exist!");
-})
+app.post("/home", passport.authenticate("local", {
+        successRedirect: "/home",
+        failureRedirect: "/"
+    }) ,function(req, res){
+});
+
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/");
+});
+
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/");
+}
 
 app.listen(3000, function(){
-    console.log("Hello there!");
-});
+    console.log("server started.......");
+})

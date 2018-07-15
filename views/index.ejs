@@ -3,12 +3,12 @@
 <h2>PhotoVault</h2>
 <h4>Sign Up</h4>
 
-<form action="/home" method="post">
+<form action="/" method="POST">
     <p>
     <label for="first">First Name</label>
-    <input type="text" name="first" id="first">
+    <input type="text" name="firstName" id="first">
     <label for="last">Last Name</label>
-    <input type="text" name="last" id="last">
+    <input type="text" name="lastName" id="last">
     </p>
     <p>
     <label for="username">Username</label>
@@ -19,27 +19,27 @@
     <input type="email" name="email" id="email">
     </p>
     <p>
-    <label for="password1">Password</label>
-    <input type="password" name="password1" id="password1">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
     <label for="password2">Confirm Password</label>
     <input type="password" name="password2" id="password2">
     </p>
-    <button type="submit" name="signup">Sign Up</button>
+    <button type="submit" name="signup" value="true">Sign Up</button>
 </form>
 
 <h5>OR</h5>
 <h4>Have an Account? Log In!</h4>
 
-<form action="/home" method="get">
+<form action="/home" method="POST">
     <p>
-    <label for="user">Username or Email</label>
-    <input type="text" name="user" id="user">
+    <label for="username">Username or Email</label>
+    <input type="text" name="username" id="username">
     </p>
     <p>
     <label for="password">Password</label>
-    <input type="text" name="password" id="password">
+    <input type="password" name="password" id="password">
     </p>
-    <button type="submit" name="login">Login</button>
+    <button type="submit">Login</button>
 </form>
 
 <% include partials/footer.ejs %>
