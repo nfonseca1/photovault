@@ -52,11 +52,23 @@ app.post("/", function(req, res){
     });
 });
 
-app.post("/home", passport.authenticate("local", {
+app.get("/login", function(req, res){
+    res.redirect("/");
+})
+
+app.post("/login", passport.authenticate("local", {
         successRedirect: "/home",
         failureRedirect: "/"
     }) ,function(req, res){
 });
+
+app.post("/home", function(req, res){
+    res.send("Sent");
+})
+
+app.get("/account", function(req, res){
+    res.render("account.ejs");
+})
 
 app.get("/logout", function(req, res){
     req.logout();
