@@ -3,8 +3,9 @@ var express               = require("express"),
     passport              = require("passport"),
     bodyParser            = require("body-parser"),
     User                  = require("./models/user"),
+    countries             = require("./public/countries"),
     LocalStrategy         = require("passport-local"),
-    passportLocalMongoose = require("passport-local-mongoose")
+    passportLocalMongoose = require("passport-local-mongoose");
     
 mongoose.connect("mongodb://localhost/photoVault");
 var app = express();
@@ -67,7 +68,7 @@ app.post("/home", function(req, res){
 })
 
 app.get("/account", function(req, res){
-    res.render("account.ejs");
+    res.render("account.ejs", {countries: countries});
 })
 
 app.get("/logout", function(req, res){
