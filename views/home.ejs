@@ -2,4 +2,20 @@
 
 <h2>Home Page</h2>
 
+<div class="row text-center" style="display: flex; flex-wrap: wrap">
+    <% posts.forEach(function(post){ %>
+        <div class="col-md-4">
+            <a href="/home/<%=post._id%>" class="nostyle">
+                <div class="caption">
+                    <h4><%=post.title%></h4>
+                </div>
+                <div class="thumbnail">
+                    <img src="<%=post.image%>">
+                </div>
+                <p><%=post.description%></p>
+            </a>
+        </div>
+    <%});%>
+</div>
+
 <% include partials/footer.ejs %>

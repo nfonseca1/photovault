@@ -6,7 +6,7 @@ var postSchema = new mongoose.Schema({
     description: String,
     country: String,
     photoType: String,
-    isPublic: bool
-})
+    isPublic: Boolean
+});
 
-module.exports(mongoose.model("Post", postSchema));
+module.exports = mongoose.model("Post", postSchema);

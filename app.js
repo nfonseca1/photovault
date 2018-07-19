@@ -3,6 +3,7 @@ var express               = require("express"),
     passport              = require("passport"),
     bodyParser            = require("body-parser"),
     User                  = require("./models/user"),
+    Post                  = require("./models/post"),
     countries             = require("./public/countries"),
     LocalStrategy         = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose");
@@ -32,8 +33,38 @@ app.get("/", function(req, res){
     res.render("index.ejs");
 });
 
+app.get("/login", function(req, res){
+    res.redirect("/");
+})
+
 app.get("/home",isLoggedIn, function(req, res){
-   res.render("home.ejs");
+    Post.find({}, function(err, posts){
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render("home.ejs", {posts: posts});
+        }
+    })
+});
+
+app.get("/home/:id", function(req, res){
+    Post.find({_id: req.params.id}, function(err, post){
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("post.ejs", {post: post});
+        }
+    })
+})
+
+app.get("/account", function(req, res){
+    res.render("account.ejs", {countries: countries});
+})
+
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/");
 });
 
 app.post("/", function(req, res){
@@ -53,10 +84,6 @@ app.post("/", function(req, res){
     });
 });
 
-app.get("/login", function(req, res){
-    res.redirect("/");
-})
-
 app.post("/login", passport.authenticate("local", {
         successRedirect: "/home",
         failureRedirect: "/"
@@ -64,17 +91,15 @@ app.post("/login", passport.authenticate("local", {
 });
 
 app.post("/home", function(req, res){
-    res.send("Sent");
+    Post.create(req.body.post, function(err, newPost){
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.redirect("/home");
+        }
+    })
 })
-
-app.get("/account", function(req, res){
-    res.render("account.ejs", {countries: countries});
-})
-
-app.get("/logout", function(req, res){
-    req.logout();
-    res.redirect("/");
-});
 
 
 function isLoggedIn(req, res, next){
