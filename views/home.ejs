@@ -6,13 +6,15 @@
     <% posts.forEach(function(post){ %>
         <div class="col-md-4">
             <a href="/home/<%=post._id%>" class="nostyle">
-                <div class="caption">
-                    <h4><%=post.title%></h4>
+                <div class="post">
+                    <div class="caption">
+                        <h4><%=post.title%></h4>
+                    </div>
+                    <div class="thumbnail">
+                        <img src="<%=post.image%>">
+                    </div>
+                    <p><%=post.description%></p>
                 </div>
-                <div class="thumbnail">
-                    <img src="<%=post.image%>">
-                </div>
-                <p><%=post.description%></p>
             </a>
         </div>
     <%});%>

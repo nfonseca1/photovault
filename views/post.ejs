@@ -1,9 +1,11 @@
 <% include partials/header.ejs %>
 
 <div class="container">
-    <h2><%=post[0].title%></h2>
-    <img src="<%=post[0].image%>" class="photo">
-    <p><%=post[0].description%></p>
+    <div class="fullPost">
+        <h2 class="text-center title"><%=post[0].title%></h2>
+        <img src="<%=post[0].image%>" class="photo">
+        <p class="description"><%=post[0].description%></p>
+    </div>
 </div>
 
 <% include partials/footer.ejs %>
