@@ -6,7 +6,13 @@ var UserSchema = new mongoose.Schema({
     lastName: String,
     username: String,
     email: String,
-    password: String
+    password: String,
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);

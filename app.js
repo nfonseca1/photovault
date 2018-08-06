@@ -35,7 +35,7 @@ app.get("/", function(req, res){
 
 app.get("/login", function(req, res){
     res.redirect("/");
-})
+});
 
 app.get("/home",isLoggedIn, function(req, res){
     Post.find({}, function(err, posts){
@@ -56,15 +56,21 @@ app.get("/home/:id", function(req, res){
             res.render("post.ejs", {post: post});
         }
     })
-})
+});
 
 app.get("/account", function(req, res){
     res.render("account.ejs", {countries: countries});
-})
+});
 
 app.get("/logout", function(req, res){
     req.logout();
     res.redirect("/");
+});
+
+app.get("/:id/edit", function(req, res){
+    Post.findById(req.params.id, function(err, foundPost){
+        res.render("edit.ejs", {post: foundPost});
+    });
 });
 
 app.post("/", function(req, res){
@@ -99,7 +105,9 @@ app.post("/home", function(req, res){
             res.redirect("/home");
         }
     })
-})
+});
+
+
 
 
 function isLoggedIn(req, res, next){
@@ -111,4 +119,4 @@ function isLoggedIn(req, res, next){
 
 app.listen(3000, function(){
     console.log("server started.......");
-})
+});
