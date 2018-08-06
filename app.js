@@ -109,6 +109,8 @@ app.post("/home", function(req, res){
     })
 });
 
+
+
 app.put("/home/:id", function(req, res){
     Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
         if(err){

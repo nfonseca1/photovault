@@ -7,6 +7,33 @@
         <p class="description"><%=post[0].description%></p>
         <a class="btn btn-xs btn-warning" href="/home/<%=post[0]._id%>/edit">Edit</a>
     </div>
-</div>
+    <div>
+        <h2>Comments</h2>
+        <button id="addComment" class="btn btn-xs btn-success">Add Comment</button>
+        <div id="commentArea" style="margin-bottom: 150px">
 
+        </div>
+    </div>
+</div>
+<script>
+    var commentArea = document.querySelector("#commentArea");
+    var commentButton = document.querySelector("#addComment");
+    var on = false;
+
+    commentButton.addEventListener("click", openCommentForm);
+
+    function openCommentForm(){
+        var html = "";
+        if(on) {
+            commentArea.innerHTML = "";
+            on = false;
+        } else {
+            html = '<form action="/home/<%= post[0]._id %>" method="POST">';
+            html += '<input type="text" class="form-control" name="comment[text]">';
+            html += '<button type="submit" class="btn btn-xs btn-success">Post</button></form>';
+            commentArea.innerHTML = html;
+            on = true;
+        }
+    }
+</script>
 <% include partials/footer.ejs %>
