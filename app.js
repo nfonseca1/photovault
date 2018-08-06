@@ -6,6 +6,7 @@ var express               = require("express"),
     Post                  = require("./models/post"),
     countries             = require("./public/countries"),
     LocalStrategy         = require("passport-local"),
+    methodOverride = require("method-override"),
     passportLocalMongoose = require("passport-local-mongoose");
     
 mongoose.connect("mongodb://localhost/photoVault");
@@ -20,6 +21,7 @@ app.use(require("express-session")({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride("_method"));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -67,9 +69,9 @@ app.get("/logout", function(req, res){
     res.redirect("/");
 });
 
-app.get("/:id/edit", function(req, res){
+app.get("/home/:id/edit", function(req, res){
     Post.findById(req.params.id, function(err, foundPost){
-        res.render("edit.ejs", {post: foundPost});
+        res.render("edit.ejs", {post: foundPost, countries: countries});
     });
 });
 
@@ -107,7 +109,15 @@ app.post("/home", function(req, res){
     })
 });
 
-
+app.put("/home/:id", function(req, res){
+    Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
+        if(err){
+            res.redirect("/home");
+        } else {
+            res.redirect("/home/" + req.params.id);
+        }
+    });
+});
 
 
 function isLoggedIn(req, res, next){
