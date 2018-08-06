@@ -2,10 +2,10 @@
 
 <div class="container">
     <div class="fullPost">
-        <h2 class="text-center title"><%=post[0].title%></h2>
-        <img src="<%=post[0].image%>" class="photo">
-        <p class="description"><%=post[0].description%></p>
-        <a class="btn btn-xs btn-warning" href="/home/<%=post[0]._id%>/edit">Edit</a>
+        <h2 class="text-center title"><%=post.title%></h2>
+        <img src="<%=post.image%>" class="photo">
+        <p class="description"><%=post.description%></p>
+        <a class="btn btn-xs btn-warning" href="/home/<%=post._id%>/edit">Edit</a>
     </div>
     <div>
         <h2>Comments</h2>
@@ -13,6 +13,13 @@
         <div id="commentArea" style="margin-bottom: 150px">
 
         </div>
+        <% post.comments.forEach(function(comment){ %>
+        <div style="background-color: #dddddd">
+            <p>
+                <%= comment.text %>
+            </p>
+        </div>
+        <%})%>
     </div>
 </div>
 <script>
@@ -28,7 +35,7 @@
             commentArea.innerHTML = "";
             on = false;
         } else {
-            html = '<form action="/home/<%= post[0]._id %>" method="POST">';
+            html = '<form action="/home/<%= post._id %>" method="POST">';
             html += '<input type="text" class="form-control" name="comment[text]">';
             html += '<button type="submit" class="btn btn-xs btn-success">Post</button></form>';
             commentArea.innerHTML = html;

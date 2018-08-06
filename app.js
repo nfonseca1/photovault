@@ -52,7 +52,7 @@ app.get("/home",isLoggedIn, function(req, res){
 });
 
 app.get("/home/:id", function(req, res){
-    Post.find({_id: req.params.id}, function(err, post){
+    Post.findById(req.params.id).populate("comments").exec(function(err, post){
         if (err) {
             console.log(err);
         } else {
@@ -121,7 +121,7 @@ app.post("/home/:id", function(req, res){
                     console.log(err);
                 }
                 else {
-                    comment.author._id = req.user._id;
+                    comment.author.id = req.user._id;
                     comment.author.username = req.user.username;
                     //save comment
                     comment.save();
