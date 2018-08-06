@@ -4,6 +4,7 @@ var express               = require("express"),
     bodyParser            = require("body-parser"),
     User                  = require("./models/user"),
     Post                  = require("./models/post"),
+    Comment               = require("./models/comment"),
     countries             = require("./public/countries"),
     LocalStrategy         = require("passport-local"),
     methodOverride = require("method-override"),
@@ -109,7 +110,29 @@ app.post("/home", function(req, res){
     })
 });
 
-
+app.post("/home/:id", function(req, res){
+    Post.findById(req.params.id, function(err, post){
+        if(err){
+            console.log(err);
+            res.redirect("/home/" + req.params.id);
+        } else {
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                }
+                else {
+                    comment.author._id = req.user._id;
+                    comment.author.username = req.user.username;
+                    //save comment
+                    comment.save();
+                    post.comments.push(comment);
+                    post.save();
+                    res.redirect("/home/" + post._id);
+                }
+            });
+        }
+    });
+});
 
 app.put("/home/:id", function(req, res){
     Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
