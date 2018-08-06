@@ -119,6 +119,16 @@ app.put("/home/:id", function(req, res){
     });
 });
 
+app.delete("/home/:id", function(req, res){
+    Post.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            res.redirect("/home");
+        } else {
+            res.redirect("/home");
+        }
+    });
+});
+
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){

@@ -34,5 +34,8 @@
     </div>
     <button type="submit" name="upload" class="btn btn-primary">Update</button>
 </form>
+<form id="deleteForm" action="/home/<%=post._id%>?_method=DELETE" method="POST">
+    <button class="btn btn-xs btn-danger">Delete</button>
+</form>
 
 <% include partials/footer.ejs %>
