@@ -5,7 +5,9 @@
         <h2 class="text-center title"><%=post.title%></h2>
         <img src="<%=post.image%>" class="photo">
         <p class="description"><%=post.description%></p>
+        <% if(currentUser && post.author.id.equals(currentUser._id)){%>
         <a class="btn btn-xs btn-warning" href="/home/<%=post._id%>/edit">Edit</a>
+        <%}%>
     </div>
     <div>
         <h2>Comments</h2>

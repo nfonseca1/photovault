@@ -9,7 +9,7 @@ var express               = require("express"),
     LocalStrategy         = require("passport-local"),
     methodOverride = require("method-override"),
     passportLocalMongoose = require("passport-local-mongoose");
-    
+
 mongoose.connect("mongodb://localhost/photoVault");
 var app = express();
 
@@ -27,6 +27,11 @@ app.use(methodOverride("_method"));
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
 
 //============
 // ROUTES
@@ -100,7 +105,18 @@ app.post("/login", passport.authenticate("local", {
 });
 
 app.post("/home", function(req, res){
-    Post.create(req.body.post, function(err, newPost){
+    var image = req.body.image;
+    var title = req.body.title;
+    var description = req.body.description;
+    var country = req.body.country;
+    var photoType = req.body.photoType;
+    var isPublic = req.body.isPublic;
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newPost = {image: image, title: title, description: description, country: country, photoType: photoType, isPublic: isPublic, author: author}
+    Post.create(newPost, function(err, newlyCreated){
         if (err) {
             console.log(err);
         }
