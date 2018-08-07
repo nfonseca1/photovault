@@ -34,12 +34,15 @@
 
     commentButton.addEventListener("click", openCommentForm);
     commentSections.forEach(function(commentSection) {
-        commentSection.children[1].addEventListener("click", function(e){
+        commentSection.children[1].addEventListener("click", function(){
             var html = "";
-            html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') +'?_method=PUT" method="POST">';
+            html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') +'?_method=PUT" method="POST" style="display: inline;">';
             html += '<input type="text" name="comment[text]" value="'+ commentSection.getAttribute('data-comment-text') +'">';
-            html += '<button type="button" name="cancel" id="cancelComment" class="btn btn-xs">Cancel</button>';
+            html += '<button type="button" name="cancel" id="cancelComment" class="btn btn-xs">Cancel</button> ';
             html += '<button type="submit" class="btn btn-xs btn-warning" style="display: inline;">Update</button>';
+            html += '</form> ';
+            html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') + '?_method=DELETE" method="POST" style="display: inline;">';
+            html += '<button type=submit class="btn btn-xs btn-danger">Delete</button>';
             html += '</form>';
             commentSection.children[0].style.display = "none";
             commentSection.children[1].style.display = "none";

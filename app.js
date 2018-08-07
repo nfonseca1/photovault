@@ -164,6 +164,16 @@ app.delete("/home/:id", function(req, res){
     });
 });
 
+app.delete("/home/:id/comment/:commentId", function(req, res){
+    Comment.findByIdAndDelete(req.params.commentId, function(err){
+        if(err){
+            res.redirect("/home");
+        } else {
+            res.redirect("/home/" + req.params.id);
+        }
+    })
+});
+
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
