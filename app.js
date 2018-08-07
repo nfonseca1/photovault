@@ -6,6 +6,7 @@ var express               = require("express"),
     Post                  = require("./models/post"),
     Comment               = require("./models/comment"),
     countries             = require("./public/countries"),
+    middleware            = require("./middleware/middleware"),
     LocalStrategy         = require("passport-local"),
     methodOverride = require("method-override"),
     passportLocalMongoose = require("passport-local-mongoose");
@@ -45,7 +46,7 @@ app.get("/login", function(req, res){
     res.redirect("/");
 });
 
-app.get("/home",isLoggedIn, function(req, res){
+app.get("/home", middleware.isLoggedIn, function(req, res){
     Post.find({}, function(err, posts){
         if (err) {
             console.log(err);
@@ -56,7 +57,7 @@ app.get("/home",isLoggedIn, function(req, res){
     })
 });
 
-app.get("/home/:id", function(req, res){
+app.get("/home/:id", middleware.isLoggedIn, function(req, res){
     Post.findById(req.params.id).populate("comments").exec(function(err, post){
         if (err) {
             console.log(err);
@@ -66,7 +67,8 @@ app.get("/home/:id", function(req, res){
     })
 });
 
-app.get("/account", function(req, res){
+//Go to account page to ADD post
+app.get("/account", middleware.isLoggedIn, function(req, res){
     res.render("account.ejs", {countries: countries});
 });
 
@@ -75,7 +77,8 @@ app.get("/logout", function(req, res){
     res.redirect("/");
 });
 
-app.get("/home/:id/edit", function(req, res){
+//Go to EDIT page
+app.get("/home/:id/edit", middleware.checkPostOwnership, function(req, res){
     Post.findById(req.params.id, function(err, foundPost){
         res.render("edit.ejs", {post: foundPost, countries: countries});
     });
@@ -104,7 +107,8 @@ app.post("/login", passport.authenticate("local", {
     }) ,function(req, res){
 });
 
-app.post("/home", function(req, res){
+//CREATE new post
+app.post("/home", middleware.isLoggedIn, function(req, res){
     var image = req.body.image;
     var title = req.body.title;
     var description = req.body.description;
@@ -126,7 +130,8 @@ app.post("/home", function(req, res){
     })
 });
 
-app.post("/home/:id", function(req, res){
+//CREATE new comment
+app.post("/home/:id", middleware.isLoggedIn, function(req, res){
     Post.findById(req.params.id, function(err, post){
         if(err){
             console.log(err);
@@ -150,7 +155,8 @@ app.post("/home/:id", function(req, res){
     });
 });
 
-app.put("/home/:id", function(req, res){
+//UPDATE post
+app.put("/home/:id", middleware.checkPostOwnership, function(req, res){
     Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
         if(err){
             res.redirect("/home");
@@ -160,7 +166,8 @@ app.put("/home/:id", function(req, res){
     });
 });
 
-app.put("/home/:id/comment/:commentId", function(req, res){
+//UPDATE comment
+app.put("/home/:id/comment/:commentId", middleware.checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, comment){
         if(err){
             res.redirect("/home");
@@ -170,7 +177,8 @@ app.put("/home/:id/comment/:commentId", function(req, res){
     })
 });
 
-app.delete("/home/:id", function(req, res){
+//DELETE post
+app.delete("/home/:id", middleware.checkPostOwnership, function(req, res){
     Post.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/home");
@@ -180,7 +188,8 @@ app.delete("/home/:id", function(req, res){
     });
 });
 
-app.delete("/home/:id/comment/:commentId", function(req, res){
+//DELETE comment
+app.delete("/home/:id/comment/:commentId", middleware.checkCommentOwnership, function(req, res){
     Comment.findByIdAndDelete(req.params.commentId, function(err){
         if(err){
             res.redirect("/home");
@@ -189,14 +198,6 @@ app.delete("/home/:id/comment/:commentId", function(req, res){
         }
     })
 });
-
-
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/");
-}
 
 app.listen(3000, function(){
     console.log("server started.......");
