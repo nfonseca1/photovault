@@ -8,7 +8,7 @@ var express               = require("express"),
     countries             = require("./public/countries"),
     middleware            = require("./middleware/middleware"),
     LocalStrategy         = require("passport-local"),
-    methodOverride = require("method-override"),
+    methodOverride        = require("method-override"),
     passportLocalMongoose = require("passport-local-mongoose");
 
 mongoose.connect("mongodb://localhost/photoVault");
