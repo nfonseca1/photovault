@@ -19,6 +19,9 @@
                 <%= comment.text %>
             </p>
             <button class="editComment" class="btn btn-xs btn-warning">Edit</button>
+            <div>
+
+            </div>
         </div>
         <%})%>
     </div>
@@ -38,12 +41,14 @@
             html += '<button type="button" name="cancel" id="cancelComment" class="btn btn-xs">Cancel</button>';
             html += '<button type="submit" class="btn btn-xs btn-warning" style="display: inline;">Update</button>';
             html += '</form>';
-            commentSection.innerHTML = html;
+            commentSection.children[0].style.display = "none";
+            commentSection.children[1].style.display = "none";
+            commentSection.children[2].innerHTML = html;
             var cancelComment = document.querySelector("#cancelComment");
             cancelComment.addEventListener("click", function(){
-                html = '<p>'+ commentSection.getAttribute('data-comment-text') +'</p>';
-                html += '<button class=\"editComment\" class=\"btn btn-xs btn-warning\">Edit</button>';
-                commentSection.innerHTML = html;
+                commentSection.children[2].innerHTML = '';
+                commentSection.children[0].style.display = "inline";
+                commentSection.children[1].style.display = "block";
             })
         })
     });

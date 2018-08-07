@@ -144,6 +144,16 @@ app.put("/home/:id", function(req, res){
     });
 });
 
+app.put("/home/:id/comment/:commentId", function(req, res){
+    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, comment){
+        if(err){
+            res.redirect("/home");
+        } else {
+            res.redirect("/home/" + req.params.id);
+        }
+    })
+});
+
 app.delete("/home/:id", function(req, res){
     Post.findByIdAndRemove(req.params.id, function(err){
         if(err){
