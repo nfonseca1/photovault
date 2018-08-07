@@ -10,14 +10,15 @@
     <div>
         <h2>Comments</h2>
         <button id="addComment" class="btn btn-xs btn-success">Add Comment</button>
-        <div id="commentArea" style="margin-bottom: 150px">
+        <div id="commentArea">
 
         </div>
         <% post.comments.forEach(function(comment){ %>
-        <div style="background-color: #dddddd">
+        <div class="comment" data-comment-id="<%=comment._id%>" data-comment-text="<%=comment.text%>" style="background-color: #dddddd">
             <p>
                 <%= comment.text %>
             </p>
+            <button class="editComment" class="btn btn-xs btn-warning">Edit</button>
         </div>
         <%})%>
     </div>
@@ -25,21 +26,39 @@
 <script>
     var commentArea = document.querySelector("#commentArea");
     var commentButton = document.querySelector("#addComment");
-    var on = false;
+    var commentSections = document.querySelectorAll(".comment");
+    var addFormOn = false;
 
     commentButton.addEventListener("click", openCommentForm);
+    commentSections.forEach(function(commentSection) {
+        commentSection.children[1].addEventListener("click", function(e){
+            var html = "";
+            html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') +'?_method=PUT" method="POST">';
+            html += '<input type="text" name="comment[text]" value="'+ commentSection.getAttribute('data-comment-text') +'">';
+            html += '<button type="button" name="cancel" id="cancelComment" class="btn btn-xs">Cancel</button>';
+            html += '<button type="submit" class="btn btn-xs btn-warning" style="display: inline;">Update</button>';
+            html += '</form>';
+            commentSection.innerHTML = html;
+            var cancelComment = document.querySelector("#cancelComment");
+            cancelComment.addEventListener("click", function(){
+                html = '<p>'+ commentSection.getAttribute('data-comment-text') +'</p>';
+                html += '<button class=\"editComment\" class=\"btn btn-xs btn-warning\">Edit</button>';
+                commentSection.innerHTML = html;
+            })
+        })
+    });
 
     function openCommentForm(){
         var html = "";
-        if(on) {
+        if(addFormOn) {
             commentArea.innerHTML = "";
-            on = false;
+            addFormOn = false;
         } else {
             html = '<form action="/home/<%= post._id %>" method="POST">';
             html += '<input type="text" class="form-control" name="comment[text]">';
             html += '<button type="submit" class="btn btn-xs btn-success">Post</button></form>';
             commentArea.innerHTML = html;
-            on = true;
+            addFormOn = true;
         }
     }
 </script>
