@@ -77,6 +77,21 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
     })
 });
 
+app.get("/account/:username", middleware.isLoggedIn, function(req, res){
+    User.findOne({username: req.params.username}, function(err, user){
+        if(err || user == null) {
+            console.log(err);
+            res.redirect("/home");
+        }
+        Post.find({'author.username': req.params.username}, function(err, foundPosts){
+            if(err) {
+                console.log(err);
+            }
+            res.render("userAccount.ejs", {user: user, posts: foundPosts});
+        });
+    });
+});
+
 app.get("/logout", function(req, res){
     req.logout();
     res.redirect("/");

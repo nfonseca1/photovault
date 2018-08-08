@@ -1,0 +1,27 @@
+<% include partials/header.ejs %>
+
+<h3><%=user.username%>'s Account</h3>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="#">Following</a>
+        <a class="nav-item nav-link" href="#">Followers</a>
+    </div>
+</nav>
+
+<hr>
+<h3>Photos</h3>
+
+<div class="row text-center" style="display: flex; flex-wrap: wrap">
+    <%posts.forEach(function(post){%>
+    <div class="col-md-6">
+        <a href="/home/<%= post._id %>" class="nostyle">
+            <div class="thumbnail">
+                <img src="<%= post.image %>">
+            </div>
+        </a>
+    </div>
+    <%});%>
+</div>
+
+<% include partials/footer.ejs %>

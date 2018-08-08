@@ -7,7 +7,13 @@ var UserSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    friends: [
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    followers: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
