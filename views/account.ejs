@@ -1,11 +1,27 @@
 <% include partials/header.ejs %>
 
 <h3>Account</h3>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="#">Following</a>
+        <a class="nav-item nav-link" href="#">Followers</a>
+        <a class="nav-item nav-link" href="#">Messages</a>
+        <a class="nav-item nav-link" href="#">Settings</a>
+        <a class="nav-item nav-link" href="#">Logout</a>
+    </div>
+</nav>
 <h4>Upload Photo</h4>
+<div class="jumbotron">
+    <h1 class="display-4">Upload new photo</h1>
+    <button id="addButton" class="btn btn-primary btn-lg">Open Form</button>
+</div>
 
-<form action="/home" method="POST">
-    <!--<input type="file" name="photo" class="form-control" required>-->
-    <input type="text" name="image" class="form-control" required>
+<form action="/home" method="POST" id="addPhotoForm" style="display: none;">
+    <div class="form-group">
+        <label for="image">Image Link</label>
+        <input type="text" name="image" id="image" class="form-control" required>
+    </div>
     <div class="form-group">
         <label for="title">Title</label>
         <input type="text" name="title" id="title" class="form-control" required>
@@ -45,5 +61,22 @@
     </div>
         <button type="submit" name="upload" class="btn btn-primary">Upload</button>
 </form>
+
+<script>
+    var addButton = document.querySelector("#addButton");
+    var addPhotoForm = document.querySelector("#addPhotoForm");
+    var addFormOn = false;
+
+    addButton.addEventListener("click", openAddForm);
+
+    function openAddForm(){
+        addFormOn = !addFormOn;
+        if (addFormOn){
+            addPhotoForm.style.display = "block";
+        } else {
+            addPhotoForm.style.display = "none";
+        }
+    }
+</script>
 
 <% include partials/footer.ejs %>
