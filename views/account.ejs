@@ -62,6 +62,21 @@
         <button type="submit" name="upload" class="btn btn-primary">Upload</button>
 </form>
 
+<hr>
+<h3>Photos</h3>
+
+<div class="row text-center" style="display: flex; flex-wrap: wrap">
+    <%posts.forEach(function(post){%>
+        <div class="col-md-6">
+            <a href="/home/<%= post._id %>" class="nostyle">
+                <div class="thumbnail">
+                    <img src="<%= post.image %>">
+                </div>
+            </a>
+        </div>
+    <%});%>
+</div>
+
 <script>
     var addButton = document.querySelector("#addButton");
     var addPhotoForm = document.querySelector("#addPhotoForm");
@@ -77,6 +92,7 @@
             addPhotoForm.style.display = "none";
         }
     }
+
 </script>
 
 <% include partials/footer.ejs %>

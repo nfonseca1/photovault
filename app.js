@@ -69,7 +69,12 @@ app.get("/home/:id", middleware.isLoggedIn, function(req, res){
 
 //Go to account page to ADD post
 app.get("/account", middleware.isLoggedIn, function(req, res){
-    res.render("account.ejs", {countries: countries});
+    Post.find({'author.id': req.user._id}, function(err, foundPosts){
+        if (err) {
+            console.log(err);
+        }
+        res.render("account.ejs", {countries: countries, posts: foundPosts});
+    })
 });
 
 app.get("/logout", function(req, res){
