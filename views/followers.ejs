@@ -5,15 +5,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
         <a class="nav-item nav-link active" href="/account">Photos</a>
-        <a class="nav-item nav-link" href="/account/following">Following <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="/account/followers">Followers</a>
+        <a class="nav-item nav-link" href="/account/following">Following</a>
+        <a class="nav-item nav-link" href="/account/followers">Followers <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" href="#">Messages</a>
         <a class="nav-item nav-link" href="#">Settings</a>
         <a class="nav-item nav-link" href="/logout">Logout</a>
     </div>
 </nav>
 
-<h3>Following (<%=myUser.following.length%>)</h3>
+<h3>Followers (<%=myUser.followers.length%>)</h3>
 
 <table class="table table-striped">
     <thead>
@@ -24,12 +24,12 @@
     </tr>
     </thead>
     <tbody>
-    <%myUser.following.forEach(function(follow){%>
-        <tr>
-            <td><%=follow.username%></td>
-            <td><%=follow.firstName%></td>
-            <td><%=follow.lastName%></td>
-        </tr>
+    <%myUser.followers.forEach(function(follower){%>
+    <tr>
+        <td><%=follower.username%></td>
+        <td><%=follower.firstName%></td>
+        <td><%=follower.lastName%></td>
+    </tr>
     <%});%>
     </tbody>
 </table>

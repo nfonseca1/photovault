@@ -86,7 +86,16 @@ app.get("/account/following", middleware.isLoggedIn, function(req, res){
             res.render("following.ejs", {myUser: myUser});
         }
     })
-    //res.render("following.ejs");
+});
+
+app.get("/account/followers", middleware.isLoggedIn, function(req, res){
+    User.findById(req.user._id).populate("followers").exec(function(err, myUser){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("followers.ejs", {myUser: myUser});
+        }
+    })
 });
 
 app.get("/account/:username", middleware.isLoggedIn, function(req, res){
