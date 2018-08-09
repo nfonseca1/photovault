@@ -4,6 +4,7 @@
         <title>Snappir</title>
         <base href="/">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <style>
             .thumbnail img {
                 width: 100%;
@@ -21,6 +22,10 @@
                 text-decoration: inherit;
                 color: inherit;
                 cursor: auto;
+            }
+
+            .post-full{
+                padding: 2px 2px 2px 2px;
             }
 
             .post {
@@ -54,16 +59,14 @@
         </style>
     </head>
     <body>
-    <div class="container-fluid">
-
-        <ul class="nav">
-            <li class="nav-link">
-                <a href="/home">Home</a>
-            </li>
-            <li class="nav-link">
-                <a href="/account">Account</a>
-            </li>
-            <li class="nav-link">
-                <a href="/logout">Logout</a>
-            </li>
-        </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand h1" href="/home"><em>Snappir</em></a>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">

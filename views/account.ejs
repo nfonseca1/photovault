@@ -1,6 +1,8 @@
 <% include partials/header.ejs %>
 
-<h3><%=currentUser%>'s Account</h3>
+<h3><%=currentUser.username%>'s Account</h3>
+
+<button id="followButton">Follow</button>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
         <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
@@ -8,7 +10,7 @@
         <a class="nav-item nav-link" href="#">Followers</a>
         <a class="nav-item nav-link" href="#">Messages</a>
         <a class="nav-item nav-link" href="#">Settings</a>
-        <a class="nav-item nav-link" href="#">Logout</a>
+        <a class="nav-item nav-link" href="/logout">Logout</a>
     </div>
 </nav>
 <h4>Upload Photo</h4>

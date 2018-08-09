@@ -15,6 +15,7 @@ mongoose.connect("mongodb://localhost/photoVault");
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(require("express-session")({
     secret: "If you only knew the power of the dark side.",
     resave: false,
@@ -83,11 +84,18 @@ app.get("/account/:username", middleware.isLoggedIn, function(req, res){
             console.log(err);
             res.redirect("/home");
         }
-        Post.find({'author.username': req.params.username}, function(err, foundPosts){
+        var amFollowing = false;
+        for(var i = 0; i < req.user.following.length; i++){
+            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                amFollowing = true;
+                break;
+            }
+        }
+        Post.find({'author.username': user.username}, function(err, foundPosts){
             if(err) {
                 console.log(err);
             }
-            res.render("userAccount.ejs", {user: user, posts: foundPosts});
+            res.render("userAccount.ejs", {user: user, posts: foundPosts, following: amFollowing});
         });
     });
 });
@@ -218,6 +226,53 @@ app.delete("/home/:id/comment/:commentId", middleware.checkCommentOwnership, fun
         }
     })
 });
+
+//API
+
+app.put("/api/users/follow", function(req, res){
+    console.log(req.user.following.length);
+    console.log(req.user.following.push(req.body.accountUserId));
+    req.user.save();
+
+    User.findById(req.body.accountUserId, function(err, accountUser){
+        if(err) {
+            console.log(err);
+        } else {
+            accountUser.followers.push(req.user._id);
+            accountUser.save();
+            console.log(req.user.following.length);
+            res.send({myUser: req.user, accountUser: accountUser});
+        }
+    })
+});
+
+app.put("/api/users/unfollow", function(req, res){
+    for (var i = 0; i < req.user.following.length; i++){
+        if(JSON.stringify(req.user.following[i]) == JSON.stringify(req.body.accountUserId)){
+            var removed = req.user.following.splice(i, 1);
+            req.user.save();
+            console.log("myUser");
+            console.log(removed);
+            break;
+        }
+    }
+    User.findById(req.body.accountUserId, function(err, accountUser){
+        if(err){
+            console.log(err);
+        } else {
+            for (var i = 0; i < accountUser.followers.length; i++) {
+                if(JSON.stringify(accountUser.followers[i]) == JSON.stringify(req.user._id)){
+                    var removed = accountUser.followers.splice(i, 1);
+                    accountUser.save();
+                    console.log("accountUser");
+                    console.log(removed);
+                    break;
+                }
+            }
+        }
+        res.send({myUser: req.user, accountUser: accountUser});
+    })
+})
 
 app.listen(3000, function(){
     console.log("server started.......");

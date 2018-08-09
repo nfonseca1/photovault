@@ -1,6 +1,9 @@
 <% include partials/header.ejs %>
 
 <h3><%=user.username%>'s Account</h3>
+<div id="data" data-userId="<%=user._id%>"></div>
+<button class="btn btn-xs" id="followButton" style="<%if(!following){%>display: block;<%}else{%>display: none;<%}%>">Follow</button>
+<button class="btn btn-xs" id="unfollowButton" style="<%if(following){%>display: block;<%}else{%>display: none;<%}%>">Unfollow</button>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
         <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
@@ -23,5 +26,43 @@
     </div>
     <%});%>
 </div>
+
+<script>
+    var data = document.querySelector("#data");
+    var followButton = document.querySelector("#followButton");
+    var unfollowButton = document.querySelector("#unfollowButton");
+
+    followButton.addEventListener("click", function(){
+        followButton.style.display = "none";
+        unfollowButton.style.display = "block";
+
+        axios.put("/api/users/follow", {
+            accountUserId: data.getAttribute("data-userId")
+        })
+            .then(function(res){
+                console.log(res.data);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    });
+
+    unfollowButton.addEventListener("click", function(){
+        unfollowButton.style.display = "none";
+        followButton.style.display = "block";
+
+        axios.put("/api/users/unfollow", {
+            accountUserId: data.getAttribute("data-userId")
+        })
+            .then(function(res){
+                console.log(res.data);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    });
+
+
+</script>
 
 <% include partials/footer.ejs %>
