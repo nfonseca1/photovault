@@ -39,12 +39,6 @@
         axios.put("/api/users/follow", {
             accountUserId: data.getAttribute("data-userId")
         })
-            .then(function(res){
-                console.log(res.data);
-            })
-            .catch(function(err){
-                console.log(err);
-            })
     });
 
     unfollowButton.addEventListener("click", function(){
@@ -54,12 +48,6 @@
         axios.put("/api/users/unfollow", {
             accountUserId: data.getAttribute("data-userId")
         })
-            .then(function(res){
-                console.log(res.data);
-            })
-            .catch(function(err){
-                console.log(err);
-            })
     });
 
 

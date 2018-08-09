@@ -78,6 +78,17 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
     })
 });
 
+app.get("/account/following", middleware.isLoggedIn, function(req, res){
+    User.findById(req.user._id).populate("following").exec(function(err, myUser){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("following.ejs", {myUser: myUser});
+        }
+    })
+    //res.render("following.ejs");
+});
+
 app.get("/account/:username", middleware.isLoggedIn, function(req, res){
     User.findOne({username: req.params.username}, function(err, user){
         if(err || user == null) {
@@ -230,18 +241,14 @@ app.delete("/home/:id/comment/:commentId", middleware.checkCommentOwnership, fun
 //API
 
 app.put("/api/users/follow", function(req, res){
-    console.log(req.user.following.length);
-    console.log(req.user.following.push(req.body.accountUserId));
-    req.user.save();
-
     User.findById(req.body.accountUserId, function(err, accountUser){
         if(err) {
             console.log(err);
         } else {
-            accountUser.followers.push(req.user._id);
+            req.user.following.push(accountUser);
+            req.user.save();
+            accountUser.followers.push(req.user);
             accountUser.save();
-            console.log(req.user.following.length);
-            res.send({myUser: req.user, accountUser: accountUser});
         }
     })
 });
@@ -249,10 +256,8 @@ app.put("/api/users/follow", function(req, res){
 app.put("/api/users/unfollow", function(req, res){
     for (var i = 0; i < req.user.following.length; i++){
         if(JSON.stringify(req.user.following[i]) == JSON.stringify(req.body.accountUserId)){
-            var removed = req.user.following.splice(i, 1);
+            req.user.following.splice(i, 1);
             req.user.save();
-            console.log("myUser");
-            console.log(removed);
             break;
         }
     }
@@ -262,15 +267,12 @@ app.put("/api/users/unfollow", function(req, res){
         } else {
             for (var i = 0; i < accountUser.followers.length; i++) {
                 if(JSON.stringify(accountUser.followers[i]) == JSON.stringify(req.user._id)){
-                    var removed = accountUser.followers.splice(i, 1);
+                    accountUser.followers.splice(i, 1);
                     accountUser.save();
-                    console.log("accountUser");
-                    console.log(removed);
                     break;
                 }
             }
         }
-        res.send({myUser: req.user, accountUser: accountUser});
     })
 })
 
