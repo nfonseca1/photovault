@@ -79,10 +79,19 @@
             params: {
                 accountUserId: data.getAttribute("data-userId")
             }
-        })
-            .then(function(res){
-                console.log(res.data);
-            })
+        }).then(function(res){
+            if(res.data.existingConv){
+                axios.put("/api/users/message", {
+                    convId: res.data.convId,
+                    text: msgText.value
+                }).catch(function(err){console.log(err)})
+            } else {
+                axios.post("/api/users/message", {
+                    accountUserId: data.getAttribute("data-userId"),
+                    text: msgText.value
+                }).catch(function(err){console.log(err)})
+            }
+        }).catch(function(err){console.log(err)})
     });
 
 </script>

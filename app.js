@@ -287,20 +287,85 @@ app.put("/api/users/unfollow", function(req, res){
 })
 
 app.get("/api/users/message", function(req, res){
-    Conversation.findOne({'user1.id': req.params.accountUserId}, function(err, conv){
+    Conversation.findOne({'user1.id': req.query.accountUserId}, function(err, conv){
         if(conv == null) {
-            Conversation.findOne({'user2.id': req.params.accountUserId}, function(err, conv){
+            Conversation.findOne({'user2.id': req.query.accountUserId}, function(err, conv){
                 if(conv == null){
                     res.send({existingConv: false});
                 } else {
-                    res.send({existingConv: true});
+                    res.send({existingConv: true, convId: conv._id});
                 }
             })
         } else {
-            res.send({existingConv: true});
+            res.send({existingConv: true, convId: conv._id});
         }
     })
-})
+});
+
+app.post("/api/users/message", function(req, res){
+    User.findById(req.body.accountUserId, function(err, accountUser){
+        if(err){
+            console.log(err);
+        } else {
+            var conv = {
+                user1: {
+                    id: req.user._id,
+                    username: req.user.username,
+                    view: true
+                },
+                user2: {
+                    id: accountUser._id,
+                    username: accountUser.username,
+                    view: true
+                },
+                message: []
+            }
+            Conversation.create(conv, function(err, newConv){
+                if(err){
+                    console.log("conv creation");
+                    console.log(err);
+                } else {
+                    newConv.messages.push({
+                        text: req.body.text,
+                        author: req.user.username
+                    });
+                    newConv.save();
+                }
+            })
+        }
+    })
+});
+
+app.put("/api/users/message", function(req, res){
+    Conversation.findById(req.body.convId, function(err, conv){
+        if(err){
+            console.log(err);
+        } else {
+            var convTemp = {
+                user1: {
+                    id: conv.user1.id,
+                    username: conv.user1.username,
+                    view: true
+                },
+                user2: {
+                    id: conv.user2.id,
+                    username: conv.user2.username,
+                    view: true
+                },
+                messages: conv.messages
+            }
+            convTemp.messages.push({
+                text: req.body.text,
+                author: req.user.username
+            });
+            Conversation.findByIdAndUpdate(req.body.convId, convTemp, function(err, newConv){
+                if(err){
+                    console.log(err);
+                }
+            })
+        }
+    })
+});
 
 app.listen(3000, function(){
     console.log("server started.......");
