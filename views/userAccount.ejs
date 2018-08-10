@@ -12,6 +12,16 @@
     </div>
 </nav>
 
+<div class="jumbotron">
+    <h2 class="display-4">Send a message</h2>
+    <button id="msgFormButton" class="btn btn-primary btn-lg">Message</button>
+</div>
+
+<div id="msgForm" style="display: none;">
+    <input type="text" class="form-control" id="msgText">
+    <button type="button" class="btn btn-primary" id="msgSendButton">Send</button>
+</div>
+
 <hr>
 <h3>Photos</h3>
 
@@ -31,6 +41,11 @@
     var data = document.querySelector("#data");
     var followButton = document.querySelector("#followButton");
     var unfollowButton = document.querySelector("#unfollowButton");
+    var msgFormButton = document.querySelector("#msgFormButton");
+    var msgSendButton = document.querySelector("#msgSendButton")
+    var msgForm = document.querySelector("#msgForm");
+    var msgText = document.querySelector("#msgText");
+    var formOn = false;
 
     followButton.addEventListener("click", function(){
         followButton.style.display = "none";
@@ -50,6 +65,25 @@
         })
     });
 
+    msgFormButton.addEventListener("click", function(){
+        formOn = !formOn;
+        if (formOn){
+            msgForm.style.display = "block";
+        } else {
+            msgForm.style.display = "none";
+        }
+    });
+
+    msgSendButton.addEventListener("click", function(){
+        axios.get("/api/users/message", {
+            params: {
+                accountUserId: data.getAttribute("data-userId")
+            }
+        })
+            .then(function(res){
+                console.log(res.data);
+            })
+    });
 
 </script>
 

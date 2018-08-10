@@ -5,6 +5,7 @@ var express               = require("express"),
     User                  = require("./models/user"),
     Post                  = require("./models/post"),
     Comment               = require("./models/comment"),
+    Conversation          = require("./models/conversation"),
     countries             = require("./public/countries"),
     middleware            = require("./middleware/middleware"),
     LocalStrategy         = require("passport-local"),
@@ -281,6 +282,22 @@ app.put("/api/users/unfollow", function(req, res){
                     break;
                 }
             }
+        }
+    })
+})
+
+app.get("/api/users/message", function(req, res){
+    Conversation.findOne({'user1.id': req.params.accountUserId}, function(err, conv){
+        if(conv == null) {
+            Conversation.findOne({'user2.id': req.params.accountUserId}, function(err, conv){
+                if(conv == null){
+                    res.send({existingConv: false});
+                } else {
+                    res.send({existingConv: true});
+                }
+            })
+        } else {
+            res.send({existingConv: true});
         }
     })
 })
