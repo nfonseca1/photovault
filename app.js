@@ -99,6 +99,17 @@ app.get("/account/followers", middleware.isLoggedIn, function(req, res){
     })
 });
 
+app.get("/account/messages", middleware.isLoggedIn, function(req, res){
+    Conversation.find({$or: [{'user1.id': req.user._id}, {'user2.id': req.user._id}]}).sort('-lastMessage').exec(function(err, convs){
+        if(err){
+            console.log("convs err");
+            console.log(err);
+        } else {
+            res.render("messages.ejs", {convs: convs});
+        }
+    })
+});
+
 app.get("/account/:username", middleware.isLoggedIn, function(req, res){
     User.findOne({username: req.params.username}, function(err, user){
         if(err || user == null) {
@@ -287,15 +298,10 @@ app.put("/api/users/unfollow", function(req, res){
 })
 
 app.get("/api/users/message", function(req, res){
-    Conversation.findOne({'user1.id': req.query.accountUserId}, function(err, conv){
-        if(conv == null) {
-            Conversation.findOne({'user2.id': req.query.accountUserId}, function(err, conv){
-                if(conv == null){
-                    res.send({existingConv: false});
-                } else {
-                    res.send({existingConv: true, convId: conv._id});
-                }
-            })
+    Conversation.findOne({$or: [{'user1.id': req.query.accountUserId, 'user2.id': req.user._id},
+            {'user2.id': req.query.accountUserId, 'user1.id': req.user._id}]}, function(err, conv){
+        if(conv == null){
+            res.send({existingConv: false});
         } else {
             res.send({existingConv: true, convId: conv._id});
         }
@@ -329,6 +335,7 @@ app.post("/api/users/message", function(req, res){
                         text: req.body.text,
                         author: req.user.username
                     });
+                    newConv.lastMessage = Date.now();
                     newConv.save();
                 }
             })
@@ -358,6 +365,7 @@ app.put("/api/users/message", function(req, res){
                 text: req.body.text,
                 author: req.user.username
             });
+            convTemp.lastMessage = Date.now();
             Conversation.findByIdAndUpdate(req.body.convId, convTemp, function(err, newConv){
                 if(err){
                     console.log(err);

@@ -13,25 +13,31 @@
     </div>
 </nav>
 
-<h3>Followers (<%=myUser.followers.length%>)</h3>
+<h3>Conversations (<%=convs.length%>)</h3>
 
 <table class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Username</th>
-        <th scope="col">Firstname</th>
-        <th scope="col">Lastname</th>
+        <th scope="col">Latest Message</th>
+        <th scope="col">Action</th>
     </tr>
     </thead>
     <tbody>
-    <%myUser.followers.forEach(function(follower){%>
+    <%var user;%>
+    <%convs.forEach(function(conv){%>
+    <%if(conv.user1.username == currentUser.username){user = conv.user2.username} else {user = conv.user1.username};%>
     <tr>
-        <td><%=follower.username%></td>
-        <td><%=follower.firstName%></td>
-        <td><%=follower.lastName%></td>
+        <td><%=user%></td>
+        <td><%=conv.messages[(conv.messages.length - 1)].text%></td>
+        <td><button id="viewButton" class="btn btn-xs" >View</button></td>
     </tr>
     <%});%>
     </tbody>
 </table>
+
+<script>
+
+</script>
 
 <% include partials/footer.ejs %>
