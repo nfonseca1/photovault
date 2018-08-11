@@ -21,13 +21,10 @@ var conversationSchema = new mongoose.Schema({
         {
             text: String,
             author: String,
-            date: {
-                type: Date,
-                default: Date.now
-            }
+            date: String
         }
     ],
     lastMessage: Date
-});
+})
 
 module.exports = mongoose.model("Conversation", conversationSchema);

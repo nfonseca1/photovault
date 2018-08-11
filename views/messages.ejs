@@ -12,32 +12,126 @@
         <a class="nav-item nav-link" href="/logout">Logout</a>
     </div>
 </nav>
+<div id="convSection">
+    <h3>Conversations (<%=convs.length%>)</h3>
 
-<h3>Conversations (<%=convs.length%>)</h3>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Latest Message</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%var user;%>
-    <%convs.forEach(function(conv){%>
-    <%if(conv.user1.username == currentUser.username){user = conv.user2.username} else {user = conv.user1.username};%>
-    <tr>
-        <td><%=user%></td>
-        <td><%=conv.messages[(conv.messages.length - 1)].text%></td>
-        <td><button id="viewButton" class="btn btn-xs" >View</button></td>
-    </tr>
-    <%});%>
-    </tbody>
-</table>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Latest Message</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%var user;%>
+        <%convs.forEach(function(conv){%>
+        <%if(conv.user1.username == currentUser.username){user = conv.user2.username} else {user = conv.user1.username};%>
+        <tr>
+            <td><%=user%></td>
+            <td><%=conv.messages[(conv.messages.length - 1)].text%></td>
+            <td><button class="viewButton btn btn-xs" data-convId="<%=conv._id%>">View</button></td>
+        </tr>
+        <%});%>
+        </tbody>
+    </table>
+</div>
 
 <script>
+    var resVar;
 
+    setupViewButtons();
+
+    function setupViewButtons(){
+        var viewButtons = document.querySelectorAll(".viewButton");
+
+        viewButtons.forEach(function(viewButton){
+            viewButton.addEventListener("click", viewMessages);
+        });
+    }
+
+    function viewMessages(e){
+        axios.get("/api/users/messages", {
+            params: {
+                convId: e.target.getAttribute("data-convId")
+            }
+        }).then(function(res){
+            resVar = res;
+            displayMessages();
+        })
+    }
+
+    function displayMessages(){
+        var html = '<button id="messagesBackButton" class="btn btn-xs">Back</button>';
+        html += '<h3>Messages (' + resVar.data.messages.length + ')</h3>';
+        html += '<input type="text" id="sendMsgInput" class="form-control"><button id="sendMsgBtn" class="btn btn-xs btn-success">Send</button>';
+        html += '<table class="table table-striped">';
+        html += '<thead><tr><th scope="col">User</th><th scope="col">Date<th scope="col">Message</td></tr></thead>';
+        resVar.data.messages.slice().reverse().forEach(function(message){
+            html += '<tr><td>' + message.author + '</td><td style="border-left: solid 1px;">' +
+                message.date + '</td><td style="border-left: solid 1px;">' + message.text + '</tr>';
+        })
+        html += '</table>';
+        var convSection = document.querySelector("#convSection");
+        convSection.innerHTML = html;
+
+        var msgBackBtn = document.querySelector("#messagesBackButton");
+        msgBackBtn.addEventListener("click", viewConvs);
+
+        var sendMsgBtn = document.querySelector("#sendMsgBtn");
+        sendMsgBtn.addEventListener("click", sendMessage);
+    }
+
+    function sendMessage(){
+        var sendMsgInput = document.querySelector("#sendMsgInput");
+        axios.put("/api/users/conversations", {
+            convId: resVar.data._id,
+            text: sendMsgInput.value
+        }).then(function(res){
+            axios.get("/api/users/messages", {
+                params: {
+                    convId: resVar.data._id
+                }
+            }).then(function(res){
+                resVar = res;
+                sendMsgInput.value = "";
+                displayMessages();
+            })
+        })
+    }
+
+    function viewConvs(){
+        axios.get("/api/users/conversations")
+            .then(function(res){
+                var html = '<h3>Conversations (' + res.data.convs.length + ')</h3>';
+                html += '<table class="table table-striped">';
+                html += '<thead>' +
+                    '<tr><th scope="col">Username</th>' +
+                    '<th scope="col">Latest Message</th>' +
+                    '<th scope="col">Action</th></tr>' +
+                    '</thead>';
+                html += '<tbody>';
+
+                var user;
+                res.data.convs.forEach(function(conv){
+                    if(conv.user1.username == res.data.myUser.username){
+                        user = conv.user2.username;
+                    } else {
+                        user = conv.user1.username;
+                    }
+                    html += '<tr><td>' + user + '</td>';
+                    html += '<td>' + conv.messages[(conv.messages.length - 1)].text + '</td>';
+                    html += '<td><button class="viewButton btn btn-xs" data-convId="' + conv._id + '">View</button></td>';
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+
+                var convSection = document.querySelector("#convSection");
+                convSection.innerHTML = html;
+
+                setupViewButtons();
+            })
+    }
 </script>
 
 <% include partials/footer.ejs %>

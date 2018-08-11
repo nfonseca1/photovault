@@ -297,7 +297,7 @@ app.put("/api/users/unfollow", function(req, res){
     })
 })
 
-app.get("/api/users/message", function(req, res){
+app.get("/api/users/checkConversations", function(req, res){
     Conversation.findOne({$or: [{'user1.id': req.query.accountUserId, 'user2.id': req.user._id},
             {'user2.id': req.query.accountUserId, 'user1.id': req.user._id}]}, function(err, conv){
         if(conv == null){
@@ -308,7 +308,7 @@ app.get("/api/users/message", function(req, res){
     })
 });
 
-app.post("/api/users/message", function(req, res){
+app.post("/api/users/conversations", function(req, res){
     User.findById(req.body.accountUserId, function(err, accountUser){
         if(err){
             console.log(err);
@@ -331,9 +331,12 @@ app.post("/api/users/message", function(req, res){
                     console.log("conv creation");
                     console.log(err);
                 } else {
+                    var date = new Date();
+                    date = date.toLocaleString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
                     newConv.messages.push({
                         text: req.body.text,
-                        author: req.user.username
+                        author: req.user.username,
+                        date: date
                     });
                     newConv.lastMessage = Date.now();
                     newConv.save();
@@ -343,7 +346,7 @@ app.post("/api/users/message", function(req, res){
     })
 });
 
-app.put("/api/users/message", function(req, res){
+app.put("/api/users/conversations", function(req, res){
     Conversation.findById(req.body.convId, function(err, conv){
         if(err){
             console.log(err);
@@ -361,17 +364,39 @@ app.put("/api/users/message", function(req, res){
                 },
                 messages: conv.messages
             }
+            var date = new Date();
+            date = date.toLocaleString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
             convTemp.messages.push({
                 text: req.body.text,
-                author: req.user.username
+                author: req.user.username,
+                date: date
             });
             convTemp.lastMessage = Date.now();
             Conversation.findByIdAndUpdate(req.body.convId, convTemp, function(err, newConv){
                 if(err){
                     console.log(err);
+                } else {
+                    res.send(newConv);
                 }
             })
         }
+    })
+});
+
+app.get("/api/users/conversations", function(req, res){
+    Conversation.find({$or: [{'user1.id': req.user._id}, {'user2.id': req.user._id}]}).sort('-lastMessage').exec(function(err, convs){
+        if(err){
+            console.log("convs err");
+            console.log(err);
+        } else {
+            res.send({convs: convs, myUser: req.user});
+        }
+    })
+});
+
+app.get("/api/users/messages", function(req, res){
+    Conversation.findById(req.query.convId, function(err, conv){
+        res.send(conv);
     })
 });
 
