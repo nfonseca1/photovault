@@ -31,6 +31,31 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//cloudinary
+require('dotenv').config();
+var multer = require('multer');
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+var cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: 'dfuxqmces',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
     next();
@@ -171,26 +196,30 @@ app.post("/login", passport.authenticate("local", {
 });
 
 //CREATE new post
-app.post("/home", middleware.isLoggedIn, function(req, res){
-    var image = req.body.image;
-    var title = req.body.title;
-    var description = req.body.description;
-    var country = req.body.country;
-    var photoType = req.body.photoType;
-    var isPublic = req.body.isPublic;
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    var newPost = {image: image, title: title, description: description, country: country, photoType: photoType, isPublic: isPublic, author: author}
-    Post.create(newPost, function(err, newlyCreated){
-        if (err) {
-            console.log(err);
+app.post("/home", middleware.isLoggedIn, upload.single('image'), function(req, res){
+    cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
+        var newPost = {
+            image: result.secure_url,
+            imageId: result.public_id,
+            title: req.body.title,
+            description: req.body.description,
+            country: req.body.country,
+            photoType: req.body.photoType,
+            isPublic: req.body.isPublic,
+            author: {
+                id: req.user._id,
+                username: req.user.username
+            }
         }
-        else {
-            res.redirect("/home");
-        }
-    })
+        Post.create(newPost, function(err, newlyCreated){
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.redirect("/home");
+            }
+        })
+    });
 });
 
 //CREATE new comment
@@ -241,12 +270,34 @@ app.put("/account/settings", function(req, res){
 });
 
 //UPDATE post
-app.put("/home/:id", middleware.checkPostOwnership, function(req, res){
-    Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
+app.put("/home/:id", middleware.checkPostOwnership, upload.single('image'), function(req, res){
+    Post.findById(req.params.id, function(err, post){
         if(err){
-            res.redirect("/home");
+            console.log(err);
         } else {
-            res.redirect("/home/" + req.params.id);
+            if(req.file){
+                cloudinary.v2.uploader.destroy(req.file.path, function(err){
+                    if(err) {
+                        console.log(err);
+                    }
+                    cloudinary.v2.uploader.upload(req.file.path, function(err, result){
+                        if(err){
+                            console.log(err);
+                        }
+                        post.imageId = result.public_id;
+                        post.image = result.secure_url;
+                        post.title = req.body.post.title;
+                        post.description = req.body.post.description;
+                        post.save();
+                        res.redirect("/home/" + req.params.id);
+                    })
+                })
+            } else {
+                post.title = req.body.post.title;
+                post.description = req.body.post.description;
+                post.save();
+                res.redirect("/home/" + req.params.id);
+            }
         }
     });
 });
@@ -264,12 +315,13 @@ app.put("/home/:id/comment/:commentId", middleware.checkCommentOwnership, functi
 
 //DELETE post
 app.delete("/home/:id", middleware.checkPostOwnership, function(req, res){
-    Post.findByIdAndRemove(req.params.id, function(err){
+    Post.findById(req.params.id, function(err, post){
         if(err){
-            res.redirect("/home");
-        } else {
-            res.redirect("/home");
+            console.log(err);
         }
+        cloudinary.v2.uploader.destroy(post.imageId);
+        post.remove();
+        res.redirect("/home");
     });
 });
 

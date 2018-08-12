@@ -18,10 +18,10 @@
     <button id="addButton" class="btn btn-primary btn-lg">Open Form</button>
 </div>
 
-<form action="/home" method="POST" id="addPhotoForm" style="display: none;">
+<form action="/home" method="POST" id="addPhotoForm" style="display: none;" enctype="multipart/form-data">
     <div class="form-group">
         <label for="image">Image Link</label>
-        <input type="text" name="image" id="image" class="form-control" required>
+        <input type="file" id="image" class="form-control" name="image" accept="image/*" required>
     </div>
     <div class="form-group">
         <label for="title">Title</label>
