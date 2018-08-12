@@ -1,0 +1,97 @@
+<% include partials/header.ejs %>
+
+<h3><%=currentUser.username%>'s Account</h3>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/account">Photos</a>
+        <a class="nav-item nav-link" href="/account/following">Following</a>
+        <a class="nav-item nav-link" href="/account/followers">Followers</a>
+        <a class="nav-item nav-link" href="/account/messages">Messages</a>
+        <a class="nav-item nav-link active" href="/account/settings">Settings</a>
+        <a class="nav-item nav-link" href="/logout">Logout</a>
+    </div>
+</nav>
+
+<h3>Settings</h3>
+
+<form action="/account/settings?_method=PUT" method="post">
+    <div class="form-group">
+        <label for="currentEmail">Current Email</label>
+        <input type="email" id="currentEmail" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <div class="form-group">
+        <label for="newEmail">New Email</label>
+        <input type="email" name="email" id="newEmail" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <div class="form-group">
+        <label for="newEmail2">New Email</label>
+        <input type="email" name="newEmail2" id="newEmail2" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <hr>
+    <input type="hidden" name="username" id="hidden" value="<%=currentUser.username%>" data-email="<%currentUser.email%>">
+    <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <input type="password" name="currentPassword" id="currentPassword" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" name="password" id="newPassword" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <div class="form-group">
+        <label for="newPassword2">Confirm New Password</label>
+        <input type="password" name="newPassword2" id="newPassword2" class="form-control">
+        <p class="validation" style="color: red;"></p>
+    </div>
+    <button type="button" id="settingsButton" class="btn btn-primary">Update</button>
+</form>
+
+<script>
+    var form = document.querySelector("form");
+    var currentEmail = document.querySelector("#currentEmail");
+    var newEmail = document.querySelector("#newEmail");
+    var newEmail2 = document.querySelector("#newEmail2");
+    var hidden = document.querySelector("#hidden");
+    var currentPassword = document.querySelector("#currentPassword");
+    var newPassword = document.querySelector("#newPassword");
+    var newPassword2 = document.querySelector("#newPassword");
+    var button = document.querySelector("#settingsButton");
+    var error = document.querySelectorAll(".validation");
+    var readyToSubmit = false;
+
+    button.addEventListener("click", function(){
+
+        if(currentEmail.value != "" && newEmail.value != "" && newEmail2.value != ""){
+            if(newEmail.value == newEmail2.value){
+                readyToSubmit = true;
+            }
+        }
+
+        if(currentPassword.value != "" && newPassword.value != "" && newPassword2.value != ""){
+            if(newPassword.value == newPassword2.value){
+                axios.post("/api/settings/validate", {
+                    username: hidden.value,
+                    password: currentPassword.value
+                })
+                    .then(function(res){
+                        if(res.data.validated){
+                            form.submit();
+                        } else {
+                            error[3].textContent = "Current password is incorrect.";
+                        }
+                    })
+            }
+        }
+        if(readyToSubmit){
+            form.submit();
+        }
+    })
+
+</script>
+
+<% include partials/footer.ejs %>

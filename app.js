@@ -102,12 +102,15 @@ app.get("/account/followers", middleware.isLoggedIn, function(req, res){
 app.get("/account/messages", middleware.isLoggedIn, function(req, res){
     Conversation.find({$or: [{'user1.id': req.user._id}, {'user2.id': req.user._id}]}).sort('-lastMessage').exec(function(err, convs){
         if(err){
-            console.log("convs err");
             console.log(err);
         } else {
             res.render("messages.ejs", {convs: convs});
         }
     })
+});
+
+app.get("/account/settings", middleware.isLoggedIn, function(req, res){
+        res.render("settings.ejs");
 });
 
 app.get("/account/:username", middleware.isLoggedIn, function(req, res){
@@ -213,6 +216,28 @@ app.post("/home/:id", middleware.isLoggedIn, function(req, res){
             });
         }
     });
+});
+
+app.put("/account/settings", function(req, res){
+    User.findById(req.user._id, function(err, user){
+        if(err){
+            console.log(err);
+        } else {
+            if(req.body.email != ""){
+                user.email = "req.body.email";
+                user.save();
+                console.log(user);
+            }
+            if(req.body.password != ""){
+                user.setPassword(req.body.password, function(){
+                    user.save();
+                    res.redirect("/account/settings");
+                })
+            } else {
+                res.redirect("/account/settings");
+            }
+        }
+    })
 });
 
 //UPDATE post
@@ -398,6 +423,21 @@ app.get("/api/users/messages", function(req, res){
     Conversation.findById(req.query.convId, function(err, conv){
         res.send(conv);
     })
+});
+
+app.post("/api/settings/validate", function(req, res){
+    passport.authenticate("local", function(err, user){
+        if(err){
+            console.log(err);
+            res.send({validated: false});
+        } else {
+            if(user){
+                res.send({validated: true});
+            } else {
+                res.send({validated: false});
+            }
+        }
+    })(req, res);
 });
 
 app.listen(3000, function(){
