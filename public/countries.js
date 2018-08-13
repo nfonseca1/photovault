@@ -242,5 +242,3 @@ var countries = [
     {"name": "Zambia", "code": "ZM"},
     {"name": "Zimbabwe", "code": "ZW"}
 ];
-
-module.exports = countries;

@@ -15,6 +15,7 @@ var express               = require("express"),
 mongoose.connect("mongodb://localhost/photoVault");
 var app = express();
 
+app.use(express.static(__dirname +'/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(require("express-session")({
@@ -74,14 +75,34 @@ app.get("/login", function(req, res){
 });
 
 app.get("/home", middleware.isLoggedIn, function(req, res){
-    Post.find({}, function(err, posts){
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render("home.ejs", {posts: posts});
-        }
-    })
+    if(req.query.searchBy == undefined){
+        Post.find({}, function(err, posts){
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render("home.ejs", {posts: posts});
+            }
+        })
+    } else if(req.query.searchBy == "title"){
+        var search = req.query.search;
+        Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
+            if (err) {console.log(err)}
+            else {res.render("home.ejs", {posts: posts})}
+        })
+    } else if(req.query.searchBy == "description"){
+        var search = req.query.search;
+        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
+            if (err) {console.log(err)}
+            else {res.render("home.ejs", {posts: posts})}
+        })
+    } else if(req.query.searchBy == "author"){
+        var search = req.query.search;
+        Post.find({'author.username': search}, function(err, posts){
+            if (err) {console.log(err)}
+            else {res.render("home.ejs", {posts: posts})}
+        })
+    }
 });
 
 app.get("/home/:id", middleware.isLoggedIn, function(req, res){
@@ -100,7 +121,7 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         }
-        res.render("account.ejs", {countries: countries, posts: foundPosts});
+        res.render("account.ejs", {posts: foundPosts});
     })
 });
 
@@ -209,7 +230,11 @@ app.post("/home", middleware.isLoggedIn, upload.single('image'), function(req, r
             author: {
                 id: req.user._id,
                 username: req.user.username
-            }
+            },
+            date: new Date(),
+            points: 0,
+            favorites: 0,
+            views: 0
         }
         Post.create(newPost, function(err, newlyCreated){
             if (err) {
@@ -490,6 +515,70 @@ app.post("/api/settings/validate", function(req, res){
             }
         }
     })(req, res);
+});
+
+app.post("/api/sort", function(req, res){
+    var sort;
+    if(req.body.sortBy == "newest"){
+        sort = "-date";
+    } else if (req.body.sortBy == "highest rated"){
+        sort = "-points";
+    } else if (req.body.sortBy == "most favorited"){
+        sort = "-favorites";
+    } else {
+        sort = "-views";
+    }
+
+    var pastDate;
+    if(req.body.within == "day"){
+        pastDate = new Date(new Date().setDate(new Date().getDate()-1));
+    } else if(req.body.within == "week"){
+        pastDate = new Date(new Date().setDate(new Date().getDate()-7));
+    } else if(req.body.within == "month"){
+        pastDate = new Date(new Date().setMonth(new Date().getMonth()-1));
+    } else if(req.body.within == "year"){
+        pastDate = new Date(new Date().setFullYear(new Date().getFullYear()-1));
+    } else {
+        pastDate = "0";
+    }
+
+    var photoType;
+    var photoType2;
+    if(req.body.photoType == "landscapes"){
+        photoType = "landscape";
+        photoType2 = "landscape";
+    } else if(req.body.photoType == "cityscapes"){
+        photoType = "cityscape";
+        photoType2 = "cityscape";
+    } else {
+        photoType = "landscape";
+        photoType2 = "cityscape";
+    }
+    console.log(req.body.photoType);
+    console.log(photoType);
+    console.log(photoType2);
+
+    if(req.body.country == "all"){
+        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}})
+            .sort(sort).exec(function(err, posts){
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log(posts);
+                    res.send(posts);
+                }
+        })
+    } else {
+        var country = req.body.country;
+        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country})
+            .sort(sort).exec(function(err, posts){
+            if(err){
+                console.log(err);
+            } else {
+                res.send(posts);
+            }
+        })
+    }
 });
 
 app.listen(3000, function(){
