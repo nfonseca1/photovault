@@ -19,6 +19,18 @@ var UserSchema = new mongoose.Schema({
             ref: "User"
         }
     ],
+    feedback: [
+        {
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Post"
+            },
+            like: Boolean,
+            hate: Boolean,
+            favorite: Boolean,
+            list: String
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);

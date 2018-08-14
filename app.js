@@ -138,7 +138,23 @@ app.get("/home/:id", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         } else {
-            res.render("post.ejs", {post: post});
+            var likeColor = "black";
+            var hateColor = "black";
+            var feedback = req.user.feedback;
+            for(var i = 0; i < feedback.length; i++){
+                if(feedback[i].id == post._id){
+                    console.log(feedback[i]);
+                    if(feedback[i].like){
+                        likeColor = "#0066ff";
+                    }
+                    if(feeback[i].hate){
+                        likeColor = "#0066ff";
+                    }
+                }
+            }
+            console.log(likeColor);
+            console.log(hateColor);
+            res.render("post.ejs", {post: post, likeColor: likeColor, hateColor: hateColor});
         }
     })
 });
@@ -662,6 +678,116 @@ app.post("/api/sort", function(req, res){
     }
 });
 
+app.post("/api/like", function(req, res){
+    console.log("server side");
+    User.findById(req.user._id, function(err, myUser){
+        if(err){console.log(err)}
+        else {
+            var feedback = myUser.feedback;
+            var postId = req.body.postId;
+            var button = req.body.button;
+            var foundFeedback = false;
+
+            for(var i = 0; i < feedback.length; i++) {
+                if (feedback[i].id == postId) {
+                    console.log("found feedback");
+                    console.log(feedback[i]);
+                    foundFeedback = true;
+                    var results = addUserPostPoints(feedback[i], button);
+                    myUser.save();
+                    console.log(myUser.feedback[i]);
+
+                    Post.findById(postId, function(err, post){
+                        if(err){console.log(err)}
+                        else {
+                            post.points = post.points + results.addPoints;
+                            post.save();
+                            res.send({like: results.like, hate: results.hate, points: post.points});
+                        }
+                    })
+                    break;
+                }
+            }
+
+            if(!foundFeedback){
+                console.log("no feedback");
+                var newFeedback = {
+                    id: postId,
+                    like: false,
+                    hate: false,
+                    favorite: false,
+                    list: ''
+                };
+                feedback.push(newFeedback);
+                console.log(feedback[feedback.length - 1]);
+                var results = addUserPostPoints(feedback[feedback.length-1], button);
+                myUser.save();
+                console.log(myUser.feedback[i]);
+
+                Post.findById(postId, function(err, post){
+                    if(err){console.log(err)}
+                    else {
+                        post.points = post.points + results.addPoints;
+                        post.save();
+                        res.send({like: results.like, hate: results.hate, points: post.points});
+                    }
+                })
+            }
+
+        }
+    })
+})
+
 app.listen(3000, function(){
     console.log("server started.......");
 });
+
+
+function addUserPostPoints(feedback, button){
+    console.log(feedback);
+    var addPoints = 0;
+    var like = false;
+    var hate = false;
+    if(button == "Like"){
+        if(feedback.like){
+            console.log("like already");
+            feedback.like = false;
+            like = false;
+            addPoints = -1;
+        } else {
+            console.log("no like");
+            feedback.like = true;
+            like = true;
+            if(feedback.hate == true){
+                addPoints = 2;
+            } else {
+                addPoints = 1;
+            }
+            feedback.hate = false;
+            hate = false;
+        }
+    } else {
+        if(feedback.hate){
+            console.log("hate already");
+            feedback.hate = false;
+            hate = false;
+            addPoints = 1;
+        } else {
+            console.log("no hate");
+            feedback.hate = true;
+            hate = true;
+            if(feedback.like == true){
+                addPoints = -2;
+            } else {
+                addPoints = -1;
+            }
+            feedback.like = false;
+            like = false;
+        }
+    }
+    return {
+        addPoints: addPoints,
+        like: like,
+        hate: hate
+    };
+}
