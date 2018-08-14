@@ -1,0 +1,37 @@
+<% include partials/header.ejs %>
+
+<h3><%=user.username%>'s Account</h3>
+
+<div id="data" data-userId="<%=user._id%>"></div>
+<button class="btn btn-xs" id="followButton" style="<%if(!following){%>display: block;<%}else{%>display: none;<%}%>">Follow</button>
+<button class="btn btn-xs" id="unfollowButton" style="<%if(following){%>display: block;<%}else{%>display: none;<%}%>">Unfollow</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/account/<%=user.username%>">Photos <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/account/<%=user.username%>/following">Following</a>
+        <a class="nav-item nav-link active" href="/account/<%=user.username%>/followers">Followers</a>
+    </div>
+</nav>
+
+<h3>Followers (<%=user.followers.length%>)</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%user.followers.forEach(function(follower){%>
+    <tr>
+        <td><%=follower.username%></td>
+        <td><%=follower.firstName%></td>
+        <td><%=follower.lastName%></td>
+    </tr>
+    <%});%>
+    </tbody>
+</table>
+
+<% include partials/footer.ejs %>

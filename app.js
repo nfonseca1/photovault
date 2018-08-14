@@ -7,6 +7,7 @@ var express               = require("express"),
     Comment               = require("./models/comment"),
     Conversation          = require("./models/conversation"),
     countries             = require("./public/countries"),
+    setupPosts            = require("./public/home.js"),
     middleware            = require("./middleware/middleware"),
     LocalStrategy         = require("passport-local"),
     methodOverride        = require("method-override"),
@@ -81,26 +82,53 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 console.log(err);
             }
             else {
-                res.render("home.ejs", {posts: posts});
+                postResults = {
+                    data: posts
+                }
+                htmlPosts = setupPosts(postResults);
+                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
     } else if(req.query.searchBy == "title"){
         var search = req.query.search;
         Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
             if (err) {console.log(err)}
-            else {res.render("home.ejs", {posts: posts})}
+            else {
+                postResults = {
+                    data: posts
+                }
+                htmlPosts = setupPosts(postResults);
+                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
+            }
         })
     } else if(req.query.searchBy == "description"){
         var search = req.query.search;
         Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
             if (err) {console.log(err)}
-            else {res.render("home.ejs", {posts: posts})}
+            else {
+                postResults = {
+                    data: posts
+                }
+                htmlPosts = setupPosts(postResults);
+                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
+            }
         })
     } else if(req.query.searchBy == "author"){
         var search = req.query.search;
         Post.find({'author.username': search}, function(err, posts){
             if (err) {console.log(err)}
-            else {res.render("home.ejs", {posts: posts})}
+            else {
+                User.findOne({username: search}, function(err, user){
+                    if(err){console.log(err)}
+                    else {
+                        postResults = {
+                            data: posts
+                        }
+                        htmlPosts = setupPosts(postResults);
+                        res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
+                    }
+                })
+            }
         })
     }
 });
@@ -121,7 +149,11 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         }
-        res.render("account.ejs", {posts: foundPosts});
+        postResults = {
+            data: foundPosts
+        }
+        htmlPosts = setupPosts(postResults);
+        res.render("account.ejs", {htmlPosts: htmlPosts});
     })
 });
 
@@ -176,9 +208,47 @@ app.get("/account/:username", middleware.isLoggedIn, function(req, res){
             if(err) {
                 console.log(err);
             }
-            res.render("userAccount.ejs", {user: user, posts: foundPosts, following: amFollowing});
+            postResults = {
+                data: foundPosts
+            }
+            htmlPosts = setupPosts(postResults);
+            res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
         });
     });
+});
+
+app.get("/account/:username/followers", middleware.isLoggedIn, function(req, res){
+    User.findOne({username: req.params.username}).populate("followers").exec(function(err, user){
+        var amFollowing = false;
+        for(var i = 0; i < req.user.following.length; i++){
+            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                amFollowing = true;
+                break;
+            }
+        }
+        if(err){
+            console.log(err);
+        } else {
+            res.render("userFollowers.ejs", {user: user, following: amFollowing});
+        }
+    })
+});
+
+app.get("/account/:username/following", middleware.isLoggedIn, function(req, res){
+    User.findOne({username: req.params.username}).populate("following").exec(function(err, user){
+        var amFollowing = false;
+        for(var i = 0; i < req.user.following.length; i++){
+            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                amFollowing = true;
+                break;
+            }
+        }
+        if(err){
+            console.log(err);
+        } else {
+            res.render("userFollowing.ejs", {user: user, following: amFollowing});
+        }
+    })
 });
 
 app.get("/logout", function(req, res){
@@ -554,28 +624,39 @@ app.post("/api/sort", function(req, res){
         photoType = "landscape";
         photoType2 = "cityscape";
     }
-    console.log(req.body.photoType);
-    console.log(photoType);
-    console.log(photoType2);
+
+    var user;
+    if(req.body.user == undefined){
+        user = new RegExp('');
+    } else {
+        user = req.body.user;
+    }
 
     if(req.body.country == "all"){
-        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}})
+        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, 'author.username': user})
             .sort(sort).exec(function(err, posts){
                 if(err){
                     console.log(err);
                 } else {
-                    console.log(posts);
-                    res.send(posts);
+                    postResults = {
+                        data: posts
+                    }
+                    htmlPosts = setupPosts(postResults);
+                    res.send(htmlPosts);
                 }
         })
     } else {
         var country = req.body.country;
-        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country})
+        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country, 'author.username': user})
             .sort(sort).exec(function(err, posts){
             if(err){
                 console.log(err);
             } else {
-                res.send(posts);
+                postResults = {
+                    data: posts
+                }
+                htmlPosts = setupPosts(postResults);
+                res.send(htmlPosts);
             }
         })
     }

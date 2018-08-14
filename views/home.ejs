@@ -2,7 +2,7 @@
 
 <script type="text/javascript" src="countries.js"></script>
 
-<form action="/home" method="GET">
+<form action="/home" method="GET" class="form-inline center">
     <select id="searchBy" name="searchBy" class="form-control">
         <option value="title">Title</option>
         <option value="description">Description</option>
@@ -22,7 +22,7 @@
             <option value="most viewed">Most Viewed</option>
         </select>
     </div>
-    <div class="form-group col">
+    <div class="form-group">
         <label for="within">Within: </label>
         <select id="within" name="within" class="form-control">
             <option value="day">Past Day</option>
@@ -49,10 +49,28 @@
     <button id="sortBtn" class="btn btn-xs btn-primary">Sort</button>
 </nav>
 
-<div id="postsSection" class="text-center" style="display: flex; flex-wrap: wrap">
+<%if(user != undefined){%>
+<table class="table table-striped">
+    <tr>
+        <td><%=user.username%></td>
+        <td><%=user.firstName%></td>
+        <td><%=user.lastName%></td>
+    </tr>
+</table>
+<%}%>
 
+<div id="postsSection" class="text-center" style="display: flex; flex-wrap: wrap">
+    <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
+
+    </div>
+    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 0 5px 0 5px">
+
+    </div>
+    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 0 5px 0 5px">
+
+    </div>
 </div>
 
-<script type="text/javascript" src="home.js"></script>
+<script type="text/javascript" src="postsSort.js"></script>
 
 <% include partials/footer.ejs %>
