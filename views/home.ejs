@@ -70,7 +70,26 @@
 
     </div>
 </div>
+<div id="endOfPage"></div>
 
 <script type="text/javascript" src="postsSort.js"></script>
+
+<script>
+    document.addEventListener("scroll", function() {
+        checkForNewDiv();
+    });
+
+    var checkForNewDiv = function() {
+        var lastDiv = document.querySelector("#endOfPage");
+        var lastDivOffset = lastDiv.offsetTop;
+        var pageOffset = window.pageYOffset + window.innerHeight;
+        console.log(pageOffset + " : " + lastDivOffset);
+
+        if(pageOffset > lastDivOffset - 100 && !end) {
+            console.log("load more");
+            makeAJAXRequest({}, true);
+        }
+    };
+</script>
 
 <% include partials/footer.ejs %>

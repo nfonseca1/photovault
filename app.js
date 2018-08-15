@@ -13,6 +13,10 @@ var express               = require("express"),
     methodOverride        = require("method-override"),
     passportLocalMongoose = require("passport-local-mongoose");
 
+//Global variables
+var allPosts;
+var currentIndex = 1;
+
 mongoose.connect("mongodb://localhost/photoVault");
 var app = express();
 
@@ -82,10 +86,14 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 console.log(err);
             }
             else {
-                postResults = {
-                    data: posts
+                allPosts = posts;
+                currentIndex = 1;
+                htmlPosts = setupPosts(allPosts, currentIndex);
+                if(currentIndex + 15 > allPosts.length){
+                    currentIndex = allPosts.length;
+                } else {
+                    currentIndex = currentIndex + 16;
                 }
-                htmlPosts = setupPosts(postResults);
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
@@ -94,10 +102,14 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
         Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
             if (err) {console.log(err)}
             else {
-                postResults = {
-                    data: posts
+                allPosts = posts;
+                currentIndex = 1;
+                htmlPosts = setupPosts(allPosts, currentIndex);
+                if(currentIndex + 15 > allPosts.length){
+                    currentIndex = allPosts.length;
+                } else {
+                    currentIndex = currentIndex + 16;
                 }
-                htmlPosts = setupPosts(postResults);
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
@@ -106,10 +118,14 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
         Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}, function(err, posts){
             if (err) {console.log(err)}
             else {
-                postResults = {
-                    data: posts
+                allPosts = posts;
+                currentIndex = 1;
+                htmlPosts = setupPosts(allPosts, currentIndex);
+                if(currentIndex + 15 > allPosts.length){
+                    currentIndex = allPosts.length;
+                } else {
+                    currentIndex = currentIndex + 16;
                 }
-                htmlPosts = setupPosts(postResults);
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
@@ -121,10 +137,14 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 User.findOne({username: search}, function(err, user){
                     if(err){console.log(err)}
                     else {
-                        postResults = {
-                            data: posts
+                        allPosts = posts;
+                        currentIndex = 1;
+                        htmlPosts = setupPosts(allPosts, currentIndex);
+                        if(currentIndex + 15 > allPosts.length){
+                            currentIndex = allPosts.length;
+                        } else {
+                            currentIndex = currentIndex + 16;
                         }
-                        htmlPosts = setupPosts(postResults);
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
                     }
                 })
@@ -275,7 +295,7 @@ app.get("/logout", function(req, res){
 //Go to EDIT page
 app.get("/home/:id/edit", middleware.checkPostOwnership, function(req, res){
     Post.findById(req.params.id, function(err, foundPost){
-        res.render("edit.ejs", {post: foundPost, countries: countries});
+        res.render("edit.ejs", {post: foundPost});
     });
 });
 
@@ -327,7 +347,7 @@ app.post("/home", middleware.isLoggedIn, upload.single('image'), function(req, r
                 console.log(err);
             }
             else {
-                res.redirect("/home");
+                res.redirect("/account");
             }
         })
     });
@@ -604,77 +624,99 @@ app.post("/api/settings/validate", function(req, res){
 });
 
 app.post("/api/sort", function(req, res){
-    var sort;
-    if(req.body.sortBy == "newest"){
-        sort = "-date";
-    } else if (req.body.sortBy == "highest rated"){
-        sort = "-points";
-    } else if (req.body.sortBy == "most favorited"){
-        sort = "-favorites";
+    if(req.body.loadMore){
+        var htmlPosts = setupPosts(allPosts, currentIndex);
+        if(currentIndex + 15 > allPosts.length){
+            currentIndex = allPosts.length;
+        } else {
+            currentIndex = currentIndex + 16;
+        }
+        console.log(currentIndex);
+        res.send(htmlPosts);
     } else {
-        sort = "-views";
-    }
 
-    var pastDate;
-    if(req.body.within == "day"){
-        pastDate = new Date(new Date().setDate(new Date().getDate()-1));
-    } else if(req.body.within == "week"){
-        pastDate = new Date(new Date().setDate(new Date().getDate()-7));
-    } else if(req.body.within == "month"){
-        pastDate = new Date(new Date().setMonth(new Date().getMonth()-1));
-    } else if(req.body.within == "year"){
-        pastDate = new Date(new Date().setFullYear(new Date().getFullYear()-1));
-    } else {
-        pastDate = "0";
-    }
+        var sort;
+        if(req.body.sortBy == "newest"){
+            sort = "-date";
+        } else if (req.body.sortBy == "highest rated"){
+            sort = "-points";
+        } else if (req.body.sortBy == "most favorited"){
+            sort = "-favorites";
+        } else {
+            sort = "-views";
+        }
 
-    var photoType;
-    var photoType2;
-    if(req.body.photoType == "landscapes"){
-        photoType = "landscape";
-        photoType2 = "landscape";
-    } else if(req.body.photoType == "cityscapes"){
-        photoType = "cityscape";
-        photoType2 = "cityscape";
-    } else {
-        photoType = "landscape";
-        photoType2 = "cityscape";
-    }
+        var pastDate;
+        if(req.body.within == "day"){
+            pastDate = new Date(new Date().setDate(new Date().getDate()-1));
+        } else if(req.body.within == "week"){
+            pastDate = new Date(new Date().setDate(new Date().getDate()-7));
+        } else if(req.body.within == "month"){
+            pastDate = new Date(new Date().setMonth(new Date().getMonth()-1));
+        } else if(req.body.within == "year"){
+            pastDate = new Date(new Date().setFullYear(new Date().getFullYear()-1));
+        } else {
+            pastDate = "0";
+        }
+        console.log(pastDate);
 
-    var user;
-    if(req.body.user == undefined){
-        user = new RegExp('');
-    } else {
-        user = req.body.user;
-    }
+        var photoType;
+        var photoType2;
+        if(req.body.photoType == "landscapes"){
+            photoType = "landscape";
+            photoType2 = "landscape";
+        } else if(req.body.photoType == "cityscapes"){
+            photoType = "cityscape";
+            photoType2 = "cityscape";
+        } else {
+            photoType = "landscape";
+            photoType2 = "cityscape";
+        }
 
-    if(req.body.country == "all"){
-        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, 'author.username': user})
-            .sort(sort).exec(function(err, posts){
+        var user;
+        if(req.body.user == undefined){
+            user = new RegExp('');
+        } else {
+            user = req.body.user;
+        }
+
+        if(req.body.country == "all"){
+            Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, 'author.username': user})
+                .sort(sort).exec(function(err, posts){
                 if(err){
                     console.log(err);
                 } else {
-                    postResults = {
-                        data: posts
+                    allPosts = posts;
+                    currentIndex = 1;
+                    var htmlPosts = setupPosts(allPosts, currentIndex);
+                    if(currentIndex + 15 > allPosts.length){
+                        currentIndex = allPosts.length;
+                    } else {
+                        currentIndex = currentIndex + 16;
                     }
-                    htmlPosts = setupPosts(postResults);
+                    console.log(currentIndex);
                     res.send(htmlPosts);
                 }
-        })
-    } else {
-        var country = req.body.country;
-        Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country, 'author.username': user})
-            .sort(sort).exec(function(err, posts){
-            if(err){
-                console.log(err);
-            } else {
-                postResults = {
-                    data: posts
+            })
+        } else {
+            var country = req.body.country;
+            Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country, 'author.username': user})
+                .sort(sort).exec(function(err, posts){
+                if(err){
+                    console.log(err);
+                } else {
+                    allPosts = posts;
+                    currentIndex = 1;
+                    var htmlPosts = setupPosts(allPosts, currentIndex);
+                    if(currentIndex + 15 > allPosts.length){
+                        currentIndex = allPosts.length;
+                    } else {
+                        currentIndex = currentIndex + 16;
+                    }
+                    res.send(htmlPosts);
                 }
-                htmlPosts = setupPosts(postResults);
-                res.send(htmlPosts);
-            }
-        })
+            })
+        }
     }
 });
 

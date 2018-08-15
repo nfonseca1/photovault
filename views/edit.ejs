@@ -13,13 +13,8 @@
         <input type="text" name="post[description]" id="description" class="form-control" value="<%=post.description%>">
     </div>
     <label for="country">Photo was taken in: </label>
-    <select class="custom-select custom-select-lg mb-3" name="post[country]" id="country">
-        <% countries.forEach(function(country){ %>
-        <% if(country.name == post.country) {%>
-        <option value="<%=country.name%>" selected="selected"><%=country.name%></option>
-        <%} else {%>
-        <option value="<%=country.name%>"><%=country.name%></option>
-        <% }});%>
+    <select class="custom-select custom-select-lg mb-3 countriesList" name="post[country]" id="country">
+
     </select>
     </div>
     <div class="form-group">
@@ -37,5 +32,21 @@
 <form id="deleteForm" action="/home/<%=post._id%>?_method=DELETE" method="POST">
     <button class="btn btn-xs btn-danger">Delete</button>
 </form>
+
+<script type="text/javascript" src="countries.js"></script>
+<script>
+    var countriesList = document.querySelector(".countriesList");
+
+    var html = "";
+    countries.forEach(function(country){
+        if(country.name == post.country) {
+            html += '<option value="' + country.name + '" selected="selected">' + country.name + '</option>'
+        } else {
+            html += '<option value="' + country.name + '">' + country.name + '</option>';
+        }
+    });
+
+    countriesList.innerHTML = html;
+</script>
 
 <% include partials/footer.ejs %>

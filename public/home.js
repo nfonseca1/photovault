@@ -1,11 +1,20 @@
 
-function setupPosts(res) {
+function setupPosts(res, currentIndex) {
     var html1 = "";
     var html2 = "";
     var html3 = "";
-    var post = res.data;
-
-    for (var p = 1; p <= res.data.length; p++) {
+    var post = res;
+    var max = 0;
+    var end = false;
+    if(currentIndex + 15 >= res.length){
+        max = res.length;
+        end = true;
+    } else {
+        max = currentIndex + 15;
+    }
+    console.log("----");
+    console.log("begin");
+    for (var p = currentIndex; p <= max; p++) {
         if (p == 1 || p % 3 == 1) {
             html1 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
             html1 += '<div>';
@@ -40,11 +49,15 @@ function setupPosts(res) {
             html3 += '</div>';
             html3 += '</a>';
         }
+        console.log(p);
     }
+    console.log("end");
+    console.log("----");
     return {
         html1: html1,
         html2: html2,
-        html3: html3
+        html3: html3,
+        end: end
     }
 }
 
