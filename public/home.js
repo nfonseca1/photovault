@@ -10,7 +10,7 @@ function setupPosts(res, currentIndex) {
         max = res.length;
         end = true;
     } else {
-        max = currentIndex + 15;
+        max = currentIndex + 14;
     }
     console.log("----");
     console.log("begin");

@@ -1,5 +1,7 @@
 <% include partials/header.ejs %>
 
+<script type="text/javascript" src="countries.js"></script>
+
 <h3><%=user.username%>'s Account</h3>
 <div id="dataId" data-userId="<%=user._id%>"></div>
 <div id="data" data-searched="no"></div>
@@ -75,6 +77,7 @@
 
     </div>
 </div>
+<div id="endOfPage"></div>
 
 <script>
     var followButton = document.querySelector("#followButton");
@@ -132,6 +135,26 @@
             msgText.value = "";
         }).catch(function(err){console.log(err)})
     });
+</script>
+
+<script type="text/javascript" src="postsSort.js"></script>
+
+<script>
+    document.addEventListener("scroll", function() {
+        checkForNewDiv();
+    });
+
+    var checkForNewDiv = function() {
+        var lastDiv = document.querySelector("#endOfPage");
+        var lastDivOffset = lastDiv.offsetTop;
+        var pageOffset = window.pageYOffset + window.innerHeight;
+        console.log(pageOffset + " : " + lastDivOffset);
+
+        if(pageOffset > lastDivOffset - 100 && !end) {
+            console.log("load more");
+            makeAJAXRequest({}, true);
+        }
+    };
 </script>
 
 <% include partials/footer.ejs %>

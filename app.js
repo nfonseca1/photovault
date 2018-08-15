@@ -92,7 +92,7 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 if(currentIndex + 15 > allPosts.length){
                     currentIndex = allPosts.length;
                 } else {
-                    currentIndex = currentIndex + 16;
+                    currentIndex = currentIndex + 15;
                 }
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
@@ -185,10 +185,14 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         }
-        postResults = {
-            data: foundPosts
+        allPosts = foundPosts;
+        currentIndex = 1;
+        htmlPosts = setupPosts(allPosts, currentIndex);
+        if(currentIndex + 15 > allPosts.length){
+            currentIndex = allPosts.length;
+        } else {
+            currentIndex = currentIndex + 15;
         }
-        htmlPosts = setupPosts(postResults);
         res.render("account.ejs", {htmlPosts: htmlPosts});
     })
 });
@@ -244,10 +248,14 @@ app.get("/account/:username", middleware.isLoggedIn, function(req, res){
             if(err) {
                 console.log(err);
             }
-            postResults = {
-                data: foundPosts
+            allPosts = foundPosts;
+            currentIndex = 1;
+            htmlPosts = setupPosts(allPosts, currentIndex);
+            if(currentIndex + 15 > allPosts.length){
+                currentIndex = allPosts.length;
+            } else {
+                currentIndex = currentIndex + 15;
             }
-            htmlPosts = setupPosts(postResults);
             res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
         });
     });
@@ -629,7 +637,7 @@ app.post("/api/sort", function(req, res){
         if(currentIndex + 15 > allPosts.length){
             currentIndex = allPosts.length;
         } else {
-            currentIndex = currentIndex + 16;
+            currentIndex = currentIndex + 15;
         }
         console.log(currentIndex);
         res.send(htmlPosts);
@@ -692,7 +700,7 @@ app.post("/api/sort", function(req, res){
                     if(currentIndex + 15 > allPosts.length){
                         currentIndex = allPosts.length;
                     } else {
-                        currentIndex = currentIndex + 16;
+                        currentIndex = currentIndex + 15;
                     }
                     console.log(currentIndex);
                     res.send(htmlPosts);
@@ -711,7 +719,7 @@ app.post("/api/sort", function(req, res){
                     if(currentIndex + 15 > allPosts.length){
                         currentIndex = allPosts.length;
                     } else {
-                        currentIndex = currentIndex + 16;
+                        currentIndex = currentIndex + 15;
                     }
                     res.send(htmlPosts);
                 }
