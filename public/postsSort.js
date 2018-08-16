@@ -9,6 +9,7 @@ var wait = false;
 var end = false;
 var index = parseInt(postsSection.getAttribute("data-index"));
 console.log(index);
+console.log("--initial index--");
 
 
 var html = '';
@@ -17,7 +18,10 @@ countries.forEach(function(country){
 })
 countriesList.innerHTML += html;
 
-sortBtn.addEventListener("click", makeAJAXRequest);
+sortBtn.addEventListener("click", function(){
+    sessionStorage.clear();
+    makeAJAXRequest();
+});
 
 function makeAJAXRequest(e, loadMore) {
     console.log(index);

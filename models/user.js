@@ -30,7 +30,8 @@ var UserSchema = new mongoose.Schema({
             favorite: Boolean,
             list: String
         }
-    ]
+    ],
+    favoriteLists: []
 });
 
 UserSchema.plugin(passportLocalMongoose);

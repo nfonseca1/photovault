@@ -111,6 +111,7 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 } else {
                     currentIndex = currentIndex + 16;
                 }
+                htmlPosts.index = currentIndex;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
@@ -127,6 +128,7 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                 } else {
                     currentIndex = currentIndex + 16;
                 }
+                htmlPosts.index = currentIndex;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
@@ -146,6 +148,7 @@ app.get("/home", middleware.isLoggedIn, function(req, res){
                         } else {
                             currentIndex = currentIndex + 16;
                         }
+                        htmlPosts.index = currentIndex;
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
                     }
                 })
@@ -159,23 +162,47 @@ app.get("/home/:id", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         } else {
-            var likeColor = "black";
-            var hateColor = "black";
-            var feedback = req.user.feedback;
-            for(var i = 0; i < feedback.length; i++){
-                if(feedback[i].id == post._id){
-                    console.log(feedback[i]);
-                    if(feedback[i].like){
-                        likeColor = "#0066ff";
+            User.findById(req.user._id, function(err, myUser){
+                if(err){console.log(err)}
+                else {
+                    var postVars = {
+                        likeColor: "black",
+                        hateColor: "black",
+                        favoriteLists: req.user.favoriteLists,
+                        favListDisplay: 'none',
+                        favBtnColor: 'black'
+                    };
+                    var feedback = myUser.feedback;
+                    console.log("--Check on load--");
+                    console.log(feedback);
+                    console.log(post._id);
+                    for(var i = 0; i < feedback.length; i++){
+                        console.log(feedback[i].id);
+                        console.log(post._id);
+                        if(feedback[i].id == req.params.id){
+                            console.log("match");
+                            if(feedback[i].like){
+                                postVars.likeColor = "#0066ff";
+                            }
+                            if(feedback[i].hate){
+                                postVars.likeColor = "#0066ff";
+                            }
+                            if(feedback[i].favorite){
+                                console.log("favorited");
+                                postVars.favListDisplay = 'inline';
+                                postVars.favBtnColor = '#0066ff';
+                            } else {
+                                console.log("not favorited");
+                                postVars.favListDisplay = 'none';
+                                postVars.favBtnColor = 'black';
+                            }
+                            break;
+                        }
                     }
-                    if(feeback[i].hate){
-                        likeColor = "#0066ff";
-                    }
+                    console.log(postVars);
+                    res.render("post.ejs", {postVars: postVars, post: post});
                 }
-            }
-            console.log(likeColor);
-            console.log(hateColor);
-            res.render("post.ejs", {post: post, likeColor: likeColor, hateColor: hateColor});
+            })
         }
     })
 });
@@ -194,6 +221,7 @@ app.get("/account", middleware.isLoggedIn, function(req, res){
         } else {
             currentIndex = currentIndex + 16;
         }
+        htmlPosts.index = currentIndex;
         res.render("account.ejs", {htmlPosts: htmlPosts});
     })
 });
@@ -228,6 +256,10 @@ app.get("/account/messages", middleware.isLoggedIn, function(req, res){
     })
 });
 
+app.get("/account/favorites", middleware.isLoggedIn, function(req, res){
+    res.render("favorites.ejs");
+})
+
 app.get("/account/settings", middleware.isLoggedIn, function(req, res){
         res.render("settings.ejs");
 });
@@ -257,6 +289,7 @@ app.get("/account/:username", middleware.isLoggedIn, function(req, res){
             } else {
                 currentIndex = currentIndex + 16;
             }
+            htmlPosts.index = currentIndex;
             res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
         });
     });
@@ -703,7 +736,7 @@ app.post("/api/sort", function(req, res){
                     console.log(err);
                 } else {
                     allPosts = posts;
-                    currentIndex = 1;
+                        currentIndex = 1;
                     var htmlPosts = setupPosts(allPosts, currentIndex);
                     if(currentIndex + 15 > allPosts.length){
                         currentIndex = allPosts.length;
@@ -711,6 +744,7 @@ app.post("/api/sort", function(req, res){
                         currentIndex = currentIndex + 16;
                     }
                     console.log(currentIndex);
+                    htmlPosts.index = currentIndex;
                     res.send(htmlPosts);
                 }
             })
@@ -729,6 +763,8 @@ app.post("/api/sort", function(req, res){
                     } else {
                         currentIndex = currentIndex + 16;
                     }
+                    console.log(currentIndex);
+                    htmlPosts.index = currentIndex;
                     res.send(htmlPosts);
                 }
             })
@@ -796,6 +832,89 @@ app.post("/api/like", function(req, res){
     })
 })
 
+app.post("/api/favorite", function(req, res){
+    console.log("server side");
+    User.findById(req.user._id, function(err, myUser){
+        if(err){console.log(err)}
+        else {
+            var feedback = myUser.feedback;
+            var postId = req.body.postId;
+            var foundFeedback = false;
+            var favorited = false;
+
+            for(var i = 0; i < feedback.length; i++) {
+                if (feedback[i].id == postId) {
+                    console.log("feedback found");
+                    console.log(feedback[i]);
+                    foundFeedback = true;
+                    if(feedback[i].favorite){
+                        console.log("on to off");
+                        feedback[i].favorite = false;
+                        favorited = false;
+                    } else {
+                        console.log("off to on");
+                        feedback[i].favorite = true;
+                        favorited = true;
+                        feedback[i].list = req.body.list;
+                    }
+                    feedback[i].list = req.body.list;
+                    myUser.save();
+
+                    Post.findById(postId, function(err, post){
+                        if(err){console.log(err)}
+                        else {
+                            if(favorited){
+                                post.favorites = post.favorites + 1;
+                            } else {
+                                post.favorites = post.favorites - 1;
+                            }
+                            post.save();
+                            res.send({favorited: favorited});
+                        }
+                    })
+                    break;
+                }
+            }
+
+            if(!foundFeedback){
+                console.log("no feedback");
+                var newFeedback = {
+                    id: postId,
+                    like: false,
+                    hate: false,
+                    favorite: false,
+                    list: ''
+                };
+                feedback.push(newFeedback);
+                if(feedback[i].favorite){
+                    feedback[i].favorite == false;
+                    favorited = false;
+                } else {
+                    feedback[i].favorite == true;
+                    favorited = true;
+                    feedback[i].list == req.body.list;
+                }
+                feedback[i].list = req.body.list;
+                myUser.save();
+
+                Post.findById(postId, function(err, post){
+                    if(err){console.log(err)}
+                    else {
+                        if(favorited){
+                            post.favorites = post.favorites + 1;
+                        } else {
+                            post.favorites = post.favorites - 1;
+                        }
+                        post.save();
+                        res.send({favorited: favorited});
+                    }
+                })
+            }
+
+        }
+    })
+})
+
 app.listen(3000, function(){
     console.log("server started.......");
 });
@@ -849,3 +968,4 @@ function addUserPostPoints(feedback, button){
         hate: hate
     };
 }
+

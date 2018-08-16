@@ -2,32 +2,39 @@
 
 <script type="text/javascript" src="countries.js"></script>
 
-<h3><%=user.username%>'s Account</h3>
-<div id="dataId" data-userId="<%=user._id%>"></div>
 <div id="data" data-searched="no"></div>
+<h3 id="userData" data-user="<%=currentUser.username%>"><%=currentUser.username%>'s Account</h3>
 
-<button class="btn btn-xs" id="followButton" style="<%if(!following){%>display: block;<%}else{%>display: none;<%}%>">Follow</button>
-<button class="btn btn-xs" id="unfollowButton" style="<%if(following){%>display: block;<%}else{%>display: none;<%}%>">Unfollow</button>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="/account/<%=user.username%>">Photos <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="/account/<%=user.username%>/following">Following</a>
-        <a class="nav-item nav-link" href="/account/<%=user.username%>/followers">Followers</a>
+        <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/account/following">Following</a>
+        <a class="nav-item nav-link" href="/account/followers">Followers</a>
+        <a class="nav-item nav-link" href="/account/messages">Messages</a>
+        <a class="nav-item nav-link" href="/account/settings">Settings</a>
+        <a class="nav-item nav-link" href="/logout">Logout</a>
     </div>
 </nav>
+<h3>Favorites</h3>
 
-<div class="jumbotron">
-    <h2 class="display-4">Send a message</h2>
-    <button id="msgFormButton" class="btn btn-primary btn-lg">Message</button>
-</div>
+<label for="list">Filter by list: </label>
+<select id="list" name="list" class="form-control">
+    <option value="all" selected="selected">All Lists</option>
+    <option value="">Unlisted</option>
 
-<div id="msgForm" style="display: none;">
-    <input type="text" class="form-control" id="msgText">
-    <button type="button" class="btn btn-primary" id="msgSendButton">Send</button>
-</div>
+</select>
+<button type="button" id="filterBtn" class="btn btn-xs btn-primary">Filter</button>
+<button type="button" id="toggleEditBtn" class="btn btn-xs btn-warning">Edit</button>
 
-<hr>
-<h3>Photos</h3>
+<nav class="navbar navbar-expand-lg navbar-light bg-light editListForm" style="border: solid 1px #333333; display: none">
+    <div class="form-group">
+        <label for="listName">List to add or edit: </label>
+        <input type="text" id="listName">
+    </div>
+    <button type="button" class="btn btn-xs btn-success addBtn">Add list</button>
+    <button type="button" class="btn btn-xs btn-warning editBtn">Change name</button>
+    <button type="button" class="btn btn-xs btn-danger removeBtn">Remove list</button>
+</nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="form-group">
@@ -39,7 +46,7 @@
             <option value="most viewed">Most Viewed</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group col">
         <label for="within">Within: </label>
         <select id="within" name="within" class="form-control">
             <option value="day">Past Day</option>
@@ -80,67 +87,37 @@
 <div id="endOfPage"></div>
 
 <script>
-    var followButton = document.querySelector("#followButton");
-    var unfollowButton = document.querySelector("#unfollowButton");
-    var msgFormButton = document.querySelector("#msgFormButton");
-    var msgSendButton = document.querySelector("#msgSendButton")
-    var msgForm = document.querySelector("#msgForm");
-    var msgText = document.querySelector("#msgText");
-    var formOn = false;
+    sessionStorage.clear();
+    var addButton = document.querySelector("#addButton");
+    var addPhotoForm = document.querySelector("#addPhotoForm");
+    var countriesList = document.querySelector("#countriesList");
+    var addFormOn = false;
 
-    followButton.addEventListener("click", function(){
-        followButton.style.display = "none";
-        unfollowButton.style.display = "block";
+    addButton.addEventListener("click", openAddForm);
 
-        axios.put("/api/users/follow", {
-            accountUserId: data.getAttribute("data-userId")
-        })
-    });
-
-    unfollowButton.addEventListener("click", function(){
-        unfollowButton.style.display = "none";
-        followButton.style.display = "block";
-
-        axios.put("/api/users/unfollow", {
-            accountUserId: data.getAttribute("data-userId")
-        })
-    });
-
-    msgFormButton.addEventListener("click", function(){
-        formOn = !formOn;
-        if (formOn){
-            msgForm.style.display = "block";
+    function openAddForm(){
+        addFormOn = !addFormOn;
+        if (addFormOn){
+            addPhotoForm.style.display = "block";
         } else {
-            msgForm.style.display = "none";
+            addPhotoForm.style.display = "none";
+        }
+    }
+    var html = '';
+    countries.forEach(function(country){
+        if(country.name == "United States") {
+            html += '<option value="' + country.name + '" selected="selected">' + country.name + '</option>';
+        } else {
+            html += '<option value="' + country.name + '">' + country.name + '</option>';
         }
     });
-
-    msgSendButton.addEventListener("click", function(){
-        axios.get("/api/users/checkConversations", {
-            params: {
-                accountUserId: data.getAttribute("data-userId")
-            }
-        }).then(function(res){
-            if(res.data.existingConv){
-                axios.put("/api/users/conversations", {
-                    convId: res.data.convId,
-                    text: msgText.value
-                }).catch(function(err){console.log(err)})
-            } else {
-                axios.post("/api/users/conversations", {
-                    accountUserId: data.getAttribute("data-userId"),
-                    text: msgText.value
-                }).catch(function(err){console.log(err)})
-            }
-            msgText.value = "";
-        }).catch(function(err){console.log(err)})
-    });
+    countriesList.innerHTML = html;
 </script>
 
 <script type="text/javascript" src="postsSort.js"></script>
+<script type="text/javascript" src="manageLists.js"></script>
 
 <script>
-    sessionStorage.clear();
     document.addEventListener("scroll", function() {
         checkForNewDiv();
     });
