@@ -10,12 +10,13 @@ function setupPosts(res, currentIndex) {
         max = res.length;
         end = true;
     } else {
-        max = currentIndex + 14;
+        max = currentIndex + 15;
     }
-    console.log("----");
-    console.log("begin");
+    console.log("--home.js--");
     for (var p = currentIndex; p <= max; p++) {
         if (p == 1 || p % 3 == 1) {
+            console.log(p);
+            console.log("col 1");
             html1 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
             html1 += '<div>';
             html1 += '<div class="title">';
@@ -27,6 +28,8 @@ function setupPosts(res, currentIndex) {
             html1 += '</div>';
             html1 += '</a>';
         } else if (p == 2 || p % 3 == 2) {
+            console.log(p);
+            console.log("col 2");
             html2 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
             html2 += '<div>';
             html2 += '<div class="title">';
@@ -38,6 +41,8 @@ function setupPosts(res, currentIndex) {
             html2 += '</div>';
             html2 += '</a>';
         } else if (p % 3 == 0) {
+            console.log(p);
+            console.log("col 3");
             html3 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
             html3 += '<div>';
             html3 += '<div class="title">';
@@ -49,15 +54,13 @@ function setupPosts(res, currentIndex) {
             html3 += '</div>';
             html3 += '</a>';
         }
-        console.log(p);
     }
-    console.log("end");
-    console.log("----");
+    console.log("--home.js--");
     return {
         html1: html1,
         html2: html2,
         html3: html3,
-        end: end
+        end: end,
     }
 }
 

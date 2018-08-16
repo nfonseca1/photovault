@@ -70,14 +70,16 @@
     <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
 
     </div>
+    <div class="endOfPage1"></div>
     <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 0 5px 0 5px">
 
     </div>
+    <div class="endOfPage2"></div>
     <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 0 5px 0 5px">
 
     </div>
+    <div class="endOfPage3"></div>
 </div>
-<div id="endOfPage"></div>
 
 <script>
     var followButton = document.querySelector("#followButton");
@@ -145,12 +147,14 @@
     });
 
     var checkForNewDiv = function() {
-        var lastDiv = document.querySelector("#endOfPage");
-        var lastDivOffset = lastDiv.offsetTop;
+        var lastDiv1 = document.querySelector(".endOfPage1");
+        var lastDiv2 = document.querySelector(".endOfPage2");
+        var lastDiv3 = document.querySelector(".endOfPage3");
+        var bottomOffset = Math.min(lastDiv1.offsetTop, lastDiv2.offsetTop, lastDiv3.offsetTop);
         var pageOffset = window.pageYOffset + window.innerHeight;
-        console.log(pageOffset + " : " + lastDivOffset);
+        console.log(pageOffset + " : " + bottomOffset);
 
-        if(pageOffset > lastDivOffset - 100 && !end) {
+        if(pageOffset > bottomOffset - 100 && !end) {
             console.log("load more");
             makeAJAXRequest({}, true);
         }

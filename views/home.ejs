@@ -59,14 +59,14 @@
 </table>
 <%}%>
 
-<div id="postsSection" class="text-center" style="display: flex; flex-wrap: wrap">
+<div id="postsSection" class="text-center" data-index="<%=htmlPosts.index%>" style="display: flex; flex-wrap: wrap">
     <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
 
     </div>
-    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 0 5px 0 5px">
+    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 2px 2px 0 2px">
 
     </div>
-    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 0 5px 0 5px">
+    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 2px 2px 0 2px">
 
     </div>
 </div>
@@ -83,10 +83,10 @@
         var lastDiv = document.querySelector("#endOfPage");
         var lastDivOffset = lastDiv.offsetTop;
         var pageOffset = window.pageYOffset + window.innerHeight;
-        console.log(pageOffset + " : " + lastDivOffset);
+        sessionStorage.pagePosition = window.pageYOffset;
 
-        if(pageOffset > lastDivOffset - 100 && !end) {
-            console.log("load more");
+        if(pageOffset > lastDivOffset - 150 && !end && !wait) {
+            wait = true;
             makeAJAXRequest({}, true);
         }
     };
