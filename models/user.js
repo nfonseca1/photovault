@@ -31,7 +31,12 @@ var UserSchema = new mongoose.Schema({
             list: String
         }
     ],
-    favoriteLists: []
+    favoriteLists: [
+        {
+            name: String,
+            privacy: String
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -7,33 +7,46 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/account">Photos <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" href="/account/following">Following</a>
         <a class="nav-item nav-link" href="/account/followers">Followers</a>
         <a class="nav-item nav-link" href="/account/messages">Messages</a>
+        <a class="nav-item nav-link active" href="/account/favorites">Favorites</a>
         <a class="nav-item nav-link" href="/account/settings">Settings</a>
         <a class="nav-item nav-link" href="/logout">Logout</a>
     </div>
 </nav>
 <h3>Favorites</h3>
 
-<label for="list">Filter by list: </label>
-<select id="list" name="list" class="form-control">
-    <option value="all" selected="selected">All Lists</option>
-    <option value="">Unlisted</option>
+<form action="/account/favorites" method="GET" class="form-inline center">
+    <label for="lists">Filter by list: </label>
+    <select id="lists" name="list" class="form-control" onchange="updateChange()">
+        <option value="all" selected="selected">All Lists</option>
+        <option value="">Unlisted</option>
+        <%lists.forEach(function(list){%>
+            <option value="<%=list.name%>"><%=list.name%></option>
+            <%})%>
+    </select>
+    <button type="submit" id="filterBtn" class="btn btn-xs btn-primary">Filter</button>
+    <button type="button" id="toggleEditBtn" class="btn btn-xs btn-warning">Edit</button>
+</form>
 
-</select>
-<button type="button" id="filterBtn" class="btn btn-xs btn-primary">Filter</button>
-<button type="button" id="toggleEditBtn" class="btn btn-xs btn-warning">Edit</button>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light editListForm" style="border: solid 1px #333333; display: none">
+<nav id="editListForm" class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333; display: none">
     <div class="form-group">
         <label for="listName">List to add or edit: </label>
         <input type="text" id="listName">
     </div>
-    <button type="button" class="btn btn-xs btn-success addBtn">Add list</button>
-    <button type="button" class="btn btn-xs btn-warning editBtn">Change name</button>
-    <button type="button" class="btn btn-xs btn-danger removeBtn">Remove list</button>
+    <button type="button" id="addBtn" class="btn btn-xs btn-success">Add list</button>
+    <button type="button" id="editBtn" class="btn btn-xs btn-warning">Change name</button>
+    <button type="button" id="removeBtn" class="btn btn-xs btn-danger">Remove list</button>
+    <div class="form-group">
+        <label for="privacy">Privacy: </label>
+        <select id="listPrivacy" name="listPrivacy" onchange="updatePrivacy()">
+            <option value="public">Public</option>
+            <option value="followers">followers</option>
+            <option value="private">private</option>
+        </select>
+    </div>
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
@@ -86,36 +99,9 @@
 </div>
 <div id="endOfPage"></div>
 
-<script>
-    sessionStorage.clear();
-    var addButton = document.querySelector("#addButton");
-    var addPhotoForm = document.querySelector("#addPhotoForm");
-    var countriesList = document.querySelector("#countriesList");
-    var addFormOn = false;
-
-    addButton.addEventListener("click", openAddForm);
-
-    function openAddForm(){
-        addFormOn = !addFormOn;
-        if (addFormOn){
-            addPhotoForm.style.display = "block";
-        } else {
-            addPhotoForm.style.display = "none";
-        }
-    }
-    var html = '';
-    countries.forEach(function(country){
-        if(country.name == "United States") {
-            html += '<option value="' + country.name + '" selected="selected">' + country.name + '</option>';
-        } else {
-            html += '<option value="' + country.name + '">' + country.name + '</option>';
-        }
-    });
-    countriesList.innerHTML = html;
-</script>
+<script type="text/javascript" src="manageLists.js"></script>
 
 <script type="text/javascript" src="postsSort.js"></script>
-<script type="text/javascript" src="manageLists.js"></script>
 
 <script>
     document.addEventListener("scroll", function() {

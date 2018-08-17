@@ -257,7 +257,61 @@ app.get("/account/messages", middleware.isLoggedIn, function(req, res){
 });
 
 app.get("/account/favorites", middleware.isLoggedIn, function(req, res){
-    res.render("favorites.ejs");
+    var listFilter;
+    if(req.query.list == undefined){
+        console.log("-fav list undefined");
+        listFilter = 'all';
+    } else {
+        console.log("-fav list defined");
+        listFilter = req.query.list;
+    }
+    var foundPosts = [];
+    if(req.user.feedback.length == 0){
+        res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
+    }
+    req.user.feedback.forEach(function(feed){
+        if(feed.favorite){
+            console.log("match");
+            console.log(feed);
+            if(listFilter == 'all'){
+                Post.findById(feed.id, function(err, post){
+                    console.log(post);
+                    foundPosts.push(post);
+                    allPosts = foundPosts;
+                    currentIndex = 1;
+                    htmlPosts = setupPosts(allPosts, currentIndex);
+                    if(currentIndex + 15 > allPosts.length){
+                        currentIndex = allPosts.length;
+                    } else {
+                        currentIndex = currentIndex + 16;
+                    }
+                    htmlPosts.index = currentIndex;
+                    res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
+                })
+                console.log("foundPost");
+            } else {
+                if(feed.list == listFilter){
+                    console.log("-list Filter");
+                    Post.findById(feed.id, function(err, post){
+                        foundPosts.push(post);
+                        console.log("pushed");
+                        allPosts = foundPosts;
+                        currentIndex = 1;
+                        htmlPosts = setupPosts(allPosts, currentIndex);
+                        if(currentIndex + 15 > allPosts.length){
+                            currentIndex = allPosts.length;
+                        } else {
+                            currentIndex = currentIndex + 16;
+                        }
+                        htmlPosts.index = currentIndex;
+                        res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
+                    })
+                } else {
+                    res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
+                }
+            }
+        }
+    })
 })
 
 app.get("/account/settings", middleware.isLoggedIn, function(req, res){
@@ -913,6 +967,80 @@ app.post("/api/favorite", function(req, res){
 
         }
     })
+})
+
+app.get("/api/favorites", function(req, res){
+    res.send({userLists: req.user.favoriteLists});
+})
+
+app.post("/api/favorites/addList", function(req, res){
+    var lists = req.user.favoriteLists;
+    for(var i = 0; i < lists.length; i++){
+        if(lists[i].name == req.body.newList){
+            res.send({success: false});
+            return;
+        }
+    }
+    lists.push({name: req.body.newList, privacy: req.body.privacy});
+    req.user.save();
+    res.send({success: true, lists: req.user.favoriteLists});
+})
+
+app.post("/api/favorites/editList", function(req, res){
+    var lists = req.user.favoriteLists;
+    for(var i = 0; i < lists.length; i++){
+        if(lists[i].name == req.body.newName){
+            res.send({success: false});
+            return;
+        } else if(i == lists.length - 1){
+            break;
+        }
+    }
+    for(var x = 0; x < lists.length; x++){
+        if(lists[x].name == req.body.list){
+            lists.splice(x, 1, {name: req.body.newName, privacy: req.body.privacy});
+            req.user.feedback.forEach(function(feed){
+                if(feed.list == req.body.list){
+                    feed.list = req.body.newName;
+                }
+            })
+            req.user.save();
+            res.send({success: true, lists: req.user.favoriteLists});
+            return;
+        }
+    }
+    res.send({success: false});
+})
+
+app.post("/api/favorites/removeList", function(req, res){
+    var lists = req.user.favoriteLists;
+    for(var i = 0; i < lists.length; i++){
+        if(lists[i].name == req.body.list){
+            lists.splice(i, 1);
+            req.user.feedback.forEach(function(feed){
+                if(feed.list == req.body.list){
+                    feed.list = '';
+                }
+            })
+            req.user.save();
+            res.send({success: true, lists: req.user.favoriteLists});
+            return;
+        }
+    }
+    res.send({success: false});
+})
+
+app.post("/api/favorites/privacy", function(req, res){
+    var lists = req.user.favoriteLists;
+    for(var i = 0; i < lists.length; i++){
+        if(lists[i].name == req.body.list){
+            lists[i].privacy = req.body.privacy;
+            req.user.save();
+            res.send({success: true, lists: req.user.favoriteLists});
+            return;
+        }
+    }
+    res.send({success: false});
 })
 
 app.listen(3000, function(){

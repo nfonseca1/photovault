@@ -24,9 +24,9 @@
                 <li class="nav-item"><a class="nav-link blank-btn favoriteBtn" style="color: <%=postVars.favBtnColor%>">Favorite</a></li>
                 <li class="nav-item"><a class="nav-link blank-btn favoriteList">
                         <select id="favList" onchange="ajaxFavoriteCall()" style="display: <%=postVars.favListDisplay%>">
-                            <option value="" selected="selected">none</option>
+                            <option value="" selected="selected">unlisted</option>
                             <%postVars.favoriteLists.forEach(function(favoriteList){%>
-                                <option value="<%=favoriteList%>"><%=favoriteList%></option>
+                                <option value="<%=favoriteList.name%>"><%=favoriteList.name%></option>
                             <%})%>
                         </select>
                     </a></li>
