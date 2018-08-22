@@ -1,16 +1,14 @@
-var postsSection = document.querySelector("#postsSection");
+var grid = document.querySelector("#grid");
+var searchBtn = document.querySelector("#searchBtn");
 var countriesList = document.querySelector("#country");
 var sortBy = document.querySelector("#sortBy");
 var within = document.querySelector("#within");
 var photoType = document.querySelector("#photoType");
 var country = document.querySelector("#country");
 var sortBtn = document.querySelector("#sortBtn");
+
 var wait = false;
 var end = false;
-var index = parseInt(postsSection.getAttribute("data-index"));
-console.log(index);
-console.log("--initial index--");
-
 
 var html = '';
 countries.forEach(function(country){
@@ -18,78 +16,105 @@ countries.forEach(function(country){
 })
 countriesList.innerHTML += html;
 
+searchBtn.addEventListener("click", function(){
+    sessionStorage.clear();
+})
+
 sortBtn.addEventListener("click", function(){
     sessionStorage.clear();
+    grid.style.display = 'none';
     makeAJAXRequest();
 });
 
 function makeAJAXRequest(e, loadMore) {
-    console.log(index);
-    console.log("^^index client in^^");
     axios.post("/api/sort", {
         sortBy: sortBy.value,
         within: within.value,
         photoType: photoType.value,
         country: country.value,
         loadMore: loadMore,
-        index: index
     })
         .then(function(res){
             if(res.data.end){end = res.data.end;}
-            sessionStorage.index = res.data.index;
-            index = res.data.index;
-            console.log(index);
-            console.log("^^index client out^^")
+            console.log(res.data);
             applyPosts(res.data, true, loadMore)
         })
 }
 
 if(sessionStorage.pageSaved == undefined){
-    sessionStorage.col1 = "";
-    sessionStorage.col2 = "";
-    sessionStorage.col3 = "";
-    sessionStorage.index = index;
+    //sessionStorage.posts = "";
     applyPosts({}, false);
-    sessionStorage.pageSaved = true;
+    //sessionStorage.pageSaved = true;
 } else {
-    var col1 = document.querySelector("#column-1");
-    var col2 = document.querySelector("#column-2");
-    var col3 = document.querySelector("#column-3");
-    console.log("----");
-    console.log(sessionStorage.pageSaved);
-    console.log(sessionStorage.pagePosition);
-    col1.innerHTML = sessionStorage.col1;
-    col2.innerHTML = sessionStorage.col2;
-    col3.innerHTML = sessionStorage.col3;
+    console.log("saved");
+    grid.innerHTML = sessionStorage.posts;
     window.scrollBy(sessionStorage.pagePosition, 0);
-    index = sessionStorage.index;
-    console.log(index);
 }
 
 function applyPosts(res, ajax, loadMore){
-    var col1 = document.querySelector("#column-1");
-    var col2 = document.querySelector("#column-2");
-    var col3 = document.querySelector("#column-3");
-
+    console.log("----");
     if(ajax){
-        if(loadMore){
-            col1.innerHTML += res.html1;
-            col2.innerHTML += res.html2;
-            col3.innerHTML += res.html3;
-        } else {
+        if(!loadMore) {
             end = false;
-            col1.innerHTML = res.html1;
-            col2.innerHTML = res.html2;
-            col3.innerHTML = res.html3;
+            grid.style.display = 'flex';
+            grid.innerHTML = '';
         }
+        grid.classList.add('grid-default');
+        grid.classList.remove('grid');
+        grid.innerHTML += res.html;
+        //sessionStorage.posts = grid.innerHTML;
+        setTimeout(function(){
+            setupLayout(res.currentIndex);
+        }, 100);
     } else {
-        col1.innerHTML = col1.getAttribute("data-col1");
-        col2.innerHTML = col2.getAttribute("data-col2");
-        col3.innerHTML = col3.getAttribute("data-col3");
+        console.log("loading search");
+        grid.innerHTML = grid.getAttribute("data-posts");
+        //sessionStorage.posts = grid.innerHTML;
+        setTimeout(function(){
+            setupLayout(grid.getAttribute("data-index"));
+        }, 100);
     }
-    sessionStorage.col1 = col1.innerHTML;
-    sessionStorage.col2 = col2.innerHTML;
-    sessionStorage.col3 = col3.innerHTML;
-    console.log(sessionStorage.pagePosition);
+}
+
+function setupLayout(i){
+    var images = document.querySelectorAll("img");
+    var figures = document.querySelectorAll("figure");
+    var iTags = document.querySelectorAll("i");
+
+    var t = i - 30;
+    var x = i - 30;
+    if((i - 30) < 0 ){
+        t = 0;
+        x = 0;
+    } else {
+        t = i - 30;
+        x = i - 30;
+    }
+
+    var height = [];
+    var width = [];
+
+    for(t; t < images.length; t++){
+        height[t] = parseInt(images[t].clientHeight);
+        width[t] = parseInt(images[t].clientWidth);
+    }
+    grid.classList.add('grid');
+    for(x; x < images.length; x++){
+        var h = height[x];
+        var w = width[x];
+        var flexGrow = (w * 100) / h;
+        var flexBasis = (w * 200) / h;
+        var paddingBottom = (h / w) * 100;
+        var src = images[x].getAttribute("src");
+
+        images[x].style.opacity = 0;
+
+        figures[x].style.flexGrow = flexGrow;
+        figures[x].style.flexBasis = flexBasis + "px";
+        figures[x].style.backgroundImage = 'url('+src+')';
+        iTags[x].style.paddingBottom = paddingBottom + '%';
+    }
+    grid.classList.remove('grid-default');
+
     wait = false;
 }

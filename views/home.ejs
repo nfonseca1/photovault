@@ -59,16 +59,8 @@
 </table>
 <%}%>
 
-<div id="postsSection" class="text-center" data-index="<%=htmlPosts.index%>" style="display: flex; flex-wrap: wrap">
-    <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
+<div id="grid" class="grid-default" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
-    </div>
-    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 2px 2px 0 2px">
-
-    </div>
-    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 2px 2px 0 2px">
-
-    </div>
 </div>
 <div id="endOfPage"></div>
 
@@ -83,7 +75,7 @@
         var lastDiv = document.querySelector("#endOfPage");
         var lastDivOffset = lastDiv.offsetTop;
         var pageOffset = window.pageYOffset + window.innerHeight;
-        sessionStorage.pagePosition = window.pageYOffset;
+        //sessionStorage.pagePosition = window.pageYOffset;
 
         if(pageOffset > lastDivOffset - 150 && !end && !wait) {
             wait = true;

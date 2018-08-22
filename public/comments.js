@@ -33,7 +33,7 @@ function openCommentForm(){
         commentArea.innerHTML = "";
         addFormOn = false;
     } else {
-        html = '<form action="/home/<%= post._id %>" method="POST">';
+        html = '<form action="/home/<%= post._id %>/comment" method="POST">';
         html += '<input type="text" class="form-control" name="comment[text]">';
         html += '<button type="submit" class="btn btn-xs btn-success">Post</button></form>';
         commentArea.innerHTML = html;

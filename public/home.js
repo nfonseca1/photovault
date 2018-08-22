@@ -1,66 +1,24 @@
 
-function setupPosts(res, currentIndex) {
-    var html1 = "";
-    var html2 = "";
-    var html3 = "";
-    var post = res;
+function setupPosts(posts, i) {
+    var html = '';
     var max = 0;
     var end = false;
-    if(currentIndex + 15 >= res.length){
-        max = res.length;
+    if(i + 30 >= posts.length){
+        max = posts.length;
         end = true;
     } else {
-        max = currentIndex + 15;
+        max = i + 30;
     }
-    console.log("--home.js--");
-    for (var p = currentIndex; p <= max; p++) {
-        if (p == 1 || p % 3 == 1) {
-            console.log(p);
-            console.log("col 1");
-            html1 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
-            html1 += '<div>';
-            html1 += '<div class="title">';
-            html1 += '<h5>' + post[p - 1].title + '</h5>';
-            html1 += '</div>';
-            html1 += '<div class="thumbnail">';
-            html1 += '<img src="' + post[p - 1].image + '">';
-            html1 += '</div>';
-            html1 += '</div>';
-            html1 += '</a>';
-        } else if (p == 2 || p % 3 == 2) {
-            console.log(p);
-            console.log("col 2");
-            html2 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
-            html2 += '<div>';
-            html2 += '<div class="title">';
-            html2 += '<h5>' + post[p - 1].title + '</h5>';
-            html2 += '</div>';
-            html2 += '<div class="thumbnail">';
-            html2 += '<img src="' + post[p - 1].image + '">';
-            html2 += '</div>';
-            html2 += '</div>';
-            html2 += '</a>';
-        } else if (p % 3 == 0) {
-            console.log(p);
-            console.log("col 3");
-            html3 += '<a href="/home/' + post[p - 1]._id + '" class="nostyle">';
-            html3 += '<div>';
-            html3 += '<div class="title">';
-            html3 += '<h5>' + post[p - 1].title + '</h5>';
-            html3 += '</div>';
-            html3 += '<div class="thumbnail">';
-            html3 += '<img src="' + post[p - 1].image + '">';
-            html3 += '</div>';
-            html3 += '</div>';
-            html3 += '</a>';
-        }
+    for (i; i < max; i++) {
+        html += '<figure><i></i>';
+        html += '<a href="/home/' + posts[i]._id + '" class="nostyle">';
+        html += '<img src="' + posts[i].image + '"></a>';
+        html += '</figure>';
     }
-    console.log("--home.js--");
     return {
-        html1: html1,
-        html2: html2,
-        html3: html3,
-        end: end,
+        html: html,
+        currentIndex: i,
+        end: end
     }
 }
 
