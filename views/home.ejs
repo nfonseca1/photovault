@@ -2,6 +2,7 @@
 
 <script type="text/javascript" src="countries.js"></script>
 
+<div id="userData"></div>
 <form action="/home" method="GET" class="form-inline center">
     <select id="searchBy" name="searchBy" class="form-control">
         <option value="title">Title</option>
@@ -59,7 +60,7 @@
 </table>
 <%}%>
 
-<div id="grid" class="grid-default" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
 </div>
 <div id="endOfPage"></div>
@@ -75,9 +76,9 @@
         var lastDiv = document.querySelector("#endOfPage");
         var lastDivOffset = lastDiv.offsetTop;
         var pageOffset = window.pageYOffset + window.innerHeight;
-        //sessionStorage.pagePosition = window.pageYOffset;
+        sessionStorage.pagePosition = window.pageYOffset;
 
-        if(pageOffset > lastDivOffset - 150 && !end && !wait) {
+        if(pageOffset > lastDivOffset - 300 && !end && !wait) {
             wait = true;
             makeAJAXRequest({}, true);
         }

@@ -32,7 +32,7 @@ cloudinary.config({
 
 router.get("/", middleware.isLoggedIn, function(req, res){
     if(req.query.searchBy == undefined){
-        Post.find({}).limit(4000).exec(function(err, posts){
+        Post.find({}).limit(1000).exec(function(err, posts){
             if (err) {
                 console.log(err);
             }
@@ -41,36 +41,39 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                 req.session.currentIndex = 0;
                 var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                 req.session.currentIndex = htmlPosts.currentIndex;
+                req.session.dataSave = false;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
     } else if(req.query.searchBy == "title"){
         var search = req.query.search;
-        Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(4000).exec(function(err, posts){
+        Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
             if (err) {console.log(err)}
             else {
                 req.session.allPosts = posts;
                 req.session.currentIndex = 0;
                 var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                 req.session.currentIndex = htmlPosts.currentIndex;
+                req.session.dataSave = false;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
     } else if(req.query.searchBy == "description"){
         var search = req.query.search;
-        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(4000).exec(function(err, posts){
+        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
             if (err) {console.log(err)}
             else {
                 req.session.allPosts = posts;
                 req.session.currentIndex = 0;
                 var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                 req.session.currentIndex = htmlPosts.currentIndex;
+                req.session.dataSave = false;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
     } else if(req.query.searchBy == "author"){
         var search = req.query.search;
-        Post.find({'author.username': search}).limit(4000).exec(function(err, posts){
+        Post.find({'author.username': search}).limit(1000).exec(function(err, posts){
             if (err) {console.log(err)}
             else {
                 User.findOne({username: search}, function(err, user){
@@ -80,6 +83,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                         req.session.currentIndex = 0;
                         var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                         req.session.currentIndex = htmlPosts.currentIndex;
+                        req.session.dataSave = false;
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
                     }
                 })
@@ -135,14 +139,8 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                         favBtnColor: 'black'
                     };
                     var feedback = myUser.feedback;
-                    console.log("--Check on load--");
-                    console.log(feedback);
-                    console.log(post._id);
                     for(var i = 0; i < feedback.length; i++){
-                        console.log(feedback[i].id);
-                        console.log(post._id);
                         if(feedback[i].id == req.params.id){
-                            console.log("match");
                             if(feedback[i].like){
                                 postVars.likeColor = "#0066ff";
                             }
@@ -150,18 +148,15 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                                 postVars.likeColor = "#0066ff";
                             }
                             if(feedback[i].favorite){
-                                console.log("favorited");
                                 postVars.favListDisplay = 'inline';
                                 postVars.favBtnColor = '#0066ff';
                             } else {
-                                console.log("not favorited");
                                 postVars.favListDisplay = 'none';
                                 postVars.favBtnColor = 'black';
                             }
                             break;
                         }
                     }
-                    console.log(postVars);
                     res.render("post.ejs", {postVars: postVars, post: post});
                 }
             })

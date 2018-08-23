@@ -7,33 +7,31 @@ var express               = require("express"),
 
 
 router.get("/", middleware.isLoggedIn, function(req, res){
+    console.log(req.params);
     User.findOne({username: req.params.username}, function(err, user){
         if(err || user == null) {
             console.log(err);
             res.redirect("/home");
+        } else {
+            var amFollowing = false;
+            for(var i = 0; i < req.user.following.length; i++){
+                if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                    amFollowing = true;
+                    break;
+                }
+            }
+            Post.find({'author.username': user.username}, function(err, foundPosts){
+                if(err) {
+                    console.log(err);
+                }
+                req.session.allPosts = foundPosts;
+                req.session.currentIndex = 0;
+                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                req.session.currentIndex = htmlPosts.currentIndex;
+                req.session.dataSave = false;
+                res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
+            });
         }
-        var amFollowing = false;
-        for(var i = 0; i < req.user.following.length; i++){
-            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
-                amFollowing = true;
-                break;
-            }
-        }
-        Post.find({'author.username': user.username}, function(err, foundPosts){
-            if(err) {
-                console.log(err);
-            }
-            allPosts = foundPosts;
-            currentIndex = 1;
-            htmlPosts = setupPosts(allPosts, currentIndex);
-            if(currentIndex + 15 > allPosts.length){
-                currentIndex = allPosts.length;
-            } else {
-                currentIndex = currentIndex + 16;
-            }
-            htmlPosts.index = currentIndex;
-            res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
-        });
     });
 });
 

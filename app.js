@@ -9,7 +9,6 @@ var express               = require("express"),
 var postRoutes = require("./routes/posts"),
     commentRoutes = require("./routes/comments"),
     accountRoutes = require("./routes/account"),
-    userAccountRoutes = require("./routes/userAccount"),
     apiRoutes = require("./routes/api"),
     indexRoutes = require("./routes/index");
 
@@ -42,60 +41,9 @@ app.use("/", indexRoutes);
 app.use("/home", postRoutes);
 app.use("/home/:id/comment", commentRoutes);
 app.use("/account", accountRoutes);
-app.use("/account/:username", userAccountRoutes);
 app.use("/api", apiRoutes);
 
 app.listen(3000, function(){
     console.log("server started.......");
 });
-
-
-function addUserPostPoints(feedback, button){
-    console.log(feedback);
-    var addPoints = 0;
-    var like = false;
-    var hate = false;
-    if(button == "Like"){
-        if(feedback.like){
-            console.log("like already");
-            feedback.like = false;
-            like = false;
-            addPoints = -1;
-        } else {
-            console.log("no like");
-            feedback.like = true;
-            like = true;
-            if(feedback.hate == true){
-                addPoints = 2;
-            } else {
-                addPoints = 1;
-            }
-            feedback.hate = false;
-            hate = false;
-        }
-    } else {
-        if(feedback.hate){
-            console.log("hate already");
-            feedback.hate = false;
-            hate = false;
-            addPoints = 1;
-        } else {
-            console.log("no hate");
-            feedback.hate = true;
-            hate = true;
-            if(feedback.like == true){
-                addPoints = -2;
-            } else {
-                addPoints = -1;
-            }
-            feedback.like = false;
-            like = false;
-        }
-    }
-    return {
-        addPoints: addPoints,
-        like: like,
-        hate: hate
-    };
-}
 

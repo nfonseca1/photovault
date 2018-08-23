@@ -3,7 +3,7 @@
 <script type="text/javascript" src="countries.js"></script>
 
 <div id="data" data-searched="no"></div>
-<h3 id="userData" data-user="<%=currentUser.username%>"><%=currentUser.username%>'s Account</h3>
+<h3 id="userData" data-username="<%=currentUser.username%>"><%=currentUser.username%>'s Account</h3>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
     <div class="navbar-nav">
@@ -102,21 +102,12 @@
     <button id="sortBtn" class="btn btn-xs btn-primary">Sort</button>
 </nav>
 
-<div id="postsSection" class="text-center" data-index="<%=htmlPosts.index%>" style="display: flex; flex-wrap: wrap">
-    <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
+<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
-    </div>
-    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 0 5px 0 5px">
-
-    </div>
-    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 0 5px 0 5px">
-
-    </div>
 </div>
 <div id="endOfPage"></div>
 
 <script>
-    sessionStorage.clear();
     var addButton = document.querySelector("#addButton");
     var addPhotoForm = document.querySelector("#addPhotoForm");
     var countriesList = document.querySelector("#countriesList");
@@ -156,7 +147,7 @@
         var pageOffset = window.pageYOffset + window.innerHeight;
         sessionStorage.pagePosition = window.pageYOffset;
 
-        if(pageOffset > lastDivOffset - 150 && !end && !wait) {
+        if(pageOffset > lastDivOffset - 300 && !end && !wait) {
             wait = true;
             makeAJAXRequest({}, true);
         }

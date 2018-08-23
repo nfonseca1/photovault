@@ -13,16 +13,12 @@ router.get("/", middleware.isLoggedIn, function(req, res){
         if (err) {
             console.log(err);
         }
-        allPosts = foundPosts;
-        currentIndex = 1;
-        htmlPosts = setupPosts(allPosts, currentIndex);
-        if(currentIndex + 15 > allPosts.length){
-            currentIndex = allPosts.length;
-        } else {
-            currentIndex = currentIndex + 16;
-        }
-        htmlPosts.index = currentIndex;
-        res.render("account.ejs", {htmlPosts: htmlPosts});
+        req.session.allPosts = foundPosts;
+        req.session.currentIndex = 0;
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+        req.session.currentIndex = htmlPosts.currentIndex;
+        req.session.dataSave = false;
+        res.render("account.ejs", {htmlPosts: htmlPosts, user: req.user});
     })
 });
 
@@ -59,59 +55,39 @@ router.get("/messages", middleware.isLoggedIn, function(req, res){
 router.get("/favorites", middleware.isLoggedIn, function(req, res){
     var listFilter;
     if(req.query.list == undefined){
-        console.log("-fav list undefined");
         listFilter = 'all';
     } else {
-        console.log("-fav list defined");
         listFilter = req.query.list;
     }
+    console.log(listFilter);
     var foundPosts = [];
     if(req.user.feedback.length == 0){
         res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
-    }
-    req.user.feedback.forEach(function(feed){
-        if(feed.favorite){
-            console.log("match");
-            console.log(feed);
-            if(listFilter == 'all'){
-                Post.findById(feed.id, function(err, post){
-                    console.log(post);
-                    foundPosts.push(post);
-                    allPosts = foundPosts;
-                    currentIndex = 1;
-                    htmlPosts = setupPosts(allPosts, currentIndex);
-                    if(currentIndex + 15 > allPosts.length){
-                        currentIndex = allPosts.length;
-                    } else {
-                        currentIndex = currentIndex + 16;
-                    }
-                    htmlPosts.index = currentIndex;
-                    res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
-                })
-                console.log("foundPost");
-            } else {
-                if(feed.list == listFilter){
-                    console.log("-list Filter");
-                    Post.findById(feed.id, function(err, post){
+    } else {
+        var feed = req.user.feedback;
+        for(var f = 0; f < feed.length; f++){
+            if(feed[f].favorite){
+                if(listFilter == 'all'){
+                    console.log("listFilter all");
+                    Post.findById(feed[f].id, function(err, post){
                         foundPosts.push(post);
-                        console.log("pushed");
-                        allPosts = foundPosts;
-                        currentIndex = 1;
-                        htmlPosts = setupPosts(allPosts, currentIndex);
-                        if(currentIndex + 15 > allPosts.length){
-                            currentIndex = allPosts.length;
-                        } else {
-                            currentIndex = currentIndex + 16;
-                        }
-                        htmlPosts.index = currentIndex;
-                        res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
                     })
-                } else {
-                    res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
+                } else if(feed[f].list == listFilter){
+                    Post.findById(feed[f].id, function(err, post){
+                        foundPosts.push(post);
+                    })
                 }
             }
         }
-    })
+        setTimeout(function(){
+            req.session.allPosts = foundPosts;
+            req.session.currentIndex = 0;
+            var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+            req.session.currentIndex = htmlPosts.currentIndex;
+            req.session.dataSave = false;
+            res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
+        }, 200);
+    }
 })
 
 router.get("/settings", middleware.isLoggedIn, function(req, res){
@@ -136,6 +112,69 @@ router.put("/settings", middleware.isLoggedIn, function(req, res){
             } else {
                 res.redirect("/account/settings");
             }
+        }
+    })
+});
+
+router.get("/:username", middleware.isLoggedIn, function(req, res){
+    console.log(req.params);
+    User.findOne({username: req.params.username}, function(err, user){
+        if(err || user == null) {
+            console.log(err);
+            res.redirect("/home");
+        } else {
+            var amFollowing = false;
+            for(var i = 0; i < req.user.following.length; i++){
+                if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                    amFollowing = true;
+                    break;
+                }
+            }
+            Post.find({'author.username': user.username}, function(err, foundPosts){
+                if(err) {
+                    console.log(err);
+                }
+                req.session.allPosts = foundPosts;
+                req.session.currentIndex = 0;
+                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                req.session.currentIndex = htmlPosts.currentIndex;
+                req.session.dataSave = false;
+                res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});
+            });
+        }
+    });
+});
+
+router.get("/:username/followers", middleware.isLoggedIn, function(req, res){
+    User.findOne({username: req.params.username}).populate("followers").exec(function(err, user){
+        var amFollowing = false;
+        for(var i = 0; i < req.user.following.length; i++){
+            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                amFollowing = true;
+                break;
+            }
+        }
+        if(err){
+            console.log(err);
+        } else {
+            res.render("userFollowers.ejs", {user: user, following: amFollowing});
+        }
+    })
+});
+
+router.get("/:username/following", middleware.isLoggedIn, function(req, res){
+    User.findOne({username: req.params.username}).populate("following").exec(function(err, user){
+        var amFollowing = false;
+        for(var i = 0; i < req.user.following.length; i++){
+            if(JSON.stringify(req.user.following[i]) == JSON.stringify(user._id)){
+                amFollowing = true;
+                break;
+            }
+        }
+        if(err){
+            console.log(err);
+        } else {
+            res.render("userFollowing.ejs", {user: user, following: amFollowing});
         }
     })
 });

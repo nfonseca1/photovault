@@ -2,8 +2,7 @@
 
 <script type="text/javascript" src="countries.js"></script>
 
-<h3><%=user.username%>'s Account</h3>
-<div id="dataId" data-userId="<%=user._id%>"></div>
+<h3 id="userData" data-username="<%=user.username%>" data-userId="<%=user._id%>"><%=user.username%>'s Account</h3>
 <div id="data" data-searched="no"></div>
 
 <button class="btn btn-xs" id="followButton" style="<%if(!following){%>display: block;<%}else{%>display: none;<%}%>">Follow</button>
@@ -66,16 +65,8 @@
     <button id="sortBtn" class="btn btn-xs btn-primary">Sort</button>
 </nav>
 
-<div id="postsSection" class="text-center" data-index="<%=htmlPosts.index%>" style="display: flex; flex-wrap: wrap">
-    <div id="column-1" class="col-md-4" data-col1="<%=htmlPosts.html1%>" style="padding: 2px 2px 0 2px">
+<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
-    </div>
-    <div id="column-2" class="col-md-4" data-col2="<%=htmlPosts.html2%>" style="padding: 0 5px 0 5px">
-
-    </div>
-    <div id="column-3" class="col-md-4" data-col3="<%=htmlPosts.html3%>" style="padding: 0 5px 0 5px">
-
-    </div>
 </div>
 <div id="endOfPage"></div>
 
@@ -93,7 +84,7 @@
         unfollowButton.style.display = "block";
 
         axios.put("/api/users/follow", {
-            accountUserId: data.getAttribute("data-userId")
+            accountUserId: userData.getAttribute("data-userId")
         })
     });
 
@@ -102,7 +93,7 @@
         followButton.style.display = "block";
 
         axios.put("/api/users/unfollow", {
-            accountUserId: data.getAttribute("data-userId")
+            accountUserId: userData.getAttribute("data-userId")
         })
     });
 
@@ -118,7 +109,7 @@
     msgSendButton.addEventListener("click", function(){
         axios.get("/api/users/checkConversations", {
             params: {
-                accountUserId: data.getAttribute("data-userId")
+                accountUserId: userData.getAttribute("data-userId")
             }
         }).then(function(res){
             if(res.data.existingConv){
@@ -128,7 +119,7 @@
                 }).catch(function(err){console.log(err)})
             } else {
                 axios.post("/api/users/conversations", {
-                    accountUserId: data.getAttribute("data-userId"),
+                    accountUserId: userData.getAttribute("data-userId"),
                     text: msgText.value
                 }).catch(function(err){console.log(err)})
             }
@@ -140,7 +131,6 @@
 <script type="text/javascript" src="postsSort.js"></script>
 
 <script>
-    sessionStorage.clear();
     document.addEventListener("scroll", function() {
         checkForNewDiv();
     });
@@ -151,7 +141,7 @@
         var pageOffset = window.pageYOffset + window.innerHeight;
         sessionStorage.pagePosition = window.pageYOffset;
 
-        if(pageOffset > lastDivOffset - 150 && !end && !wait) {
+        if(pageOffset > lastDivOffset - 300 && !end && !wait) {
             wait = true;
             makeAJAXRequest({}, true);
         }

@@ -5,7 +5,8 @@ var express               = require("express"),
     Post                  = require("../models/post"),
     Conversation          = require("../models/conversation"),
     setupPosts            = require("../public/home.js"),
-    middleware            = require("../middleware/index");
+    middleware            = require("../middleware/index"),
+    addUserPostPoints     = require("../public/addPostPoints");
 
 
 router.put("/users/follow", middleware.isLoggedIn, function(req, res){
@@ -29,7 +30,7 @@ router.put("/users/unfollow", middleware.isLoggedIn, function(req, res){
             break;
         }
     }
-    User.findById(req.body.accountUserId, middleware.isLoggedIn, function(err, accountUser){
+    User.findById(req.body.accountUserId, function(err, accountUser){
         if(err){
             console.log(err);
         } else {
@@ -164,10 +165,8 @@ router.post("/settings/validate", middleware.isLoggedIn, function(req, res){
 
 router.post("/sort", middleware.isLoggedIn, function(req, res){
     if(req.body.loadMore){
-        console.log("almost ready to send");
         var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
         req.session.currentIndex = htmlPosts.currentIndex;
-        console.log("sending..");
         res.send(htmlPosts);
     } else {
         var sortBy;
@@ -213,26 +212,23 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
         } else {
             user = req.body.user;
         }
-        console.log("finding");
         if(req.body.country == "all"){
             Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, 'author.username': user})
-                .sort(sortBy).limit(4000).exec(function(err, posts){
+                .sort(sortBy).limit(1000).exec(function(err, posts){
                 if(err){
                     console.log(err);
                 } else {
-                    console.log("almost ready to send");
                     req.session.allPosts = posts;
                     req.session.currentIndex = 0;
                     var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                     req.session.currentIndex = htmlPosts.currentIndex;
-                    console.log("sending..");
                     res.send(htmlPosts);
                 }
             })
         } else {
             var country = req.body.country;
             Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country, 'author.username': user})
-                .sort(sortBy).limit(4000).exec(function(err, posts){
+                .sort(sortBy).limit(1000).exec(function(err, posts){
                 if(err){
                     console.log(err);
                 } else {
