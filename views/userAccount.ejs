@@ -28,43 +28,6 @@
 <hr>
 <h3>Photos</h3>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="form-group">
-        <label for="sortBy">Sort By: </label>
-        <select id="sortBy" name="sortBy" class="form-control">
-            <option value="newest" selected="selected">Newest</option>
-            <option value="highest rated">Highest Rated</option>
-            <option value="most favorited">Most favorited</option>
-            <option value="most viewed">Most Viewed</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="within">Within: </label>
-        <select id="within" name="within" class="form-control">
-            <option value="day">Past Day</option>
-            <option value="week">Past Week</option>
-            <option value="month" selected="selected">Past Month</option>
-            <option value="year">Past Year</option>
-            <option value="ever">Ever</option>
-        </select>
-    </div>
-    <div class="form-group col">
-        <label for="photoType">PhotoType: </label>
-        <select id="photoType" name="photoType" class="form-control">
-            <option value="any" selected="selected">Any</option>
-            <option value="landscapes">Landscapes</option>
-            <option value="cityscapes">Cityscapes</option>
-        </select>
-    </div>
-    <div class="form-group col">
-        <label for="sortBy">Country: </label>
-        <select id="country" name="country" class="form-control">
-            <option value="all" selected="selected">All</option>
-        </select>
-    </div>
-    <button id="sortBtn" class="btn btn-xs btn-primary">Sort</button>
-</nav>
-
 <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
 </div>

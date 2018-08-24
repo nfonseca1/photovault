@@ -80,9 +80,11 @@
 
         if(pageOffset > lastDivOffset - 300 && !end && !wait) {
             wait = true;
-            makeAJAXRequest({}, true);
+            makeAJAXRequest(null, true);
         }
     };
 </script>
+
+<script type="text/javascript" src="sortBar.js"></script>
 
 <% include partials/footer.ejs %>

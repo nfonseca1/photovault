@@ -98,7 +98,6 @@ router.put("/settings", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/:username", middleware.isLoggedIn, function(req, res){
-    console.log(req.params);
     User.findOne({username: req.params.username}, function(err, user){
         if(err || user == null) {
             console.log(err);
