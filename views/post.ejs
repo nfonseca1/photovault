@@ -9,9 +9,9 @@
                     <li>Posted by: <a class="nav-item" href="/account/<%=post.author.username%>"><%=post.author.username%></a></li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link blank-btn likeBtn" style="color: <%=postVars.likeColor%>">Like</a></li>
+                    <li class="nav-item"><a class="nav-link blank-btn likeBtn" style="color: <%=postVars.likeColor%>" data-liked="<%=postVars.liked%>">Like</a></li>
                     <li class="nav-item"><span class="nav-link points"><%=post.points%></span></li>
-                    <li class="nav-item"><a class="nav-link blank-btn hateBtn" style="color: <%=postVars.hateColor%>">Hate</a></li>
+                    <li class="nav-item"><a class="nav-link blank-btn hateBtn" style="color: <%=postVars.hateColor%>" data-hated="<%=postVars.hated%>">Hate</a></li>
                 </ul>
             </nav>
         </div>
@@ -21,9 +21,9 @@
                 <li>Taken in: <a class="nav-item" href="/account/<%=post.country%>"><%=post.country%></a></li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link blank-btn favoriteBtn" style="color: <%=postVars.favBtnColor%>">Favorite</a></li>
+                <li class="nav-item"><a class="nav-link blank-btn favoriteBtn" style="color: <%=postVars.favBtnColor%>" data-favorited="<%=postVars.favorited%>">Favorite</a></li>
                 <li class="nav-item"><a class="nav-link blank-btn favoriteList">
-                        <select id="favList" onchange="ajaxFavoriteCall()" style="display: <%=postVars.favListDisplay%>">
+                        <select id="favList" onchange="ajaxFavoriteCall(null, true)" style="display: <%=postVars.favListDisplay%>">
                             <option value="" selected="selected">unlisted</option>
                             <%postVars.favoriteLists.forEach(function(favoriteList){%>
                                 <option value="<%=favoriteList.name%>"><%=favoriteList.name%></option>

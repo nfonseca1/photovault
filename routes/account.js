@@ -4,6 +4,7 @@ var express               = require("express"),
     Post                  = require("../models/post"),
     Conversation          = require("../models/conversation"),
     setupPosts            = require("../public/home.js"),
+    getFavorites          = require("../public/getFavorites"),
     middleware            = require("../middleware/index");
 
 
@@ -53,41 +54,21 @@ router.get("/messages", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/favorites", middleware.isLoggedIn, function(req, res){
-    var listFilter;
-    if(req.query.list == undefined){
-        listFilter = 'all';
-    } else {
-        listFilter = req.query.list;
-    }
-    console.log(listFilter);
-    var foundPosts = [];
-    if(req.user.feedback.length == 0){
-        res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
-    } else {
-        var feed = req.user.feedback;
-        for(var f = 0; f < feed.length; f++){
-            if(feed[f].favorite){
-                if(listFilter == 'all'){
-                    console.log("listFilter all");
-                    Post.findById(feed[f].id, function(err, post){
-                        foundPosts.push(post);
-                    })
-                } else if(feed[f].list == listFilter){
-                    Post.findById(feed[f].id, function(err, post){
-                        foundPosts.push(post);
-                    })
-                }
-            }
-        }
-        setTimeout(function(){
-            req.session.allPosts = foundPosts;
+    var foundPosts = {found: []};
+    var result = getFavorites(req.query, req.user, {}, foundPosts);
+    var interval = setInterval(function(){
+        if(result == false){
+            res.render("favorites.ejs", {htmlPosts: [], lists: req.user.favoriteLists});
+            clearInterval(interval);
+        } else if(foundPosts.found.length == result || result == false){
+            req.session.allPosts = foundPosts.found;
             req.session.currentIndex = 0;
             var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
             req.session.currentIndex = htmlPosts.currentIndex;
-            req.session.dataSave = false;
             res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
-        }, 200);
-    }
+            clearInterval(interval);
+        }
+    }, 100)
 })
 
 router.get("/settings", middleware.isLoggedIn, function(req, res){

@@ -5,6 +5,7 @@ var express               = require("express"),
     Post                  = require("../models/post"),
     Conversation          = require("../models/conversation"),
     setupPosts            = require("../public/home.js"),
+    getFavorites          = require("../public/getFavorites"),
     middleware            = require("../middleware/index"),
     addUserPostPoints     = require("../public/addPostPoints");
 
@@ -176,8 +177,10 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
             sortBy = "-points";
         } else if (req.body.sortBy == "most favorited"){
             sortBy = "-favorites";
+        } else if (req.body.sortBy == "my favorites"){
+            sortBy = "my favorites";
         } else {
-            sortBy = "-views";
+            sortBy = "-date";
         }
 
         var pastDate;
@@ -207,37 +210,57 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
         }
 
         var user;
+        var postsObj;
         if(req.body.user == undefined){
             user = new RegExp('');
         } else {
             user = req.body.user;
         }
         if(req.body.country == "all"){
-            Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, 'author.username': user})
-                .sort(sortBy).limit(1000).exec(function(err, posts){
-                if(err){
-                    console.log(err);
-                } else {
-                    req.session.allPosts = posts;
-                    req.session.currentIndex = 0;
-                    var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
-                    req.session.currentIndex = htmlPosts.currentIndex;
-                    res.send(htmlPosts);
-                }
-            })
+            postsObj = {
+                $or: [{photoType: photoType}, {photoType: photoType2}],
+                date: {$lt: new Date(), $gte: pastDate},
+                'author.username': user
+            };
         } else {
             var country = req.body.country;
-            Post.find({$or: [{photoType: photoType}, {photoType: photoType2}], date: {$lt: new Date(), $gte: pastDate}, country: country, 'author.username': user})
-                .sort(sortBy).limit(1000).exec(function(err, posts){
-                if(err){
-                    console.log(err);
-                } else {
-                    req.session.allPosts = posts;
+            postsObj = {
+                $or: [{photoType: photoType}, {photoType: photoType2}],
+                date: {$lt: new Date(), $gte: pastDate},
+                country: country,
+                'author.username': user
+            };
+        }
+        if(sortBy == 'my favorites'){
+            var foundPosts = {found: []};
+            var result = getFavorites(req.body, req.user, postsObj, foundPosts);
+            var interval = setInterval(function(){
+                if(result == false){
+                    res.send({html: '', currentIndex: 0, end: false});
+                    clearInterval(interval);
+                } else if(foundPosts.found.length == result || result == false){
+                    req.session.allPosts = foundPosts.found;
                     req.session.currentIndex = 0;
                     var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
                     req.session.currentIndex = htmlPosts.currentIndex;
                     res.send(htmlPosts);
+                    clearInterval(interval);
                 }
+            }, 100)
+        } else {
+            Post.find(postsObj)
+                .sort(sortBy).limit(1000).exec(function(err, posts){
+                    if(err){
+                        console.log(err);
+                        res.redirect("/home");
+                    } else {
+                        console.log(posts[0]);
+                        req.session.allPosts = posts;
+                        req.session.currentIndex = 0;
+                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                        req.session.currentIndex = htmlPosts.currentIndex;
+                        res.send(htmlPosts);
+                    }
             })
         }
     }
@@ -255,12 +278,9 @@ router.post("/like", middleware.isLoggedIn, function(req, res){
 
             for(var i = 0; i < feedback.length; i++) {
                 if (feedback[i].id == postId) {
-                    console.log("found feedback");
-                    console.log(feedback[i]);
                     foundFeedback = true;
                     var results = addUserPostPoints(feedback[i], button);
                     myUser.save();
-                    console.log(myUser.feedback[i]);
 
                     Post.findById(postId, function(err, post){
                         if(err){console.log(err)}
@@ -275,7 +295,6 @@ router.post("/like", middleware.isLoggedIn, function(req, res){
             }
 
             if(!foundFeedback){
-                console.log("no feedback");
                 var newFeedback = {
                     id: postId,
                     like: false,
@@ -284,10 +303,8 @@ router.post("/like", middleware.isLoggedIn, function(req, res){
                     list: ''
                 };
                 feedback.push(newFeedback);
-                console.log(feedback[feedback.length - 1]);
                 var results = addUserPostPoints(feedback[feedback.length-1], button);
                 myUser.save();
-                console.log(myUser.feedback[i]);
 
                 Post.findById(postId, function(err, post){
                     if(err){console.log(err)}
@@ -304,7 +321,6 @@ router.post("/like", middleware.isLoggedIn, function(req, res){
 })
 
 router.post("/favorite", middleware.isLoggedIn, function(req, res){
-    console.log("server side");
     User.findById(req.user._id, function(err, myUser){
         if(err){console.log(err)}
         else {
@@ -315,40 +331,40 @@ router.post("/favorite", middleware.isLoggedIn, function(req, res){
 
             for(var i = 0; i < feedback.length; i++) {
                 if (feedback[i].id == postId) {
-                    console.log("feedback found");
-                    console.log(feedback[i]);
                     foundFeedback = true;
-                    if(feedback[i].favorite){
-                        console.log("on to off");
-                        feedback[i].favorite = false;
-                        favorited = false;
-                    } else {
-                        console.log("off to on");
-                        feedback[i].favorite = true;
-                        favorited = true;
+                    if(req.body.changeList){
                         feedback[i].list = req.body.list;
-                    }
-                    feedback[i].list = req.body.list;
-                    myUser.save();
-
-                    Post.findById(postId, function(err, post){
-                        if(err){console.log(err)}
-                        else {
-                            if(favorited){
-                                post.favorites = post.favorites + 1;
-                            } else {
-                                post.favorites = post.favorites - 1;
-                            }
-                            post.save();
-                            res.send({favorited: favorited});
+                        myUser.save();
+                    } else {
+                        if(feedback[i].favorite){
+                            feedback[i].favorite = false;
+                            favorited = false;
+                        } else {
+                            feedback[i].favorite = true;
+                            favorited = true;
+                            feedback[i].list = req.body.list;
                         }
-                    })
+                        feedback[i].list = req.body.list;
+                        myUser.save();
+
+                        Post.findById(postId, function(err, post){
+                            if(err){console.log(err)}
+                            else {
+                                if(favorited){
+                                    post.favorites = post.favorites + 1;
+                                } else {
+                                    post.favorites = post.favorites - 1;
+                                }
+                                post.save();
+                                res.send({favorited: favorited});
+                            }
+                        })
+                    }
                     break;
                 }
             }
 
             if(!foundFeedback){
-                console.log("no feedback");
                 var newFeedback = {
                     id: postId,
                     like: false,

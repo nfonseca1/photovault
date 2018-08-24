@@ -8,13 +8,17 @@ var photoType = document.querySelector("#photoType");
 var country = document.querySelector("#country");
 var sortBtn = document.querySelector("#sortBtn");
 
+var wait = false;
+var end = false;
+var pagePosition = 0;
+var getFavorites = false;
 var user;
 if(userData.getAttribute("data-username") != undefined){
     user = userData.getAttribute("data-username");
 }
-var wait = false;
-var end = false;
-var pagePosition = 0;
+if(userData.getAttribute("data-getFavorites") == 'true'){
+    getFavorites = true;
+}
 
 var html = '';
 countries.forEach(function(country){
@@ -36,7 +40,8 @@ function makeAJAXRequest(e, loadMore) {
         photoType: photoType.value,
         country: country.value,
         loadMore: loadMore,
-        user: user
+        user: user,
+        getFavorites
     })
         .then(function(res){
             pagePosition = window.pageYOffset;

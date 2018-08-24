@@ -134,25 +134,28 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                     var postVars = {
                         likeColor: "black",
                         hateColor: "black",
+                        liked: false,
+                        hated: false,
                         favoriteLists: req.user.favoriteLists,
                         favListDisplay: 'none',
-                        favBtnColor: 'black'
+                        favBtnColor: 'black',
+                        favorited: false
                     };
                     var feedback = myUser.feedback;
                     for(var i = 0; i < feedback.length; i++){
                         if(feedback[i].id == req.params.id){
                             if(feedback[i].like){
                                 postVars.likeColor = "#0066ff";
+                                postVars.liked = true;
                             }
                             if(feedback[i].hate){
-                                postVars.likeColor = "#0066ff";
+                                postVars.hateColor = "#0066ff";
+                                postVars.hated = true;
                             }
                             if(feedback[i].favorite){
                                 postVars.favListDisplay = 'inline';
                                 postVars.favBtnColor = '#0066ff';
-                            } else {
-                                postVars.favListDisplay = 'none';
-                                postVars.favBtnColor = 'black';
+                                postVars.favorited = true;
                             }
                             break;
                         }

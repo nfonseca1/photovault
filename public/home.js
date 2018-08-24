@@ -10,6 +10,7 @@ function setupPosts(posts, i) {
         max = i + 30;
     }
     for (i; i < max; i++) {
+        if(posts[i] == null){continue;}
         html += '<figure><i></i>';
         html += '<a href="/home/' + posts[i]._id + '" class="nostyle">';
         html += '<img src="' + posts[i].image + '"></a>';

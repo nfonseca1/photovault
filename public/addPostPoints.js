@@ -2,14 +2,12 @@ function addUserPostPoints(feedback, button){
     var addPoints = 0;
     var like = false;
     var hate = false;
-    if(button == "Like"){
+    if(button == "like"){
         if(feedback.like){
-            console.log("like already");
             feedback.like = false;
             like = false;
             addPoints = -1;
         } else {
-            console.log("no like");
             feedback.like = true;
             like = true;
             if(feedback.hate == true){
@@ -22,12 +20,10 @@ function addUserPostPoints(feedback, button){
         }
     } else {
         if(feedback.hate){
-            console.log("hate already");
             feedback.hate = false;
             hate = false;
             addPoints = 1;
         } else {
-            console.log("no hate");
             feedback.hate = true;
             hate = true;
             if(feedback.like == true){
