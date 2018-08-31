@@ -166,7 +166,7 @@ router.post("/settings/validate", middleware.isLoggedIn, function(req, res){
 
 router.post("/sort", middleware.isLoggedIn, function(req, res){
     if(req.body.loadMore){
-        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.body.linkPhotos);
         req.session.currentIndex = htmlPosts.currentIndex;
         res.send(htmlPosts);
     } else {

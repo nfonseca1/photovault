@@ -23,6 +23,23 @@ router.get("/", middleware.isLoggedIn, function(req, res){
     })
 });
 
+router.get("/collections/new", middleware.isLoggedIn, function(req, res){
+    Post.find({'author.id': req.user._id}, function(err, foundPosts) {
+        if (err) {
+            console.log(err);
+        }
+        req.session.allPosts = foundPosts;
+        req.session.currentIndex = 0;
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, 'false');
+        req.session.currentIndex = htmlPosts.currentIndex;
+        req.session.dataSave = false;
+        res.render("createCollection.ejs", {
+            htmlPosts: htmlPosts,
+            user: req.user
+        });
+    });
+});
+
 router.get("/following", middleware.isLoggedIn, function(req, res){
     User.findById(req.user._id).populate("following").exec(function(err, myUser){
         if(err){

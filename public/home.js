@@ -1,5 +1,5 @@
 
-function setupPosts(posts, i) {
+function setupPosts(posts, i, link) {
     var html = '';
     var max = 0;
     var end = false;
@@ -12,7 +12,12 @@ function setupPosts(posts, i) {
     for (i; i < max; i++) {
         if(posts[i] == null){continue;}
         html += '<figure><i></i>';
-        html += '<a href="/home/' + posts[i]._id + '" class="nostyle">';
+        html += '<a ';
+        if(link == "false"){
+            html += '" class="nostyle">';
+        } else {
+            html += 'href="/home/' + posts[i]._id + '" class="nostyle">';
+        }
         html += '<img src="' + posts[i].image + '"></a>';
         html += '</figure>';
     }

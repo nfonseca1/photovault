@@ -1,0 +1,57 @@
+<%include partials/header.ejs%>
+
+<h4>Create a Collection</h4>
+
+<div class="row">
+    <div id="userData" class="collection col-md-12" data-username="<%=currentUser.username%>" data-rowSize="140" data-linkPhotos="false">
+        <div class="section">
+            <input type="text" class="title no-box-input form-control" placeholder="Title">
+            <input type="text" class="heading no-box-input form-control" placeholder="Heading (Optional)">
+            <input type="text" class="description no-box-input form-control" placeholder="Description (Optional)">
+
+            <button type="button" class="add-photos-btn btn btn-xs btn-primary">Add Photos</button>
+            <button type="button" class="done-photos-btn btn btn-xs" style="display: none">Finished</button>
+            <div class="section-grid grid">
+
+            </div>
+            <button type="button" class="add-section-btn btn btn-xs btn-success">Add Section</button>
+            <button type="button" class="remove-section-btn btn btn-xs btn-danger" style="display: none">Remove Section</button>
+        </div>
+    </div>
+
+    <div id="photos-list-box" style="display: none;">
+        <div class="photos-list" style="height: 85%; overflow: scroll; width: 45%;">
+            <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+
+            </div>
+            <div id="endOfPage"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="postsSort.js"></script>
+
+<script type="text/javascript" src="newCollection.js"></script>
+
+<script>
+    var usingPhotosList = true;
+
+    photosList.addEventListener("scroll", function() {
+        console.log(photosList.scrollHeight);
+        console.log(photosList.scrollTop);
+        checkForNewDiv();
+    });
+
+    var checkForNewDiv = function() {
+        var lastDiv = document.querySelector("#endOfPage");
+        var lastDivOffset = lastDiv.offsetTop;
+        var pageOffset = window.pageYOffset + window.innerHeight;
+
+        if(photosList.scrollHeight - photosList.scrollTop <= 800 && !end && !wait) {
+            wait = true;
+            makeAJAXRequest({}, true);
+        }
+    };
+</script>
+
+<% include partials/footer.ejs %>

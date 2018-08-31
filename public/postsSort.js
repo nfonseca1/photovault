@@ -5,6 +5,7 @@ var wait = false;
 var end = false;
 var pagePosition = 0;
 var getFavorites = false;
+var linkPhotos = false;
 var user;
 if(userData.getAttribute("data-username") != undefined){
     user = userData.getAttribute("data-username");
@@ -12,16 +13,24 @@ if(userData.getAttribute("data-username") != undefined){
 if(userData.getAttribute("data-getFavorites") == 'true'){
     getFavorites = true;
 }
+if(userData.getAttribute("data-linkPhotos") != undefined){
+    linkPhotos = userData.getAttribute("data-linkPhotos");
+}
 
 
 function makeAJAXRequest(e, loadMore) {
     axios.post("/api/sort", {
         loadMore: loadMore,
         user: user,
-        getFavorites: getFavorites
+        getFavorites: getFavorites,
+        linkPhotos: linkPhotos
     })
         .then(function(res){
-            pagePosition = window.pageYOffset;
+            if(usingPhotosList == undefined){
+                pagePosition = window.pageYOffset;
+            } else {
+                pagePosition = photosList.scrollTop;
+            }
             //sessionStorage.index = res.data.currentIndex;
             if(res.data.end){end = res.data.end;}
             applyPosts(res.data, true, loadMore)
@@ -87,7 +96,11 @@ function setupLayout(i){
         var h = height[x];
         var w = width[x];
         var flexGrow = (w * 100) / h;
-        var flexBasis = (w * 240) / h;
+        var size = 240;
+        if(userData.getAttribute("data-rowSize") != undefined){
+            size = parseInt(userData.getAttribute("data-rowSize"));
+        }
+        var flexBasis = (w * size) / h;
         var paddingBottom = (h / w) * 100;
         var src = images[x].getAttribute("src");
 
@@ -99,7 +112,12 @@ function setupLayout(i){
         iTags[x].style.paddingBottom = paddingBottom + '%';
     }
     //grid.classList.remove('grid-default');
-    window.scrollTo(window.pageXOffset, pagePosition);
+    if(usingPhotosList == undefined){
+        window.scrollTo(window.pageXOffset, pagePosition);
+    } else {
+        photosList.scrollTo(0, pagePosition);
+        addImageEvents();
+    }
     unpauseRequests(false);
 }
 
