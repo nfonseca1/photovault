@@ -4,6 +4,10 @@
         <title>Snappir</title>
         <base href="/">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Lato|Varela+Round" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
+        <link rel="stylesheet" href="assets/styling.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <style>
             .grid-default{
@@ -114,14 +118,53 @@
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand h1" href="/home"><em>Snappir</em></a>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/account">Account</a>
-                    </li>
-                </ul>
+        <nav class="snappir-nav">
+            <div class="snappir-container">
+                <a class="nav-snappir-logo" href="/home">Snappir</a>
+                <div class="nav-search">
+                    <form action="/home" method="get">
+                        <input type="text" class="snappir-search" name="search" placeholder=" Post title, author, keyword...">
+                        <button type="submit" class="snappir-search-btn">Search</button>
+                    </form>
+                </div>
+                <a class="nav-account" href="/account">Account</a>
+                <button class="nav-more-btn">More</button>
             </div>
         </nav>
-        <div class="center-content">
+        <div class="nav-more">
+            <form action="/home" method="get" class="nav-more-form">
+                <input type="text" class="nav-more-search" name="search" placeholder=" Search">
+                <button type="submit" class="more-search-btn"><i class="fas fa-search"></i></button>
+            </form>
+            <h3 class="nav-more-header">Account</h3>
+            <h5 class="nav-more-item">Photos</h5>
+            <h5 class="nav-more-item">Collections</h5>
+            <h5 class="nav-more-item">followers</h5>
+            <h5 class="nav-more-item">following</h5>
+            <h5 class="nav-more-item">messages</h5>
+            <h5 class="nav-more-item">favorites</h5>
+            <h5 class="nav-more-item">settings</h5>
+        </div>
+        <div class="nav-content-space"></div>
+        <div>
+
+            <script>
+                var moreBtn = document.querySelector(".nav-more-btn");
+                var more = document.querySelector(".nav-more");
+                var moreOn = false;
+
+                window.matchMedia("(min-width: 992px)").addListener(function(){
+                    more.style.display = "none";
+                    moreOn = false;
+                })
+
+                moreBtn.addEventListener("click", function(){
+                    if(moreOn){
+                        more.style.display = "none";
+                        moreOn = false;
+                    } else {
+                        more.style.display = "block";
+                        moreOn = true;
+                    }
+                })
+            </script>

@@ -160,3 +160,209 @@ body{
     text-align: left;
     margin-top: 15px;
 }
+
+
+.snappir-container{
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.snappir-nav{
+    z-index: 20;
+    position: fixed;
+    width: 100%;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #d3d3d3;
+    padding-bottom: 5px;
+}
+.nav-snappir-logo {
+    display: inline-block;
+    color: #E36C10;
+    font-family: 'Roboto Slab', serif;
+    font-size: 27px;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 5%;
+    width: 8%;
+    text-align: left;
+}
+.nav-search{
+    display: inline-block;
+    width: 83%;
+    text-align: center;
+}
+.snappir-search{
+    display: inline-block;
+    height: 35%;
+    width: 35%;
+    background-color: #DBDBDB;
+    border: 1px solid #D1D1D1;
+    border-radius: 100px 0 0 100px;
+    font-size: 12px;
+    padding-left: 1%;
+}
+.snappir-search-btn{
+    display: inline-block;
+    height: 38%;
+    background-color: #0170CA;
+    border-radius: 0 100px 100px 0;
+    border: none;
+    font-size: 12px;
+    color: #f0f0f0;
+    margin-left: -2%;
+}
+.nav-more{
+    z-index: 25;
+    display: none;
+    position: fixed;
+    width: 30%;
+    margin: 37px 0 auto 70%;
+    background-color: #f0f0f0;
+    border: 1px solid #d3d3d3;
+}
+.nav-more-header{
+    font-family: 'Roboto Slab', serif;
+    text-align: center;
+    font-weight: bold;
+}
+.nav-more-item {
+    font-family: 'Roboto Slab', serif;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+.nav-more-item:hover{
+    font-family: 'Roboto Slab', serif;
+    text-align: center;
+    background-color: #d1d1d1;
+}
+.nav-more-form{
+    text-align: center;
+}
+.nav-more-search{
+    display: inline-block;
+    width: 70%;
+    height: 16px;
+    background-color: #DBDBDB;
+    border: 1px solid #D1D1D1;
+    border-radius: 60px 0 0 60px;
+    font-size: 12px;
+    padding-left: 1%;
+}
+.more-search-btn{
+    display: inline-block;
+    height: 16px;
+    background-color: #0170CA;
+    border-radius: 0 60px 60px 0;
+    border: none;
+    font-size: 10px;
+    color: #f0f0f0;
+    margin-left: -2%;
+}
+.home-header{
+    width: 100%;
+    background-color: #f0f0f0;
+    padding-top: 40px;
+    border-bottom: 1px solid #d3d3d3;
+}
+.home-title {
+    color: #3D3D3D;
+    font-family: 'Roboto', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 52px;
+    text-align: left;
+    margin: 15px auto 15px 0;
+}
+.home-header-nav{
+    width: 100%;
+}
+.home-dropdown{
+    display: inline-block;
+    border: none;
+    background-color: transparent;
+    width: 80px;
+}
+.home-sort-dropdown{
+    border: none;
+    background-color: transparent;
+    width: 80px;
+}
+
+#grid{
+    margin-top: 15px;
+}
+#endOfPage{
+    width: 100%;
+    height: 100px;
+    border: 1px solid #2a2a2a;
+}
+@media (min-width: 0px) {
+    .nav-account {
+        display: none;
+    }
+    .nav-more-btn{
+        display: inline-block;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+    }
+    .home-header-left{
+        display: inline-block;
+        width: 65%;
+        text-align: left;
+    }
+    .home-header-right{
+        display: inline-block;
+        width: 34%;
+        text-align: right;
+    }
+    .home-link{
+        display: none;
+        margin-left: 5%;
+    }
+    .home-sort-dropdown{
+        display: inline-block;
+        border: none;
+        background-color: transparent;
+        width: 80px;
+    }
+}
+@media (min-width: 992px) {
+    .nav-account {
+        display: inline-block;
+        color: #484848;
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        font-weight: 400;
+        line-height: 32px;
+        width: 8%;
+        margin-right: 0;
+        text-align: right;
+    }
+    .nav-more-btn{
+        display: none;
+    }
+    .home-header-left{
+        display: inline-block;
+        width: 49%;
+        text-align: left;
+    }
+    .home-header-right{
+        display: inline-block;
+        width: 49%;
+        text-align: right;
+    }
+    .nav-more{
+        display: none;
+    }
+    .home-sort-dropdown{
+        display: none;
+        border: none;
+        background-color: transparent;
+        width: 80px;
+    }
+    .home-link{
+        display: inline-block;
+        margin-left: 5%;
+    }
+}

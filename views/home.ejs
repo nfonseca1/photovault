@@ -3,52 +3,42 @@
 <script type="text/javascript" src="countries.js"></script>
 
 <div id="userData"></div>
-<form action="/home" method="GET" class="form-inline center">
-    <select id="searchBy" name="searchBy" class="form-control">
-        <option value="title">Title</option>
-        <option value="description">Description</option>
-        <option value="author">Author</option>
-    </select>
-    <input type="text" id="search" class="form-control" name="search">
-    <button type="submit" id="searchBtn" class="btn btn-xs btn-primary">Search</button>
-</form>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="form-group">
-        <label for="sortBy">Sort By: </label>
-        <select id="sortBy" name="sortBy" class="form-control">
-            <option value="newest" selected="selected">Newest</option>
-            <option value="highest rated">Highest Rated</option>
-            <option value="most favorited">Most favorited</option>
-            <option value="my favorites">My Favorites</option>
-        </select>
+<div class="home-header">
+    <div class="snappir-container">
+        <div class="home-title">HOME</div>
+        <div class="home-header-nav">
+            <div class="home-header-left">
+                <select name="country" class="home-dropdown">
+                    <option value="all" selected="selected">All</option>
+                </select>
+                <select name="photoType" class="home-dropdown">
+                    <option value="all" selected="selected">All</option>
+                    <option value="landscape">landscape</option>
+                    <option value="cityscape">cityscape</option>
+                </select>
+                <select name="within" class="home-dropdown">
+                    <option value="day">Past Day</option>
+                    <option value="week">Past Week</option>
+                    <option value="month" selected="selected">Past Month</option>
+                    <option value="year">Past Year</option>
+                    <option value="ever">Ever</option>
+                </select>
+            </div>
+            <div class="home-header-right">
+                <select class="home-sort-dropdown">
+                    <option value="newest" selected="selected">Newest</option>
+                    <option value="mostLiked">Most Liked</option>
+                    <option value="mostFavorited">Most Favorited</option>
+                    <option value="myFavorites">My Favorites</option>
+                </select>
+                <div class="home-link">Newest</div>
+                <div class="home-link">Most Liked</div>
+                <div class="home-link">Most Favorited</div>
+                <div class="home-link">My Favorites</div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="within">Within: </label>
-        <select id="within" name="within" class="form-control">
-            <option value="day">Past Day</option>
-            <option value="week">Past Week</option>
-            <option value="month" selected="selected">Past Month</option>
-            <option value="year">Past Year</option>
-            <option value="ever">Ever</option>
-        </select>
-    </div>
-    <div class="form-group col">
-        <label for="photoType">PhotoType: </label>
-        <select id="photoType" name="photoType" class="form-control">
-            <option value="any" selected="selected">Any</option>
-            <option value="landscapes">Landscapes</option>
-            <option value="cityscapes">Cityscapes</option>
-        </select>
-    </div>
-    <div class="form-group col">
-        <label for="sortBy">Country: </label>
-        <select id="country" name="country" class="form-control">
-            <option value="all" selected="selected">All</option>
-        </select>
-    </div>
-    <button id="sortBtn" class="btn btn-xs btn-primary">Sort</button>
-</nav>
+</div>
 
 <%if(user != undefined){%>
 <table class="table table-striped">
@@ -60,10 +50,12 @@
 </table>
 <%}%>
 
-<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+<div class="snappir-container">
+    <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
+    </div>
+    <div id="endOfPage"></div>
 </div>
-<div id="endOfPage"></div>
 
 <script type="text/javascript" src="postsSort.js"></script>
 
