@@ -90,6 +90,7 @@ function setupLayout(i){
     for(t; t < images.length; t++){
         height[t] = parseInt(images[t].naturalHeight);
         width[t] = parseInt(images[t].naturalWidth);
+        console.log(width[t]);
     }
     //grid.classList.add('grid');
     for(x; x < images.length; x++){

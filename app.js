@@ -39,7 +39,6 @@ app.use(function(req, res, next){
 
 app.use("/", indexRoutes);
 app.use("/home", postRoutes);
-app.use("/home/:id/comment", commentRoutes);
 app.use("/account", accountRoutes);
 app.use("/api", apiRoutes);
 
