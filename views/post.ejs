@@ -34,14 +34,26 @@
         <div class="post-meta-location">
             Taken in: <%=post.country%>
         </div>
-        <div class="post-meta-author">
-
-        </div>
-        <div class="post-meta-rate">
-
-        </div>
-        <div class="post-meta-favorite">
-
+        <div class="post-meta-flex">
+            <div class="post-meta-author">
+                Posted by: <%=post.author.username%>
+            </div>
+            <div class="post-meta-rate">
+                <a class="likeBtn" style="color: <%=postVars.likeColor%>" data-liked="<%=postVars.liked%>">Like</a>
+                <span class="points"><%=post.points%></span>
+                <a class="hateBtn" style="color: <%=postVars.hateColor%>" data-hated="<%=postVars.hated%>">Hate</a>
+            </div>
+            <div class="post-meta-favorite">
+                <a class="blank-btn favoriteBtn" style="color: <%=postVars.favBtnColor%>" data-favorited="<%=postVars.favorited%>">Favorite</a>
+                <a class="blank-btn favoriteList">
+                    <select id="favList" onchange="ajaxFavoriteCall(null, true)" style="display: <%=postVars.favListDisplay%>">
+                        <option value="" selected="selected">unlisted</option>
+                        <%postVars.favoriteLists.forEach(function(favoriteList){%>
+                        <option value="<%=favoriteList.name%>"><%=favoriteList.name%></option>
+                        <%})%>
+                    </select>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -51,7 +63,7 @@
     var photo = document.querySelector(".post-photo");
 
     setImageSizes();
-    setInterval(setImageSizes(), 500);
+    setInterval(setImageSizes, 500);
 
     function setImageSizes(){
         var areaRatio = photoArea.offsetWidth / photoArea.offsetHeight;
