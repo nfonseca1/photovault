@@ -353,20 +353,6 @@ body{
     padding-bottom: 10px;
     text-align: left;
 }
-.account-nav-item{
-    color: #444444;
-    font-family: 'Roboto Slab', serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    line-height: 24px;
-    margin-left: 2%;
-    margin-right: 2%;
-}
-.account-nav-active{
-    color: #206BC3;
-    border-bottom: 2px solid #206BC3;
-}
 .account-upload-container{
     margin-top: 15px;
     width: 100%;
@@ -727,5 +713,27 @@ body{
         border-bottom: 1px solid #D3D3D3;
         padding-bottom: 5px;
         text-align: center;
+    }
+    .account-nav-item{
+        color: #444444;
+        font-family: 'Roboto Slab', serif;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        line-height: 24px;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    .account-nav-active{
+        color: #206BC3;
+        border-bottom: 2px solid #206BC3;
+    }
+    .account-nav-danger{
+        color: #AE3232;
+    }
+}
+@media (min-width: 1200px){
+    .account-nav-item{
+        font-size: 18px;
     }
 }

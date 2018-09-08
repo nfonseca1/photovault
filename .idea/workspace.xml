@@ -38,8 +38,8 @@
       <file leaf-file-name="account.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/account.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="71" column="11" lean-forward="true" selection-start-line="71" selection-start-column="11" selection-end-line="71" selection-end-column="11" />
+            <state relative-caret-position="505">
+              <caret line="31" column="49" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -103,8 +103,8 @@
       <file leaf-file-name="styling.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/assets/styling.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="577" column="1" selection-start-line="577" selection-start-column="1" selection-end-line="577" selection-end-column="1" />
+            <state relative-caret-position="316">
+              <caret line="732" column="5" selection-start-line="732" selection-start-column="5" selection-end-line="732" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -326,12 +326,12 @@
       <workItem from="1533961187397" duration="109433000" />
       <workItem from="1534337027131" duration="15026000" />
       <workItem from="1534353791025" duration="195288000" />
-      <workItem from="1535400395055" duration="117287000" />
+      <workItem from="1535400395055" duration="117998000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="634610000" />
+    <option name="totallyTimeSpent" value="635321000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1618" height="917" extended-state="6" />
@@ -728,15 +728,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/account.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="71" column="11" lean-forward="true" selection-start-line="71" selection-start-column="11" selection-end-line="71" selection-end-column="11" />
+        <state relative-caret-position="505">
+          <caret line="31" column="49" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/assets/styling.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="577" column="1" selection-start-line="577" selection-start-column="1" selection-end-line="577" selection-end-column="1" />
+        <state relative-caret-position="316">
+          <caret line="732" column="5" selection-start-line="732" selection-start-column="5" selection-end-line="732" selection-end-column="5" />
         </state>
       </provider>
     </entry>
