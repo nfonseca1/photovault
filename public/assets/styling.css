@@ -181,14 +181,9 @@ body{
     font-size: 27px;
     font-style: italic;
     font-weight: 700;
-    line-height: 5%;
+    line-height: 32px;
     width: 8%;
     text-align: left;
-}
-.nav-search{
-    display: inline-block;
-    width: 83%;
-    text-align: center;
 }
 .snappir-search{
     display: inline-block;
@@ -209,15 +204,6 @@ body{
     font-size: 12px;
     color: #f0f0f0;
     margin-left: -2%;
-}
-.nav-more{
-    z-index: 25;
-    display: none;
-    position: fixed;
-    width: 30%;
-    margin: 37px 0 auto 70%;
-    background-color: #f0f0f0;
-    border: 1px solid #d3d3d3;
 }
 .nav-more-header{
     font-family: 'Roboto Slab', serif;
@@ -328,15 +314,145 @@ body{
 .post-meta-favorite{
     display: inline-block;
 }
+
+.account-header{
+    padding-top: 45px;
+    width: 100%;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #D3D3D3;
+}
+.account-username{
+    text-align: center;
+    color: #424242;
+    font-family: 'Roboto', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 33px;
+}
+.account-info-container{
+    width: 100%;
+    text-align: center;
+    padding: 10px 0 15px 0;
+}
+.account-info{
+    display: inline-block;
+    padding: 0 1% 0 1%;
+    color: #6C6C6C;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+.account-bio{
+    color: #424242;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    width: 55%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.account-nav-item{
+    color: #444444;
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 24px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.account-nav-active{
+    color: #206BC3;
+    border-bottom: 2px solid #206BC3;
+}
+.account-upload-container{
+    margin-top: 15px;
+    width: 100%;
+    padding: 5px 0;
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+    text-align: center;
+}
+.snappir-btn{
+    display: inline-block;
+    background-color: #0170CA;
+    border: 1px solid #CDCDFD;
+    border-radius: 4px;
+    height: 25px;
+    color: #F7F7F7;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+.account-upload-form{
+    display: none;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    padding: 10px 15px 10px 15px;
+    background-color: #EEEEEE;
+    border: 1px solid #D3D3D3;
+}
+.account-upload-field{
+    display: inline-block;
+    padding: 5px 20px;
+}
+.snappir-label{
+    display: block;
+    color: #444444;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 26px;
+    text-align: left;
+}
+.label-inline{
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+.snappir-input{
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    width: 450px;
+    height: 25px;
+}
+.input-select{
+    width: 200px;
+}
 @media (min-width: 0px) {
+    .nav-search{
+        display: none;
+    }
     .nav-account {
         display: none;
     }
+    .nav-more{
+        z-index: 25;
+        display: none;
+        position: fixed;
+        width: 100%;
+        margin: 37px 0 auto 0;
+        background-color: #f0f0f0;
+        border: 1px solid #d3d3d3;
+    }
     .nav-more-btn{
         display: inline-block;
+        color: #484848;
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        font-weight: 400;
+        line-height: 32px;
+        width: 8%;
+        padding: 0;
+        text-align: right;
+        float: right;
         border: none;
         background-color: transparent;
-        padding: 0;
     }
     .home-header-left{
         display: inline-block;
@@ -455,6 +571,21 @@ body{
     .post-meta{
         font-size: 14px;
     }
+
+    .account-nav{
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .nav-search{
+        display: inline-block;
+        width: 83%;
+        text-align: center;
+    }
+    .nav-more{
+        width: 50%;
+        margin: 37px 0 auto 50%;
+    }
 }
 @media (min-width: 992px) {
     .nav-account {
@@ -465,7 +596,6 @@ body{
         font-weight: 400;
         line-height: 32px;
         width: 8%;
-        margin-right: 0;
         text-align: right;
     }
     .nav-more-btn{
@@ -588,5 +718,14 @@ body{
     }
     .post-meta{
         font-size: 16px;
+    }
+
+    .account-nav{
+        display: block;
+        width: 100%;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #D3D3D3;
+        padding-bottom: 5px;
+        text-align: center;
     }
 }

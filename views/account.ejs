@@ -3,76 +3,83 @@
 <script type="text/javascript" src="countries.js"></script>
 
 <div id="data" data-searched="no"></div>
-<h3 id="userData" data-username="<%=currentUser.username%>"><%=currentUser.username%>'s Account</h3>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="/account">Photos <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="/account/following">Following</a>
-        <a class="nav-item nav-link" href="/account/followers">Followers</a>
-        <a class="nav-item nav-link" href="/account/messages">Messages</a>
-        <a class="nav-item nav-link" href="/account/favorites">Favorites</a>
-        <a class="nav-item nav-link" href="/account/settings">Settings</a>
-        <a class="nav-item nav-link" href="/logout">Logout</a>
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
     </div>
-</nav>
-<h4>Upload Photo</h4>
-<div class="jumbotron">
-    <h1 class="display-4">Upload new photo</h1>
-    <button id="addButton" class="btn btn-primary btn-lg">Open Form</button>
 </div>
 
-<form action="/home" method="POST" id="addPhotoForm" style="display: none;" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="image">Image Link</label>
-        <input type="file" id="image" class="form-control" name="image" accept="image/*" required>
-    </div>
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="Description">Description</label>
-        <input type="text" name="description" id="description" class="form-control">
-    </div>
-    <label for="country">Photo was taken in: </label>
-    <select id="countriesList" class="custom-select custom-select-lg mb-3" name="country" id="country">
-
-    </select>
-    <div class="form-group">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="photoType" id="landscape" value="landscape" checked="checked">
-            <label class="form-check-label" for="landscape">Landscape</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="photoType" id="cityscape" value="cityscape">
-            <label class="form-check-label" for="cityscape">Cityscape</label>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="isPublic" id="public" value="true" checked="checked">
-            <label class="form-check-label" for="isPublic">Public</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="isPublic" id="private" value="false">
-            <label class="form-check-label" for="isPublic">Private</label>
-        </div>
-    </div>
-        <button type="submit" name="upload" class="btn btn-primary">Upload</button>
-</form>
-
-<hr>
-<h3>Photos</h3>
-
-<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
-
+<div class="account-nav">
+    <a class="account-nav-item account-nav-active" href="/account">Photos</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item" href="/account/followers">Followers</a>
+    <a class="account-nav-item" href="/account/messages">Messages</a>
+    <a class="account-nav-item" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item" href="/logout">Logout</a>
 </div>
-<div id="endOfPage"></div>
+
+<div class="snappir-container">
+    <div class="account-upload-container">
+        <button id="addButton" class="snappir-btn">Upload Photo</button>
+    </div>
+
+    <form action="/home" method="POST" class="account-upload-form" enctype="multipart/form-data">
+        <div class="account-upload-field">
+            <label for="image" class="snappir-label">Image Link</label>
+            <input type="file" id="image" class="" name="image" accept="image/*" required>
+        </div>
+        <div class="account-upload-field">
+            <label for="title" class="snappir-label">Title</label>
+            <input type="text" name="title" id="title" class="snappir-input" required>
+        </div>
+        <div class="account-upload-field">
+            <label for="Description" class="snappir-label">Description</label>
+            <input type="text" name="description" id="description" class="snappir-input">
+        </div>
+        <div class="account-upload-field">
+            <label for="country" class="snappir-label">Photo was taken in: </label>
+            <select id="countriesList" class="snappir-input input-select" name="country" id="country">
+
+            </select>
+        </div>
+        <div class="account-upload-field">
+            <label class="snappir-label" for="photoType">Photo Type</label>
+            <select class="snappir-input input-select" name="photoType" id="photoType">
+                <option value="landscape" selected="selected">Landscape</option>
+                <option value="cityscape">Cityscape</option>
+            </select>
+        </div>
+        <div class="account-upload-field">
+            <label class="snappir-label label-inline" for="isPrivate">Private</label>
+            <input class="" type="checkbox" name="isPrivate" id="isPrivate">
+        </div>
+        <div class="account-upload-field">
+            <button type="submit" name="upload" class="snappir-btn">Upload</button>
+        </div>
+    </form>
+
+    <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+
+    </div>
+    <div id="endOfPage"></div>
+</div>
 
 <script>
     var addButton = document.querySelector("#addButton");
-    var addPhotoForm = document.querySelector("#addPhotoForm");
+    var addPhotoForm = document.querySelector(".account-upload-form");
     var countriesList = document.querySelector("#countriesList");
     var addFormOn = false;
 
@@ -81,9 +88,13 @@
     function openAddForm(){
         addFormOn = !addFormOn;
         if (addFormOn){
-            addPhotoForm.style.display = "block";
+            addPhotoForm.style.display = "flex";
+            addButton.style.backgroundColor = "#e6e6e6";
+            addButton.style.color = "#0170CA";
         } else {
             addPhotoForm.style.display = "none";
+            addButton.style.backgroundColor = "#0170CA";
+            addButton.style.color = "#F7F7F7";
         }
     }
     var html = '';
