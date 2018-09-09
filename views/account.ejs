@@ -23,13 +23,13 @@
 
 <div class="account-nav">
     <a class="account-nav-item account-nav-active" href="/account">Photos</a>
-    <a class="account-nav-item" href="/account/following">Collections</a>
+    <a class="account-nav-item" href="/account/collections">Collections</a>
     <a class="account-nav-item" href="/account/following">Following</a>
     <a class="account-nav-item" href="/account/followers">Followers</a>
     <a class="account-nav-item" href="/account/messages">Messages</a>
     <a class="account-nav-item" href="/account/favorites">Favorites</a>
     <a class="account-nav-item" href="/account/settings">Settings</a>
-    <a class="account-nav-item account-nav-danger" href="/logout">Logout</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
 </div>
 
 <div class="snappir-container">
@@ -43,8 +43,8 @@
             <input type="file" id="image" class="" name="image" accept="image/*" required>
         </div>
         <div class="account-upload-field">
-            <label for="title" class="snappir-label">Title</label>
-            <input type="text" name="title" id="title" class="snappir-input" required>
+            <label for="Title" class="snappir-label">Title</label>
+            <input type="text" name="title" id="title" class="snappir-input">
         </div>
         <div class="account-upload-field">
             <label for="Description" class="snappir-label">Description</label>
@@ -109,7 +109,8 @@
     countriesList.innerHTML = html;
 </script>
 
-<script type="text/javascript" src="postsSort.js"></script>
+<script type="text/javascript" src="
+postsSort.js"></script>
 
 <script>
     document.addEventListener("scroll", function() {

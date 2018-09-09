@@ -367,10 +367,14 @@ body{
     border: 1px solid #CDCDFD;
     border-radius: 4px;
     height: 25px;
+    padding: 1px 6px 1px 6px;
     color: #F7F7F7;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
+}
+.snappir-btn-green{
+    background-color: #036322;
 }
 .account-upload-form{
     display: none;
@@ -409,6 +413,70 @@ body{
 }
 .input-select{
     width: 200px;
+}
+
+.user-info-container{
+    margin-top: 15px;
+}
+.user-info-bar{
+    margin-top: 5px;
+    width: 100%;
+    height: 50px;
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+}
+.info-bar-image{
+    display: inline-block;
+    width: 5%;
+    height: 100%;
+}
+.info-bar-details{
+    display: inline-block;
+    width: 66%;
+    height: 100%;
+}
+.info-bar-half{
+    display: inline-block;
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+.info-bar-bio{
+    display: inline-block;
+    width: 75%;
+    height: 100%;
+    padding-right: 5px;
+    overflow: hidden;
+    color: #898989;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    text-align: left;
+}
+.info-bar-actions{
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 27%;
+    height: 100%;
+    float: right;
+}
+.info-message-bar{
+    display: none;
+    width: 100%;
+    height: 30px;
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+    padding: 3px 5% 3px 5%;
+}
+.message-bar-input{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    width: 90%;
+    height: 22px;
+    margin-right: 1%;
+    float: left
 }
 @media (min-width: 0px) {
     .nav-search{
@@ -554,11 +622,26 @@ body{
         margin: 0 auto;
         text-align: center;
     }
+    .info-bar-name{
+        display: inline-block;
+        width: 32%;
+        color: #474747;
+        font-family: 'Roboto', sans-serif;
+        font-size: 17px;
+        text-align: left;
+        overflow: hidden;
+    }
     .post-meta{
         font-size: 14px;
     }
 
     .account-nav{
+        display: none;
+    }
+    .info-bar-meta{
+        display: none;
+    }
+    .user-message-btn{
         display: none;
     }
 }
@@ -571,6 +654,22 @@ body{
     .nav-more{
         width: 50%;
         margin: 37px 0 auto 50%;
+    }
+    .info-bar-name{
+        width: 25%;
+        font-size: 18px;
+    }
+    .info-bar-meta{
+        display: inline-block;
+        width: 23%;
+        color: #6C6C6C;
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        text-align: right;
+        float: right;
+    }
+    .user-message-btn{
+        display: inline-block;
     }
 }
 @media (min-width: 992px) {
@@ -736,4 +835,8 @@ body{
     .account-nav-item{
         font-size: 18px;
     }
+}
+
+.visible{
+    display: inline-block;
 }
