@@ -20,7 +20,8 @@ var CollectionSchema = new mongoose.Schema({
                 }
             ]
         }
-    ]
+    ],
+    isPublic: Boolean
 });
 
-module.exports = mongoose.Model("Collection", CollectionSchema);
+module.exports = mongoose.model("Collection", CollectionSchema);

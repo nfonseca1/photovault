@@ -4,6 +4,7 @@
 
 <div class="snappir-container">
     <div class="new-collection-container">
+        <a href="/account/collections"><div class="new-collection-back"></div></a>
         <input type="text" class="new-collection-title new-collection-input" placeholder="Title">
         <div class="new-collection-section">
             <button type="button" class="remove-section-btn snappir-btn snappir-btn-red" style="display: none">Remove Section</button>
@@ -16,6 +17,14 @@
             </div>
             <button type="button" class="add-section-btn snappir-btn">Add Section</button>
         </div>
+    </div>
+    <div class="collection-upload-bar">
+        <div class="collection-upload-field">
+            <label class="snappir-label label-inline" for="collection-public">Public</label>
+            <input type="checkbox" id="collection-public" name="public" checked="checked">
+        </div>
+        <button id="collection-upload" class="snappir-btn snappir-btn-green">Upload</button>
+        <form action="/account/collections" method="POST" id="collection-form"><input type="hidden" id="collection-form-info"></form>
     </div>
 
     <div class="photos-list">

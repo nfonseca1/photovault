@@ -1,5 +1,9 @@
 var collection = document.querySelector(".new-collection-container");
 var title = document.querySelector(".new-collection-title");
+var publicInput = document.querySelector("#collection-public");
+var uploadBtn = document.querySelector("#collection-upload");
+var form = document.querySelector("#collection-form");
+var formInfo = document.querySelector("#collection-form-info");
 var photosList = document.querySelector(".photos-list");
 
 var sections = document.querySelectorAll(".new-collection-section");
@@ -13,11 +17,15 @@ var addSectionBtns = document.querySelectorAll(".add-section-btn");
 var currentGrid;
 var photosOn = false;
 
+uploadBtn.addEventListener("click", uploadCollection);
+
 updateSections(true);
 
 function updateSections(updateButtons){
     sections = document.querySelectorAll(".new-collection-section");
     removeSectionBtns = document.querySelectorAll(".remove-section-btn");
+    headings = document.querySelectorAll(".new-collection-heading");
+    descriptions = document.querySelectorAll(".new-collection-description");
     addPhotosBtns = document.querySelectorAll(".add-photos-btn");
     sectionGrids = document.querySelectorAll(".section-grid");
     addSectionBtns = document.querySelectorAll(".add-section-btn");
@@ -113,4 +121,36 @@ function addSection(){
         '        </div>';
     collection.innerHTML += html;
     updateSections(true);
+}
+
+function uploadCollection(){
+    var titleVal = title.value;
+    var privacy = publicInput.value;
+    var headingsVal = [];
+    var descriptionsVal = [];
+    var photosVal = [];
+    var secs = sections.length;
+
+    for(let i = 0; i < secs; i++){
+        headingsVal.push(headings[i].value);
+        descriptionsVal.push(descriptions[i].value);
+
+        var secPhotos = [];
+        sectionGrids[i].querySelectorAll("figure").forEach(function(figure){
+            secPhotos.push(figure.querySelector("a").getAttribute("data-id"));
+        })
+        photosVal.push(secPhotos)
+    }
+
+    var newCol = {
+        sections: secs,
+        title: titleVal,
+        headings: headingsVal,
+        descriptions: descriptionsVal,
+        photos: photosVal,
+        isPublic: privacy
+    }
+    formInfo.value = newCol;
+    form.submit();
+
 }

@@ -14,7 +14,7 @@ function setupPosts(posts, i, link) {
         html += '<figure><i></i>';
         html += '<a ';
         if(link == "false"){
-            html += '" class="nostyle">';
+            html += 'data-id="' + posts[i]._id + '" class="nostyle">';
         } else {
             html += 'href="/home/' + posts[i]._id + '" class="nostyle">';
         }

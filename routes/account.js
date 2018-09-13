@@ -3,6 +3,7 @@ var express               = require("express"),
     User                  = require("../models/user"),
     Post                  = require("../models/post"),
     Conversation          = require("../models/conversation"),
+    Collection            = require("../models/collection"),
     setupPosts            = require("../public/home.js"),
     getFavorites          = require("../public/getFavorites"),
     middleware            = require("../middleware/index");
@@ -22,6 +23,40 @@ router.get("/", middleware.isLoggedIn, function(req, res){
         res.render("account.ejs", {htmlPosts: htmlPosts, user: req.user});
     })
 });
+
+router.get("/collections", middleware.isLoggedIn, function(req, res){
+    res.send("Success");
+})
+
+router.post("/collections", middleware.isLoggedIn, function(req, res){
+    var newCollection = {};
+    newCollection.title = req.body.title;
+    newCollection.author = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    newCollection.sections = [];
+
+    for(let i = 0; i < req.body.sections; i++){
+        var newSection = {};
+        newSection.heading = req.body.headings[i];
+        newSection.description = req.body.descriptions[i];
+        newSection.posts = req.body.photos[i];
+        newCollection.sections.push(newSection);
+    }
+    if(req.body.isPublic == 'on'){
+        newCollection.isPublic = true;
+    } else {
+        newCollection.isPublic = false;
+    }
+    Collection.create(newCollection, function(err, newlyCreated){
+        if(err) {console.log(err)}
+        else{
+            console.log(newlyCreated);
+            res.redirect("/account/collections");
+        }
+    })
+})
 
 router.get("/collections/new", middleware.isLoggedIn, function(req, res){
     Post.find({'author.id': req.user._id}, function(err, foundPosts) {

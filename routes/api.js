@@ -476,4 +476,5 @@ router.post("/favorites/privacy", middleware.isLoggedIn, function(req, res){
     res.send({success: false});
 })
 
+
 module.exports = router;

@@ -611,8 +611,15 @@ body{
     margin-top: 50px;
     padding: 30px;
 }
+.new-collection-back{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-image: url("back.png");
+    background-size: cover;
+}
 .new-collection-section{
-    border-top: 2px solid #dfdfdf;
+    border-top: 2px solid #555555;
 }
 .new-collection-input{
     display: block;
@@ -654,6 +661,19 @@ body{
     height: 85%;
     overflow: scroll;
     float: right;
+}
+.collection-upload-bar{
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+    width: 100%;
+    height: 35px;
+    margin-top: 10px;
+    font-family: 'Roboto', sans-serif;
+    padding: 5px 5px 0 30px;
+}
+.collection-upload-field{
+    display: inline-block;
+    padding-right: 5%;
 }
 @media (min-width: 0px) {
     .nav-search{
