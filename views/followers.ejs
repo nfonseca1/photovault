@@ -1,38 +1,91 @@
 <% include partials/header.ejs %>
 
-<h3><%=currentUser.username%>'s Account</h3>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/account">Photos</a>
-        <a class="nav-item nav-link" href="/account/following">Following</a>
-        <a class="nav-item nav-link active" href="/account/followers">Followers</a>
-        <a class="nav-item nav-link" href="/account/messages">Messages</a>
-        <a class="nav-item nav-link" href="/account/favorites">Favorites</a>
-        <a class="nav-item nav-link" href="/account/settings">Settings</a>
-        <a class="nav-item nav-link" href="/logout">Logout</a>
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
     </div>
-</nav>
+</div>
 
-<h3>Followers (<%=myUser.followers.length%>)</h3>
+<div class="account-nav">
+    <a class="account-nav-item" href="/account">Photos</a>
+    <a class="account-nav-item" href="/account/collections">Collections</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item account-nav-active" href="/account/followers">Followers</a>
+    <a class="account-nav-item" href="/account/messages">Messages</a>
+    <a class="account-nav-item" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
+</div>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Firstname</th>
-        <th scope="col">Lastname</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%myUser.followers.forEach(function(follower){%>
-    <tr>
-        <td><%=follower.username%></td>
-        <td><%=follower.firstName%></td>
-        <td><%=follower.lastName%></td>
-    </tr>
-    <%});%>
-    </tbody>
-</table>
+<div class="snappir-container">
+    <div class="user-info-container">
+        <% for(var i = 0; i < 15; i++){ %>
+        <div class="user-info-bar">
+            <div class="info-bar-image">
+
+            </div>
+            <div class="info-bar-details">
+                <div class="info-bar-half">
+                    <div class="info-bar-name">Username</div>
+                    <div class="info-bar-name">FirstName</div>
+                    <div class="info-bar-name">LastName</div>
+                    <div class="info-bar-meta">Photos: XX</div>
+                </div>
+                <div class="info-bar-half">
+                    <div class="info-bar-bio">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+                        Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                    </div>
+                    <div class="info-bar-meta">Collections: XX</div>
+                </div>
+            </div>
+            <div class="info-bar-actions">
+                <button class="snappir-btn user-message-btn">Message</button>
+                <button class="snappir-btn">Following</button>
+            </div>
+        </div>
+        <div class="info-message-bar">
+            <form action="#" method="post">
+                <input type="text" class="message-bar-input">
+                <button type="submit" class="snappir-btn snappir-btn-green">Send</button>
+            </form>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    var messageBtns = document.querySelectorAll(".user-message-btn");
+    var infoMessageBars = document.querySelectorAll(".info-message-bar");
+
+    for(var b = 0; b < messageBtns.length; b++){
+        messageBarSetup(b);
+    }
+
+    function messageBarSetup(index){
+        messageBtns[index].addEventListener("click", function(){
+            infoMessageBars[index].classList.toggle("visible");
+        })
+    }
+
+    setInterval(function(){
+        if(!window.matchMedia('(min-width: 768px)').matches){
+            infoMessageBars.forEach(function(infoMessageBar){
+                infoMessageBar.classList.remove("visible");
+            })
+        }
+    }, 300);
+</script>
 
 <% include partials/footer.ejs %>

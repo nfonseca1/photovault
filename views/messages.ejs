@@ -1,138 +1,114 @@
 <% include partials/header.ejs %>
 
-<h3><%=currentUser.username%>'s Account</h3>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/account">Photos</a>
-        <a class="nav-item nav-link" href="/account/following">Following</a>
-        <a class="nav-item nav-link" href="/account/followers">Followers</a>
-        <a class="nav-item nav-link active" href="/account/messages">Messages</a>
-        <a class="nav-item nav-link" href="/account/favorites">Favorites</a>
-        <a class="nav-item nav-link" href="/account/settings">Settings</a>
-        <a class="nav-item nav-link" href="/logout">Logout</a>
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
     </div>
-</nav>
-<div id="convSection">
-    <h3>Conversations (<%=convs.length%>)</h3>
+</div>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Username</th>
-            <th scope="col">Latest Message</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%var user;%>
-        <%convs.forEach(function(conv){%>
-        <%if(conv.user1.username == currentUser.username){user = conv.user2.username} else {user = conv.user1.username};%>
-        <tr>
-            <td><%=user%></td>
-            <td><%=conv.messages[(conv.messages.length - 1)].text%></td>
-            <td><button class="viewButton btn btn-xs" data-convId="<%=conv._id%>">View</button></td>
-        </tr>
-        <%});%>
-        </tbody>
-    </table>
+<div class="account-nav">
+    <a class="account-nav-item" href="/account">Photos</a>
+    <a class="account-nav-item" href="/account/collections">Collections</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item" href="/account/followers">Followers</a>
+    <a class="account-nav-item account-nav-active" href="/account/messages">Messages</a>
+    <a class="account-nav-item" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
+</div>
+
+<div class="snappir-container">
+    <div class="user-info-container">
+        <% for(let i = 0; i < 5; i++){ %>
+        <div class="user-info-bar">
+            <div class="info-bar-image">
+
+            </div>
+            <div class="info-bar-details">
+                <div class="info-bar-half">
+                    <div class="info-bar-name">Username</div>
+                    <div class="info-bar-name">FirstName</div>
+                    <div class="info-bar-name">LastName</div>
+                    <div class="info-bar-meta">Messages: XX</div>
+                </div>
+                <div class="info-bar-half">
+                    <div class="info-bar-bio">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+                        Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                    </div>
+                    <div class="info-bar-meta">XX/XX/XX</div>
+                </div>
+            </div>
+            <div class="info-bar-actions">
+                <button class="snappir-btn user-view-btn">View</button>
+                <button class="snappir-btn user-message-btn">Reply</button>
+            </div>
+        </div>
+        <div class="info-message-bar">
+            <form action="#" method="post">
+                <input type="text" class="message-bar-input">
+                <button type="submit" class="snappir-btn snappir-btn-green message-btn">Send</button>
+            </form>
+        </div>
+        <div class="message-table-container">
+            <table>
+                <% for(let i = 0; i < 5; i++){ %>
+                    <tr class="message-table-row">
+                        <td class="message-table-info"><div class="message-info-user">Username1746</div>Thur, Aug 23, 2018 - 7:30PM</td>
+                        <td class="message-table-text">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex sit amet augue hendrerit fermentum.
+                            Ut pellentesque tempus lobortis. Cras leo ligula, venenatis ut ipsum volutpat, pellentesque laoreet mi.
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+        <% } %>
+    </div>
 </div>
 
 <script>
-    var resVar;
+    var messageBtns = document.querySelectorAll(".user-message-btn");
+    var infoMessageBars = document.querySelectorAll(".info-message-bar");
+    var viewBtns = document.querySelectorAll(".user-view-btn");
+    var messageTables = document.querySelectorAll(".message-table-container");
 
-    setupViewButtons();
-
-    function setupViewButtons(){
-        var viewButtons = document.querySelectorAll(".viewButton");
-
-        viewButtons.forEach(function(viewButton){
-            viewButton.addEventListener("click", viewMessages);
-        });
+    for(var b = 0; b < messageBtns.length; b++){
+        messageBarSetup(b);
     }
 
-    function viewMessages(e){
-        axios.get("/api/users/messages", {
-            params: {
-                convId: e.target.getAttribute("data-convId")
+    function messageBarSetup(index){
+        messageBtns[index].addEventListener("click", function(){
+            infoMessageBars[index].classList.toggle("visible");
+        })
+        viewBtns[index].addEventListener("click", function(){
+            messageTables[index].classList.toggle("visible");
+            if(!window.matchMedia('(min-width: 768px)').matches){
+                infoMessageBars[index].classList.toggle("visible");
             }
-        }).then(function(res){
-            resVar = res;
-            displayMessages();
         })
     }
 
-    function displayMessages(){
-        var html = '<button id="messagesBackButton" class="btn btn-xs">Back</button>';
-        html += '<h3>Messages (' + resVar.data.messages.length + ')</h3>';
-        html += '<input type="text" id="sendMsgInput" class="form-control"><button id="sendMsgBtn" class="btn btn-xs btn-success">Send</button>';
-        html += '<table class="table table-striped">';
-        html += '<thead><tr><th scope="col">User</th><th scope="col">Date<th scope="col">Message</td></tr></thead>';
-        resVar.data.messages.slice().reverse().forEach(function(message){
-            html += '<tr><td>' + message.author + '</td><td style="border-left: solid 1px;">' +
-                message.date + '</td><td style="border-left: solid 1px;">' + message.text + '</tr>';
-        })
-        html += '</table>';
-        var convSection = document.querySelector("#convSection");
-        convSection.innerHTML = html;
-
-        var msgBackBtn = document.querySelector("#messagesBackButton");
-        msgBackBtn.addEventListener("click", viewConvs);
-
-        var sendMsgBtn = document.querySelector("#sendMsgBtn");
-        sendMsgBtn.addEventListener("click", sendMessage);
-    }
-
-    function sendMessage(){
-        var sendMsgInput = document.querySelector("#sendMsgInput");
-        axios.put("/api/users/conversations", {
-            convId: resVar.data._id,
-            text: sendMsgInput.value
-        }).then(function(res){
-            axios.get("/api/users/messages", {
-                params: {
-                    convId: resVar.data._id
+    setInterval(function(){
+        if(!window.matchMedia('(min-width: 768px)').matches){
+           for(var x = 0; x < messageTables.length; x++){
+                if(messageTables[x].classList.contains("visible")){
+                    infoMessageBars[x].classList.add("visible");
                 }
-            }).then(function(res){
-                resVar = res;
-                sendMsgInput.value = "";
-                displayMessages();
-            })
-        })
-    }
-
-    function viewConvs(){
-        axios.get("/api/users/conversations")
-            .then(function(res){
-                var html = '<h3>Conversations (' + res.data.convs.length + ')</h3>';
-                html += '<table class="table table-striped">';
-                html += '<thead>' +
-                    '<tr><th scope="col">Username</th>' +
-                    '<th scope="col">Latest Message</th>' +
-                    '<th scope="col">Action</th></tr>' +
-                    '</thead>';
-                html += '<tbody>';
-
-                var user;
-                res.data.convs.forEach(function(conv){
-                    if(conv.user1.username == res.data.myUser.username){
-                        user = conv.user2.username;
-                    } else {
-                        user = conv.user1.username;
-                    }
-                    html += '<tr><td>' + user + '</td>';
-                    html += '<td>' + conv.messages[(conv.messages.length - 1)].text + '</td>';
-                    html += '<td><button class="viewButton btn btn-xs" data-convId="' + conv._id + '">View</button></td>';
-                    html += '</tr>';
-                });
-                html += '</tbody></table>';
-
-                var convSection = document.querySelector("#convSection");
-                convSection.innerHTML = html;
-
-                setupViewButtons();
-            })
-    }
+            }
+        }
+    }, 300);
 </script>
 
 <% include partials/footer.ejs %>

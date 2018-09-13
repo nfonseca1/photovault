@@ -18,11 +18,11 @@ sections[0].querySelector(".add-section-btn").addEventListener("click", function
 
 function showUserPhotos(section){
     if(!displayPhotos) {
-        photosListBox.classList.add("col-md-6");
+        photosListBox.classList.add("collection-half-size");
         photosListBox.style.display = "inline";
         photosList.style.position = "fixed";
-        collection.classList.remove("col-md-12");
-        collection.classList.add("col-md-6");
+        collection.classList.remove("collection-full-size");
+        collection.classList.add("collection-half-size");
         displayPhotos = true;
     }
     sectionIndex = section;
@@ -36,11 +36,11 @@ function showUserPhotos(section){
 
 function hideUserPhotos(section){
     if(displayPhotos) {
-        photosListBox.classList.remove("col-md-6");
+        photosListBox.classList.remove("collection-half-size");
         photosListBox.style.display = "none";
         photosList.style.position = "static";
-        collection.classList.add("col-md-12");
-        collection.classList.remove("col-md-6");
+        collection.classList.add("collection-full-size");
+        collection.classList.remove("collection-half-size");
         displayPhotos = false;
     }
     if(section != undefined){

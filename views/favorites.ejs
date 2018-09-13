@@ -3,56 +3,131 @@
 <script type="text/javascript" src="countries.js"></script>
 
 <div id="data" data-searched="no"></div>
-<h3 id="userData" data-user="<%=currentUser.username%>" data-getFavorites="true"><%=currentUser.username%>'s Account</h3>
+<div id="userData" data-user="<%=currentUser.username%>" data-getFavorites="true"></div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/account">Photos <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="/account/following">Following</a>
-        <a class="nav-item nav-link" href="/account/followers">Followers</a>
-        <a class="nav-item nav-link" href="/account/messages">Messages</a>
-        <a class="nav-item nav-link active" href="/account/favorites">Favorites</a>
-        <a class="nav-item nav-link" href="/account/settings">Settings</a>
-        <a class="nav-item nav-link" href="/logout">Logout</a>
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
     </div>
-</nav>
-<h3>Favorites</h3>
+</div>
 
-<form action="/account/favorites" method="GET" class="form-inline center">
-    <label for="lists">Filter by list: </label>
-    <select id="lists" name="list" class="form-control" onchange="updateChange()">
-        <option value="all" selected="selected">All Lists</option>
-        <option value="">Unlisted</option>
-        <%lists.forEach(function(list){%>
+<div class="account-nav">
+    <a class="account-nav-item" href="/account">Photos</a>
+    <a class="account-nav-item" href="/account/collections">Collections</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item" href="/account/followers">Followers</a>
+    <a class="account-nav-item" href="/account/messages">Messages</a>
+    <a class="account-nav-item account-nav-active" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
+</div>
+
+<div class="snappir-container">
+    <div class="account-favorites-container">
+        <select name="list" class="home-dropdown favorites-bar-item">
+            <option value="all" selected="selected">All</option>
+            <option value="unlisted">unlisted</option>
+            <%lists.forEach(function(list){%>
             <option value="<%=list.name%>"><%=list.name%></option>
             <%})%>
-    </select>
-    <button type="submit" id="filterBtn" class="btn btn-xs btn-primary">Filter</button>
-    <button type="button" id="toggleEditBtn" class="btn btn-xs btn-warning">Edit</button>
-</form>
-
-<nav id="editListForm" class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333; display: none">
-    <div class="form-group">
-        <label for="listName">List to add or edit: </label>
-        <input type="text" id="listName">
-    </div>
-    <button type="button" id="addBtn" class="btn btn-xs btn-success">Add list</button>
-    <button type="button" id="editBtn" class="btn btn-xs btn-warning">Change name</button>
-    <button type="button" id="removeBtn" class="btn btn-xs btn-danger">Remove list</button>
-    <div class="form-group">
-        <label for="privacy">Privacy: </label>
-        <select id="listPrivacy" name="listPrivacy" onchange="updatePrivacy()">
-            <option value="public">Public</option>
-            <option value="followers">followers</option>
-            <option value="private">private</option>
         </select>
+        <a class="account-nav-item favorites-bar-item">Filter</a>
+        <a class="account-nav-item favorites-bar-item favorites-edit-btn">Edit List</a>
+        <a class="account-nav-item favorites-bar-item favorites-create-btn">Create New List</a>
     </div>
-</nav>
+    <div class="favorites-edit-container favorites-edit">
+        Change:
+        <input type="text" class="list-bar-input" placeholder="List">
+        to:
+        <input type="text" class="list-bar-input" placeholder="New Name">
+        <button class="snappir-btn favorites-bar-btn">Change Name</button>
+        <button class="snappir-btn snappir-btn-red list-bar-btn">Delete List</button>
+    </div>
+    <div class="favorites-edit-container favorites-create">
+        <input type="text" class="list-bar-input" placeholder="List">
+        <button class="snappir-btn favorites-bar-btn">Create</button>
+    </div>
 
-<div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+    <form action="/home" method="POST" class="account-upload-form" enctype="multipart/form-data">
+        <div class="account-upload-field">
+            <label for="image" class="snappir-label">Image Link</label>
+            <input type="file" id="image" class="" name="image" accept="image/*" required>
+        </div>
+        <div class="account-upload-field">
+            <label for="Title" class="snappir-label">Title</label>
+            <input type="text" name="title" id="title" class="snappir-input">
+        </div>
+        <div class="account-upload-field">
+            <label for="Description" class="snappir-label">Description</label>
+            <input type="text" name="description" id="description" class="snappir-input">
+        </div>
+        <div class="account-upload-field">
+            <label for="country" class="snappir-label">Photo was taken in: </label>
+            <select id="countriesList" class="snappir-input input-select" name="country" id="country">
 
+            </select>
+        </div>
+        <div class="account-upload-field">
+            <label class="snappir-label" for="photoType">Photo Type</label>
+            <select class="snappir-input input-select" name="photoType" id="photoType">
+                <option value="landscape" selected="selected">Landscape</option>
+                <option value="cityscape">Cityscape</option>
+            </select>
+        </div>
+        <div class="account-upload-field">
+            <label class="snappir-label label-inline" for="isPrivate">Private</label>
+            <input class="" type="checkbox" name="isPrivate" id="isPrivate">
+        </div>
+        <div class="account-upload-field">
+            <button type="submit" name="upload" class="snappir-btn">Upload</button>
+        </div>
+    </form>
+    <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
+
+    </div>
+    <div id="endOfPage"></div>
 </div>
-<div id="endOfPage"></div>
+
+<script>
+    var editBtn = document.querySelector(".favorites-edit-btn");
+    var createBtn = document.querySelector(".favorites-create-btn");
+    var editList = document.querySelector(".favorites-edit");
+    var createList = document.querySelector(".favorites-create");
+    var formOpened = '';
+
+    editBtn.addEventListener("click", function(){
+        if(formOpened == "edit"){
+            editList.style.display = "none";
+            formOpened = '';
+        } else {
+            createList.style.display = "none";
+            editList.style.display = "block";
+            formOpened = 'edit';
+        }
+    })
+
+    createBtn.addEventListener("click", function(){
+        if(formOpened == "create"){
+            createList.style.display = "none";
+            formOpened = '';
+        } else {
+            editList.style.display = "none";
+            createList.style.display = "block";
+            formOpened = 'create';
+        }
+    })
+</script>
 
 <script type="text/javascript" src="manageLists.js"></script>
 

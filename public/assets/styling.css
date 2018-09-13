@@ -376,6 +376,9 @@ body{
 .snappir-btn-green{
     background-color: #036322;
 }
+.snappir-btn-red{
+    background-color: #930b0b;
+}
 .account-upload-form{
     display: none;
     flex-wrap: wrap;
@@ -473,10 +476,184 @@ body{
     background-color: #fafafa;
     border: 1px solid #b4b4b4;
     border-radius: 5px;
-    width: 90%;
+    width: 84%;
     height: 22px;
     margin-right: 1%;
-    float: left
+    float: left;
+}
+
+.message-table-container{
+    display: none;
+    background-color: #EBEBEB;
+    border: 1px solid #D3D3D3;
+    color: #444444;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+.message-table-row{
+    width: 100%;
+    border-bottom: 1px solid #D3D3D3;
+}
+.message-table-info{
+    padding: 2px 2% 2px 2%;
+    width: 20%;
+    font-size: 15px;
+}
+.message-info-user{
+    color: #206BC3;
+    overflow: hidden;
+}
+.message-table-text{
+    padding: 2px 2% 2px 2%;
+    width: 80%;
+}
+
+.account-favorites-container{
+    margin-top: 15px;
+    width: 100%;
+    padding: 5px 5px;
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+    text-align: left;
+}
+.favorites-bar-item{
+    display: inline-block;
+    margin-left: 2%;
+}
+.favorites-edit-container{
+    display: none;
+    width: 100%;
+    height: auto;
+    background-color: #EBEBEB;
+    border: 1px solid #D3D3D3;
+    padding: 5px 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    text-align: left;
+}
+.list-bar-input{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    min-width: 100px;
+    width: 10%;
+    height: 22px;
+    margin: auto 2% auto 2%;
+    padding-left: 2px;
+}
+.list-bar-btn{
+    display: inline-block;
+    margin: auto 2% auto 2%;
+}
+
+.settings-container{
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    background-color: #F0F0F0;
+    border: 1px solid #D3D3D3;
+    padding: 0 15px 15px 15px;
+}
+.settings-heading{
+    color: #2E2E2E;
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 39px;
+    margin-top: 30px;
+    text-align: left;
+}
+.settings-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    height: auto;
+}
+.settings-col{
+    width: 30%;
+    height: auto;
+}
+.settings-input{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    min-width: 100px;
+    width: 100%;
+    height: 22px;
+    padding-left: 2px;
+}
+.settings-input-textarea{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    min-width: 100px;
+    width: 100%;
+    height: 50px;
+    padding-left: 2px;
+}
+
+.collection-full-size{
+    display: inline-block;
+    width: 100%;
+}
+.collection-half-size{
+    display: inline-block;
+    width: 50%;
+}
+.new-collection-container{
+    height: auto;
+    background-color: #f0f0f0;
+    border: 1px solid #D3D3D3;
+    margin-top: 50px;
+    padding: 30px;
+}
+.new-collection-section{
+    border-top: 2px solid #dfdfdf;
+}
+.new-collection-input{
+    display: block;
+    width: 100%;
+    height: 45px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    font-size: 30px;
+    padding-left: 10px;
+    margin: 15px 0;
+}
+.new-collection-title{
+    margin-bottom: 50px;
+}
+.new-collection-textarea{
+    display: block;
+    width: 100%;
+    height: 90px;
+    background-color: transparent;
+    border: 1px solid #dddddd;
+    font-size: 30px;
+    padding-left: 10px;
+    margin: 15px 0;
+}
+.section-grid{
+    display: block;
+    min-height: 100px;
+    border: 1px solid #dddddd;
+    background-color: #f5f5f5;
+    margin: 10px 0 15px 0;
+}
+.photos-list{
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 5%;
+    width: 45%;
+    height: 85%;
+    overflow: scroll;
+    float: right;
 }
 @media (min-width: 0px) {
     .nav-search{
@@ -525,6 +702,7 @@ body{
     .home-sort-dropdown{
         display: inline-block;
         border: none;
+        border-bottom: 1px solid #dddddd;
         background-color: transparent;
         width: 80px;
     }
@@ -565,9 +743,11 @@ body{
         line-height: 22px;
         text-align: left;
     }
+    /*
     ::-webkit-scrollbar {
-        width: 0px;  /* remove scrollbar space */
+        width: 0px;
     }
+    */
     .post-info-comments{
         display: inline-block;
         width: 36%;
@@ -577,9 +757,11 @@ body{
         border-bottom: 1px solid #bababa;
         padding: 4px;
     }
+    /*
     ::-webkit-scrollbar {
-        width: 0px;  /* remove scrollbar space */
+        width: 0px;
     }
+    */
     .post-comment-form{
         text-align: center;
         margin-bottom: 5px;
@@ -644,7 +826,17 @@ body{
     .user-message-btn{
         display: none;
     }
+    .message-btn{
+        width: 15%;
+        float: right;
+        font-size: 15px;
+    }
+    .settings-col-half{
+        width: 100%;
+        height: auto;
+    }
 }
+
 @media (min-width: 768px) {
     .nav-search{
         display: inline-block;
@@ -670,6 +862,11 @@ body{
     }
     .user-message-btn{
         display: inline-block;
+    }
+    .message-btn{
+        width: 15%;
+        float: right;
+        font-size: 16px;
     }
 }
 @media (min-width: 992px) {
@@ -745,9 +942,11 @@ body{
         line-height: 22px;
         text-align: left;
     }
+    /*
     ::-webkit-scrollbar {
-        width: 0px;  /* remove scrollbar space */
+        width: 0px;
     }
+    */
     .post-info-comments{
         height: 36%;
         width: 100%;
@@ -756,9 +955,11 @@ body{
         border-bottom: 1px solid #bababa;
         padding: 4px;
     }
+    /*
     ::-webkit-scrollbar {
-        width: 0px;  /* remove scrollbar space */
+        width: 0px;
     }
+    */
     .post-comment-form{
         text-align: center;
         margin-bottom: 5px;
@@ -829,6 +1030,10 @@ body{
     }
     .account-nav-danger{
         color: #AE3232;
+    }
+    .settings-col-half{
+        width: 50%;
+        height: auto;
     }
 }
 @media (min-width: 1200px){
