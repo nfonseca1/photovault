@@ -1,4 +1,3 @@
-var postId = document.querySelector(".data");
 var likeBtn = document.querySelector(".likeBtn");
 var hateBtn = document.querySelector(".hateBtn");
 var points = document.querySelector(".points");
@@ -6,21 +5,15 @@ var favoriteBtn = document.querySelector(".favoriteBtn");
 var favList = document.querySelector("#favList");
 
 var liked = likeBtn.getAttribute("data-liked");
-console.log(liked);
-console.log(likeBtn.style.color);
 var hated = hateBtn.getAttribute("data-hated");
-console.log(hated);
-console.log(hateBtn.style.color);
 var favorited = favoriteBtn.getAttribute("data-favorited");
 
 likeBtn.addEventListener("click", function(){
     console.log(liked);
     if (liked == 'true'){
-        console.log("liked");
         liked = 'false';
         likeBtn.style.color = 'black';
     } else {
-        console.log("not liked");
         liked = 'true';
         hated = 'false';
         likeBtn.style.color = '#0066ff';
@@ -55,7 +48,7 @@ favoriteBtn.addEventListener("click", function(){
 
 function ajaxLikeCall(e, button){
     axios.post("/api/like", {
-        postId: postId.getAttribute("data-postId"),
+        postId: details.getAttribute("data-postId"),
         button: button
     })
         .then(function(res){
@@ -65,7 +58,7 @@ function ajaxLikeCall(e, button){
 
 function ajaxFavoriteCall(e, changeList) {
     axios.post("/api/favorite", {
-        postId: postId.getAttribute("data-postId"),
+        postId: details.getAttribute("data-postId"),
         button: 'favorite',
         list: favList.value,
         changeList: changeList

@@ -3,7 +3,30 @@ var sortBy = document.querySelector("#sortBy");
 var within = document.querySelector("#within");
 var photoType = document.querySelector("#photoType");
 var country = document.querySelector("#country");
-var sortBtn = document.querySelector("#sortBtn");
+var newestBtn = document.querySelector("#newest");
+var mostLikedBtn = document.querySelector("#mostLiked");
+var mostFavoritedBtn = document.querySelector("#mostFavorited");
+var myFavoritesBtn = document.querySelector("#myFavorites");
+
+newestBtn.addEventListener("click", function(){
+    sortBy.value = "newest";
+    makeAJAXSortRequest(null, false);
+})
+
+mostLikedBtn.addEventListener("click", function(){
+    sortBy.value = "mostLiked";
+    makeAJAXSortRequest(null, false);
+})
+
+mostFavoritedBtn.addEventListener("click", function(){
+    sortBy.value = "mostFavorited";
+    makeAJAXSortRequest(null, false);
+})
+
+myFavoritesBtn.addEventListener("click", function(){
+    sortBy.value = "myFavorites";
+    makeAJAXSortRequest(null, false);
+})
 
 var html = '';
 countries.forEach(function(country){
@@ -11,14 +34,9 @@ countries.forEach(function(country){
 })
 countriesList.innerHTML += html;
 
-sortBtn.addEventListener("click", function(){
-    unpauseRequests(true);
-    sessionStorage.clear();
-    grid.style.display = 'none';
-    makeAJAXSortRequest(null, false);
-});
-
 function makeAJAXSortRequest(e, loadMore) {
+    unpauseRequests(true);
+    grid.style.display = 'none';
     axios.post("/api/sort", {
         sortBy: sortBy.value,
         within: within.value,

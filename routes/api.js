@@ -4,6 +4,7 @@ var express               = require("express"),
     User                  = require("../models/user"),
     Post                  = require("../models/post"),
     Conversation          = require("../models/conversation"),
+    Collection            = require("../models/collection"),
     setupPosts            = require("../public/home.js"),
     getFavorites          = require("../public/getFavorites"),
     middleware            = require("../middleware/index"),
@@ -166,6 +167,7 @@ router.post("/settings/validate", middleware.isLoggedIn, function(req, res){
 
 router.post("/sort", middleware.isLoggedIn, function(req, res){
     if(req.body.loadMore){
+        console.log(req.session.currentIndex);
         var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.body.linkPhotos);
         req.session.currentIndex = htmlPosts.currentIndex;
         res.send(htmlPosts);
@@ -173,11 +175,11 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
         var sortBy;
         if(req.body.sortBy == "newest"){
             sortBy = "-date";
-        } else if (req.body.sortBy == "highest rated"){
+        } else if (req.body.sortBy == "mostLiked"){
             sortBy = "-points";
-        } else if (req.body.sortBy == "most favorited"){
+        } else if (req.body.sortBy == "mostFavorited"){
             sortBy = "-favorites";
-        } else if (req.body.sortBy == "my favorites"){
+        } else if (req.body.sortBy == "myFavorites"){
             sortBy = "my favorites";
         } else {
             sortBy = "-date";
@@ -248,6 +250,7 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
                 }
             }, 100)
         } else {
+            console.log(postsObj);
             Post.find(postsObj)
                 .sort(sortBy).limit(1000).exec(function(err, posts){
                     if(err){
@@ -476,5 +479,14 @@ router.post("/favorites/privacy", middleware.isLoggedIn, function(req, res){
     res.send({success: false});
 })
 
+router.get("/collections", middleware.isLoggedIn, function(req, res){
+    console.log(req.query);
+    Post.findById(req.query.id, function(err, found){
+        if(err){console.log(err)}
+        else{
+            res.send({src: found.image})
+        }
+    })
+})
 
 module.exports = router;

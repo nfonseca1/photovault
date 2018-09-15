@@ -26,7 +26,7 @@ function makeAJAXRequest(e, loadMore) {
         linkPhotos: linkPhotos
     })
         .then(function(res){
-            if(usingPhotosList == undefined){
+            if(usingPhotosList == false){
                 pagePosition = window.pageYOffset;
             } else {
                 pagePosition = photosList.scrollTop;
@@ -88,9 +88,10 @@ function setupLayout(i){
     var width = [];
 
     for(t; t < images.length; t++){
+        console.log(t);
+        console.log(images[t]);
         height[t] = parseInt(images[t].naturalHeight);
         width[t] = parseInt(images[t].naturalWidth);
-        console.log(width[t]);
     }
     //grid.classList.add('grid');
     for(x; x < images.length; x++){
@@ -113,7 +114,7 @@ function setupLayout(i){
         iTags[x].style.paddingBottom = paddingBottom + '%';
     }
     //grid.classList.remove('grid-default');
-    if(usingPhotosList == undefined){
+    if(usingPhotosList == false){
         window.scrollTo(window.pageXOffset, pagePosition);
     } else {
         photosList.scrollTo(0, pagePosition);

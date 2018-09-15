@@ -25,11 +25,34 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/collections", middleware.isLoggedIn, function(req, res){
-    res.send("Success");
+    Collection.find({'author.id': req.user._id}, function(err, found){
+        if(err) {console.log(err)}
+        else {
+            var cols = [];
+
+            for(let i = 0; i < found.length; i++){
+                var displayCol = {};
+                displayCol.title = found[i].title;
+                displayCol.id = found[i]._id;
+                for(let x = 0; x < found[i].sections.length; x++){
+                    if(found[i].sections[x].posts.length >= 1){
+                        var imageId = found[i].sections[x].posts[0];
+                        displayCol.image = imageId;
+                        cols.push(displayCol);
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            res.render("collections.ejs", {collections: cols});
+        }
+    })
 })
 
 router.post("/collections", middleware.isLoggedIn, function(req, res){
     var newCollection = {};
+    console.log(req.body);
     newCollection.title = req.body.title;
     newCollection.author = {
         id: req.user._id,
@@ -52,6 +75,7 @@ router.post("/collections", middleware.isLoggedIn, function(req, res){
     Collection.create(newCollection, function(err, newlyCreated){
         if(err) {console.log(err)}
         else{
+            console.log("database");
             console.log(newlyCreated);
             res.redirect("/account/collections");
         }

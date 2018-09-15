@@ -32,7 +32,7 @@ cloudinary.config({
 
 
 router.get("/", middleware.isLoggedIn, function(req, res){
-    if(req.query.searchBy == undefined){
+    if(req.query.search == undefined){
         Post.find({}).limit(1000).exec(function(err, posts){
             if (err) {
                 console.log(err);
@@ -46,37 +46,12 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
             }
         })
-    } else if(req.query.searchBy == "title"){
+    } else {
         var search = req.query.search;
-        Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
-            if (err) {console.log(err)}
-            else {
-                req.session.allPosts = posts;
-                req.session.currentIndex = 0;
-                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
-                req.session.currentIndex = htmlPosts.currentIndex;
-                req.session.dataSave = false;
-                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
-            }
-        })
-    } else if(req.query.searchBy == "description"){
-        var search = req.query.search;
-        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
-            if (err) {console.log(err)}
-            else {
-                req.session.allPosts = posts;
-                req.session.currentIndex = 0;
-                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
-                req.session.currentIndex = htmlPosts.currentIndex;
-                req.session.dataSave = false;
-                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
-            }
-        })
-    } else if(req.query.searchBy == "author"){
-        var search = req.query.search;
+        console.log(req.query.search);
         Post.find({'author.username': search}).limit(1000).exec(function(err, posts){
             if (err) {console.log(err)}
-            else {
+            else if(posts.length >= 1){
                 User.findOne({username: search}, function(err, user){
                     if(err){console.log(err)}
                     else {
@@ -86,6 +61,31 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                         req.session.currentIndex = htmlPosts.currentIndex;
                         req.session.dataSave = false;
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
+                    }
+                })
+            } else {
+                Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
+                    if (err) {console.log(err)}
+                    else if (posts.length >= 1){
+                        req.session.allPosts = posts;
+                        req.session.currentIndex = 0;
+                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                        req.session.currentIndex = htmlPosts.currentIndex;
+                        req.session.dataSave = false;
+                        res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
+                    }
+                    else {
+                        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
+                            if (err) {console.log(err)}
+                            else {
+                                req.session.allPosts = posts;
+                                req.session.currentIndex = 0;
+                                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                                req.session.currentIndex = htmlPosts.currentIndex;
+                                req.session.dataSave = false;
+                                res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
+                            }
+                        })
                     }
                 })
             }
@@ -161,7 +161,13 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                             break;
                         }
                     }
-                    res.render("post.ejs", {postVars: postVars, post: post});
+                    var isAuthor;
+                    if (post.author.username == myUser.username){
+                        isAuthor = true;
+                    } else {
+                        isAuthor = false;
+                    }
+                    res.render("post.ejs", {postVars: postVars, post: post, isAuthor: isAuthor});
                 }
             })
         }
@@ -181,29 +187,11 @@ router.put("/:id", middleware.checkPostOwnership, upload.single('image'), functi
         if(err){
             console.log(err);
         } else {
-            if(req.file){
-                cloudinary.v2.uploader.destroy(req.file.path, function(err){
-                    if(err) {
-                        console.log(err);
-                    }
-                    cloudinary.v2.uploader.upload(req.file.path, function(err, result){
-                        if(err){
-                            console.log(err);
-                        }
-                        post.imageId = result.public_id;
-                        post.image = result.secure_url;
-                        post.title = req.body.post.title;
-                        post.description = req.body.post.description;
-                        post.save();
-                        res.redirect("/home/" + req.params.id);
-                    })
-                })
-            } else {
-                post.title = req.body.post.title;
-                post.description = req.body.post.description;
-                post.save();
-                res.redirect("/home/" + req.params.id);
-            }
+
+            post.title = req.body.title;
+            post.description = req.body.description;
+            post.save();
+            res.redirect("/home/" + req.params.id);
         }
     });
 });
@@ -248,7 +236,7 @@ router.post("/:id/comment", middleware.isLoggedIn, function(req, res){
 
 //UPDATE comment
 router.put("/:id/comment/:commentId", middleware.checkCommentOwnership, function(req, res){
-    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, comment){
+    Comment.findByIdAndUpdate(req.params.commentId, {$set: {text: req.body.comment}}, function(err, comment){
         if(err){
             res.redirect("/home");
         } else {

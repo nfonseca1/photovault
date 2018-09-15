@@ -3,12 +3,10 @@
 <div class="snappir-container">
     <div class="post-container">
         <div class="post-info">
-            <div class="post-info-details">
-                <div class="info-title">
-                    <%=post.title%>
-                </div>
-                <div class="info-description">
-                    <%=post.description%>
+            <div class="post-info-details" data-isAuthor="<%=isAuthor%>" data-postId="<%= post._id %>" data-user="<%=currentUser.username%>">
+                <div class="info-details-box">
+                    <div class="info-title"><%=post.title%></div>
+                    <div class="info-description"><%=post.description%></div>
                 </div>
             </div>
             <div class="post-info-comments">
@@ -17,8 +15,11 @@
                     <button type="submit" class="post-comment-btn">Add</button>
                 </form>
                 <%post.comments.forEach(function(comment){%>
-                <div class="post-comment">
-                    <%=comment.author.username%>: <%=comment.text%>
+                <div class="post-comment" data-comment-user="<%=comment.author.username%>" data-commentId="<%=comment._id%>">
+                    <div class="post-comment-box">
+                        <a href="/account/<%=comment.author.username%>"><%=comment.author.username%>: </a>
+                        <span class="post-comment-text"><%=comment.text%></span>
+                    </div>
                 </div>
                 <%})%>
             </div>
@@ -36,7 +37,7 @@
         </div>
         <div class="post-meta-flex">
             <div class="post-meta-author">
-                Posted by: <%=post.author.username%>
+                Posted by: <a href="/account/<%=post.author.username%>" style="color: #0170CA"><%=post.author.username%></a>
             </div>
             <div class="post-meta-rate">
                 <a class="likeBtn" style="color: <%=postVars.likeColor%>" data-liked="<%=postVars.liked%>">Like</a>
@@ -61,6 +62,46 @@
 <script>
     var photoArea = document.querySelector(".post-photo-area");
     var photo = document.querySelector(".post-photo");
+
+    var details = document.querySelector(".post-info-details");
+
+    updateDetails();
+
+    function updateDetails(){
+        var postId = details.getAttribute("data-postId");
+
+        if(details.getAttribute("data-isAuthor")){
+            details.querySelector(".info-details-box").addEventListener("mouseenter", function(){
+                details.querySelector(".info-details-box").title = "Click to edit";
+            })
+            details.querySelector(".info-details-box").addEventListener("click", function(){
+                var title = details.querySelector(".info-title");
+                var description = details.querySelector(".info-description");
+                var currentTitle = title.textContent;
+                var currentDescription = description.textContent;
+
+                var html = '';
+                html += '<form action="/home/' + postId + '?_method=PUT" method="post">';
+                html += '<input type="text" id="title" name="title" class="post-update-input" placeholder="Title" value="' + currentTitle + '">';
+                html += '<textarea id="description" name="description" class="post-update-textarea" placeholder="Description">' + currentDescription + '</textarea>';
+                html += '<button type="button" id="post-cancel-btn" class="snappir-btn snappir-btn-white">Cancel</button>';
+                html += '<button type="submit" class="snappir-btn snappir-btn-green">Update</button>';
+                html += '</form>';
+                details.innerHTML = html;
+
+                var cancelBtn = document.querySelector("#post-cancel-btn");
+                cancelBtn.addEventListener("click", function(){
+                    details.innerHTML = '<div class="info-details-box">' +
+                        '<div class="info-title">'
+                        + currentTitle + '</div>\n' +
+                        '<div class="info-description">'
+                        + currentDescription + '</div>' +
+                    '</div>';
+                    updateDetails();
+                })
+            })
+        }
+    }
 
     setImageSizes();
     setInterval(setImageSizes, 500);

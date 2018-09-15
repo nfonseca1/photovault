@@ -1,42 +1,39 @@
-var commentArea = document.querySelector("#commentArea");
-var commentButton = document.querySelector("#addComment");
-var commentSections = document.querySelectorAll(".comment");
-var addFormOn = false;
+var comments = document.querySelectorAll(".post-comment");
 
-commentButton.addEventListener("click", openCommentForm);
-commentSections.forEach(function(commentSection) {
-    commentSection.children[1].addEventListener("click", function(){
-        var html = "";
-        html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') +'?_method=PUT" method="POST" style="display: inline;">';
-        html += '<input type="text" name="comment[text]" value="'+ commentSection.getAttribute('data-comment-text') +'">';
-        html += '<button type="button" name="cancel" id="cancelComment" class="btn btn-xs">Cancel</button> ';
-        html += '<button type="submit" class="btn btn-xs btn-warning" style="display: inline;">Update</button>';
-        html += '</form> ';
-        html += '<form action="/home/<%=post._id%>/comment/'+ commentSection.getAttribute('data-comment-id') + '?_method=DELETE" method="POST" style="display: inline;">';
-        html += '<button type=submit class="btn btn-xs btn-danger">Delete</button>';
+comments.forEach(function(comment){
+    if(comment.getAttribute("data-comment-user") == details.getAttribute("data-user")){
+        updateComment(comment);
+    }
+})
+
+function updateComment(comment){
+    var postId = details.getAttribute("data-postId");
+    var commentId = comment.getAttribute("data-commentId");
+
+    comment.querySelector(".post-comment-box").addEventListener("mouseenter", function(){
+        comment.querySelector(".post-comment-box").title = "Click to edit";
+    })
+    comment.querySelector(".post-comment-box").addEventListener("click", function(){
+        var currentComment = comment.querySelector(".post-comment-text").textContent;
+
+        var html = '';
+        html += '<form action="/home/' + postId + '/comment/' + commentId + '?_method=PUT" method="post" style="display: inline">';
+        html += '<input type="text" id="updatedComment" name="comment" class="post-update-input" placeholder="Comment" value="' + currentComment + '">';
+        html += '<button type="button" id="comment-cancel-btn" class="snappir-btn snappir-btn-white">Cancel</button>';
+        html += '<button type="submit" class="snappir-btn snappir-btn-green">Update</button>';
         html += '</form>';
-        commentSection.children[0].style.display = "none";
-        commentSection.children[1].style.display = "none";
-        commentSection.children[2].innerHTML = html;
-        var cancelComment = document.querySelector("#cancelComment");
-        cancelComment.addEventListener("click", function(){
-            commentSection.children[2].innerHTML = '';
-            commentSection.children[0].style.display = "inline";
-            commentSection.children[1].style.display = "block";
+        html += '<form action="/home/' + postId + '/comment/' + commentId + '?_method=DELETE" method="post" style="display: inline-block">';
+        html += '<button type="submit" class="snappir-btn snappir-btn-red">Delete</button>';
+        html += '</form>';
+        comment.innerHTML = html;
+
+        var cancelBtn = document.querySelector("#comment-cancel-btn");
+        cancelBtn.addEventListener("click", function(){
+            comment.innerHTML = '<div class="post-comment-box">' +
+                '<a href="/account/' + comment.getAttribute("data-comment-user") + '">' + comment.getAttribute("data-comment-user") + ': </a>' +
+                '<span class="post-comment-text">' + currentComment + '</span>' +
+                '</div>';
+            updateComment(comment);
         })
     })
-});
-
-function openCommentForm(){
-    var html = "";
-    if(addFormOn) {
-        commentArea.innerHTML = "";
-        addFormOn = false;
-    } else {
-        html = '<form action="/home/<%= post._id %>/comment" method="POST">';
-        html += '<input type="text" class="form-control" name="comment[text]">';
-        html += '<button type="submit" class="btn btn-xs btn-success">Post</button></form>';
-        commentArea.innerHTML = html;
-        addFormOn = true;
-    }
 }

@@ -1,0 +1,105 @@
+<% include partials/header.ejs %>
+
+<script type="text/javascript" src="countries.js"></script>
+
+<div id="data" data-searched="no"></div>
+
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
+    </div>
+</div>
+
+<div class="account-nav">
+    <a class="account-nav-item" href="/account">Photos</a>
+    <a class="account-nav-item account-nav-active" href="/account/collections">Collections</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item" href="/account/followers">Followers</a>
+    <a class="account-nav-item" href="/account/messages">Messages</a>
+    <a class="account-nav-item" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
+</div>
+
+<div class="snappir-container">
+    <div class="account-upload-container">
+        <a href="/account/collection/new"><button id="addButton" class="snappir-btn">Create Collection</button></a>
+    </div>
+
+    <div class="grid">
+        <% collections.forEach(function(col){ %>
+            <figure class="collections-grid-item"><i></i><a href="<%=col.id%>"><img class="col-img" data-img="<%=col.image%>"></a></figure>
+        <% }) %>
+    </div>
+</div>
+
+<script>
+    function setupImages(images, figures, iTags){
+        var height = [];
+        var width = [];
+
+        for(let t = 0; t < images.length; t++){
+            height[t] = parseInt(images[t].naturalHeight);
+            width[t] = parseInt(images[t].naturalWidth);
+        }
+        for(let x = 0; x < images.length; x++){
+            var h = height[x];
+            var w = width[x];
+            var flexGrow = (w * 100) / h;
+            var size = 240;
+            if(userData.getAttribute("data-rowSize") != undefined){
+                size = parseInt(userData.getAttribute("data-rowSize"));
+            }
+            var flexBasis = (w * size) / h;
+            var paddingBottom = (h / w) * 100;
+            var src = images[x].getAttribute("src");
+            console.log(src);
+
+            images[x].style.opacity = 0;
+
+            figures[x].style.flexGrow = flexGrow;
+            figures[x].style.flexBasis = flexBasis + "px";
+            figures[x].style.backgroundImage = 'url('+src+')';
+            iTags[x].style.paddingBottom = paddingBottom + '%';
+        }
+    }
+</script>
+
+<script>
+    var figs = document.querySelectorAll("figure");
+    var iTags = document.querySelectorAll("i");
+    var imgs = document.querySelectorAll(".col-img");
+    var count = 0;
+
+    imgs.forEach(function(img){
+        axios.get("/api/collections", {
+            params: {
+                id: img.getAttribute("data-img")
+            }
+        })
+            .then(function(res){
+                console.log(res);
+                img.src = res.data.src;
+                count++;
+            })
+    })
+    var interval = setInterval(function(){
+        if(count == imgs.length){
+            clearInterval(interval);
+            setupImages(imgs, figs, iTags);
+        }
+    }, 100)
+</script>
+
+<% include partials/footer.ejs %>

@@ -283,6 +283,28 @@ body{
     border: 1px solid #2a2a2a;
 }
 
+.post-update-input{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    min-width: 100px;
+    width: 100%;
+    height: 25px;
+    padding-left: 2px;
+    margin-top: 2px;
+}
+.post-update-textarea{
+    display: inline-block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    min-width: 100px;
+    width: 100%;
+    height: 100px;
+    padding-left: 2px;
+    margin-top: 6px;
+}
 .post-photo{
     display: inline-block;
 }
@@ -379,6 +401,11 @@ body{
 .snappir-btn-red{
     background-color: #930b0b;
 }
+.snappir-btn-white{
+    background-color: #fafafa;
+    border: 1px solid #a0a0a0;
+    color: #2a2a2a;
+}
 .account-upload-form{
     display: none;
     flex-wrap: wrap;
@@ -418,9 +445,42 @@ body{
     width: 200px;
 }
 
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+.grid > img {
+    max-height: 100px;
+}
+
+.grid::after {
+    content: '';
+    flex-grow: 10000;
+}
+
+.grid > figure {
+    margin: 2px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.grid > figure > i {
+    display: block;
+}
+
+.grid > figure > a > img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: auto;
+}
 .user-info-container{
     margin-top: 15px;
 }
+
 .user-info-bar{
     margin-top: 5px;
     width: 100%;

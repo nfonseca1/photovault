@@ -8,15 +8,15 @@
         <div class="home-title">HOME</div>
         <div class="home-header-nav">
             <div class="home-header-left">
-                <select name="country" class="home-dropdown">
+                <select id="country" name="country" class="home-dropdown" onchange="makeAJAXSortRequest(null, false)">
                     <option value="all" selected="selected">All</option>
                 </select>
-                <select name="photoType" class="home-dropdown">
+                <select id="photoType" name="photoType" class="home-dropdown" onchange="makeAJAXSortRequest(null, false)">
                     <option value="all" selected="selected">All</option>
-                    <option value="landscape">landscape</option>
-                    <option value="cityscape">cityscape</option>
+                    <option value="landscapes">landscapes</option>
+                    <option value="cityscapes">cityscapes</option>
                 </select>
-                <select name="within" class="home-dropdown">
+                <select id="within" name="within" class="home-dropdown" onchange="makeAJAXSortRequest(null, false)">
                     <option value="day">Past Day</option>
                     <option value="week">Past Week</option>
                     <option value="month" selected="selected">Past Month</option>
@@ -25,32 +25,31 @@
                 </select>
             </div>
             <div class="home-header-right">
-                <select class="home-sort-dropdown">
+                <select class="home-sort-dropdown" id="sortBy" name="sortBy" onchange="makeAJAXSortRequest(null, false)">
                     <option value="newest" selected="selected">Newest</option>
                     <option value="mostLiked">Most Liked</option>
                     <option value="mostFavorited">Most Favorited</option>
                     <option value="myFavorites">My Favorites</option>
                 </select>
-                <div class="home-link">Newest</div>
-                <div class="home-link">Most Liked</div>
-                <div class="home-link">Most Favorited</div>
-                <div class="home-link">My Favorites</div>
+                <div id="newest" class="home-link">Newest</div>
+                <div id="mostLiked" class="home-link">Most Liked</div>
+                <div id="mostFavorited" class="home-link">Most Favorited</div>
+                <div id="myFavorites" class="home-link">My Favorites</div>
             </div>
         </div>
     </div>
 </div>
 
-<%if(user != undefined){%>
-<table class="table table-striped">
-    <tr>
-        <td><%=user.username%></td>
-        <td><%=user.firstName%></td>
-        <td><%=user.lastName%></td>
-    </tr>
-</table>
-<%}%>
-
 <div class="snappir-container">
+    <%if(user != undefined){%>
+    <table style="width: 100%">
+        <tr>
+            <td><%=user.username%></td>
+            <td><%=user.firstName%></td>
+            <td><%=user.lastName%></td>
+        </tr>
+    </table>
+    <%}%>
     <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
     </div>
@@ -60,6 +59,8 @@
 <script type="text/javascript" src="postsSort.js"></script>
 
 <script>
+    var usingPhotosList = false;
+
     document.addEventListener("scroll", function() {
         checkForNewDiv();
     });

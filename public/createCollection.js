@@ -2,9 +2,14 @@ var collection = document.querySelector(".new-collection-container");
 var title = document.querySelector(".new-collection-title");
 var publicInput = document.querySelector("#collection-public");
 var uploadBtn = document.querySelector("#collection-upload");
-var form = document.querySelector("#collection-form");
-var formInfo = document.querySelector("#collection-form-info");
 var photosList = document.querySelector(".photos-list");
+
+var form = document.querySelector("#collection-form");
+var formTitle = document.querySelector("#collection-form-title");
+var formSections = document.querySelector("#collection-form-sections");
+var formHeadings = document.querySelector("#collection-form-headings");
+var formDescriptions = document.querySelector("#collection-form-descriptions");
+var formPhotos = document.querySelector("#collection-form-photos");
 
 var sections = document.querySelectorAll(".new-collection-section");
 var removeSectionBtns = document.querySelectorAll(".remove-section-btn");
@@ -124,16 +129,15 @@ function addSection(){
 }
 
 function uploadCollection(){
-    var titleVal = title.value;
-    var privacy = publicInput.value;
-    var headingsVal = [];
-    var descriptionsVal = [];
+    formTitle.value = title.value;
+    formSections.value = sections.length;
+    var headingVals = [];
+    var descriptionVals = [];
     var photosVal = [];
-    var secs = sections.length;
 
-    for(let i = 0; i < secs; i++){
-        headingsVal.push(headings[i].value);
-        descriptionsVal.push(descriptions[i].value);
+    for(let i = 0; i < sections.length; i++){
+        headingVals.push(headings[i].value);
+        descriptionVals.push(descriptions[i].value);
 
         var secPhotos = [];
         sectionGrids[i].querySelectorAll("figure").forEach(function(figure){
@@ -142,15 +146,9 @@ function uploadCollection(){
         photosVal.push(secPhotos)
     }
 
-    var newCol = {
-        sections: secs,
-        title: titleVal,
-        headings: headingsVal,
-        descriptions: descriptionsVal,
-        photos: photosVal,
-        isPublic: privacy
-    }
-    formInfo.value = newCol;
+    formHeadings.value = headingVals;
+    formDescriptions.value = descriptionVals;
+    formPhotos.value = photosVal;
     form.submit();
 
 }

@@ -24,7 +24,13 @@
             <input type="checkbox" id="collection-public" name="public" checked="checked">
         </div>
         <button id="collection-upload" class="snappir-btn snappir-btn-green">Upload</button>
-        <form action="/account/collections" method="POST" id="collection-form"><input type="hidden" id="collection-form-info"></form>
+        <form action="/account/collections" method="POST" id="collection-form">
+            <input type="hidden" id="collection-form-title" name="title">
+            <input type="hidden" id="collection-form-sections" name="sections">
+            <input type="hidden" id="collection-form-headings" name="headings[]">
+            <input type="hidden" id="collection-form-descriptions" name="descriptions[]">
+            <input type="hidden" id="collection-form-photos" name="photos[]">
+        </form>
     </div>
 
     <div class="photos-list">
