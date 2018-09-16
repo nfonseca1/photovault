@@ -10,6 +10,12 @@ var express               = require("express"),
     middleware            = require("../middleware/index"),
     addUserPostPoints     = require("../public/addPostPoints");
 
+var cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: 'dfuxqmces',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 router.put("/users/follow", middleware.isLoggedIn, function(req, res){
     User.findById(req.body.accountUserId, function(err, accountUser){
@@ -167,8 +173,7 @@ router.post("/settings/validate", middleware.isLoggedIn, function(req, res){
 
 router.post("/sort", middleware.isLoggedIn, function(req, res){
     if(req.body.loadMore){
-        console.log(req.session.currentIndex);
-        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.body.linkPhotos);
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user, req.body.linkPhotos);
         req.session.currentIndex = htmlPosts.currentIndex;
         res.send(htmlPosts);
     } else {
@@ -221,7 +226,7 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
         if(req.body.country == "all"){
             postsObj = {
                 $or: [{photoType: photoType}, {photoType: photoType2}],
-                date: {$lt: new Date(), $gte: pastDate},
+                //date: {$lt: new Date(), $gte: pastDate},
                 'author.username': user
             };
         } else {
@@ -243,24 +248,22 @@ router.post("/sort", middleware.isLoggedIn, function(req, res){
                 } else if(foundPosts.found.length == result || result == false){
                     req.session.allPosts = foundPosts.found;
                     req.session.currentIndex = 0;
-                    var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                    var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                     req.session.currentIndex = htmlPosts.currentIndex;
                     res.send(htmlPosts);
                     clearInterval(interval);
                 }
             }, 100)
         } else {
-            console.log(postsObj);
             Post.find(postsObj)
                 .sort(sortBy).limit(1000).exec(function(err, posts){
                     if(err){
                         console.log(err);
                         res.redirect("/home");
                     } else {
-                        console.log(posts[0]);
                         req.session.allPosts = posts;
                         req.session.currentIndex = 0;
-                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                         req.session.currentIndex = htmlPosts.currentIndex;
                         res.send(htmlPosts);
                     }
@@ -487,6 +490,18 @@ router.get("/collections", middleware.isLoggedIn, function(req, res){
             res.send({src: found.image})
         }
     })
+})
+
+router.delete("/home/:id", middleware.isLoggedIn, function(req, res){
+    Post.findById(req.params.id, function(err, post){
+        if(err || post == null){
+            console.log(err);
+        } else if(post.author.username == req.user.username){
+            cloudinary.v2.uploader.destroy(post.imageId);
+            post.remove();
+            post.save();
+        }
+    });
 })
 
 module.exports = router;

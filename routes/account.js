@@ -17,7 +17,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
         }
         req.session.allPosts = foundPosts;
         req.session.currentIndex = 0;
-        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
         req.session.currentIndex = htmlPosts.currentIndex;
         req.session.dataSave = false;
         res.render("account.ejs", {htmlPosts: htmlPosts, user: req.user});
@@ -89,7 +89,7 @@ router.get("/collections/new", middleware.isLoggedIn, function(req, res){
         }
         req.session.allPosts = foundPosts;
         req.session.currentIndex = 0;
-        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, 'false');
+        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user, 'false');
         req.session.currentIndex = htmlPosts.currentIndex;
         req.session.dataSave = false;
         res.render("createCollection.ejs", {
@@ -139,7 +139,7 @@ router.get("/favorites", middleware.isLoggedIn, function(req, res){
         } else if(foundPosts.found.length == result || result == false){
             req.session.allPosts = foundPosts.found;
             req.session.currentIndex = 0;
-            var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+            var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
             req.session.currentIndex = htmlPosts.currentIndex;
             res.render("favorites.ejs", {htmlPosts: htmlPosts, lists: req.user.favoriteLists});
             clearInterval(interval);
@@ -192,7 +192,7 @@ router.get("/:username", middleware.isLoggedIn, function(req, res){
                 }
                 req.session.allPosts = foundPosts;
                 req.session.currentIndex = 0;
-                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                 req.session.currentIndex = htmlPosts.currentIndex;
                 req.session.dataSave = false;
                 res.render("userAccount.ejs", {htmlPosts: htmlPosts, user: user, following: amFollowing});

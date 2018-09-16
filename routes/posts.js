@@ -40,7 +40,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
             else {
                 req.session.allPosts = posts;
                 req.session.currentIndex = 0;
-                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                 req.session.currentIndex = htmlPosts.currentIndex;
                 req.session.dataSave = false;
                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
@@ -48,7 +48,6 @@ router.get("/", middleware.isLoggedIn, function(req, res){
         })
     } else {
         var search = req.query.search;
-        console.log(req.query.search);
         Post.find({'author.username': search}).limit(1000).exec(function(err, posts){
             if (err) {console.log(err)}
             else if(posts.length >= 1){
@@ -57,7 +56,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                     else {
                         req.session.allPosts = posts;
                         req.session.currentIndex = 0;
-                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                         req.session.currentIndex = htmlPosts.currentIndex;
                         req.session.dataSave = false;
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: user});
@@ -69,7 +68,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                     else if (posts.length >= 1){
                         req.session.allPosts = posts;
                         req.session.currentIndex = 0;
-                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                        var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                         req.session.currentIndex = htmlPosts.currentIndex;
                         req.session.dataSave = false;
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
@@ -80,7 +79,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                             else {
                                 req.session.allPosts = posts;
                                 req.session.currentIndex = 0;
-                                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex);
+                                var htmlPosts = setupPosts(req.session.allPosts, req.session.currentIndex, req.user);
                                 req.session.currentIndex = htmlPosts.currentIndex;
                                 req.session.dataSave = false;
                                 res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
@@ -103,7 +102,7 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
             description: req.body.description,
             country: req.body.country,
             photoType: req.body.photoType,
-            isPublic: req.body.isPublic,
+            isPublic: (req.body.isPublic == true),
             author: {
                 id: req.user._id,
                 username: req.user.username
@@ -116,6 +115,7 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
         Post.create(newPost, function(err, newlyCreated){
             if (err) {
                 console.log(err);
+                res.redirect("/home");
             }
             else {
                 res.redirect("/account");

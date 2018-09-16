@@ -1,5 +1,5 @@
 
-function setupPosts(posts, i, link) {
+function setupPosts(posts, i, user, link) {
     var html = '';
     var max = 0;
     var end = false;
@@ -11,9 +11,14 @@ function setupPosts(posts, i, link) {
     }
     for (i; i < max; i++) {
         if(posts[i] == null){continue;}
-        html += '<figure><i></i>';
+        html += '<figure class="newly-loaded" data-isAuthor="' + (posts[i].author.username == user.username) + '" data-country="' + posts[i].country + '"><i></i>';
+        html += '<div class="post-hover-container"></div>';
+        html += '<div class="post-hover-header">' + posts[i].title + '</div>';
+        html += '<div class="post-hover-footer"><div class="hover-footer-left">';
+        html += '<span class="hover-footer-author">' + posts[i].author.username + '</span></div>';
+        html += '<div class="hover-footer-right"></div></div>';
         html += '<a ';
-        if(link == "false"){
+        if(link == "false" || link === undefined){
             html += 'data-id="' + posts[i]._id + '" class="nostyle">';
         } else {
             html += 'href="/home/' + posts[i]._id + '" class="nostyle">';

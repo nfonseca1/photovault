@@ -88,10 +88,12 @@ function setupLayout(i){
     var width = [];
 
     for(t; t < images.length; t++){
-        console.log(t);
-        console.log(images[t]);
-        height[t] = parseInt(images[t].naturalHeight);
-        width[t] = parseInt(images[t].naturalWidth);
+        var count = 0;
+        do {
+            height[t] = parseInt(images[t].naturalHeight);
+            width[t] = parseInt(images[t].naturalWidth);
+            count++;
+        } while((height[t] == 0 || width[t] == 0) && count < 100)
     }
     //grid.classList.add('grid');
     for(x; x < images.length; x++){
@@ -113,6 +115,8 @@ function setupLayout(i){
         figures[x].style.backgroundImage = 'url('+src+')';
         iTags[x].style.paddingBottom = paddingBottom + '%';
     }
+
+    configureHoverEffects();
     //grid.classList.remove('grid-default');
     if(usingPhotosList == false){
         window.scrollTo(window.pageXOffset, pagePosition);
@@ -132,4 +136,78 @@ function unpauseRequests(extendWait){
     } else {
         wait = false;
     }
+}
+
+function configureHoverEffects(){
+    var newlyLoaded = document.querySelectorAll(".newly-loaded");
+
+    newlyLoaded.forEach(function(post){
+        var container = post.querySelector(".post-hover-container");
+        var header = post.querySelector(".post-hover-header");
+        var footer = post.querySelector(".post-hover-footer");
+        var footerLeft = footer.querySelector(".hover-footer-left");
+        var footerRight = footer.querySelector(".hover-footer-right");
+
+        post.addEventListener("mouseenter", function(){
+            container.style.opacity = "1";
+            container.style.transition = "opacity .35s linear";
+            header.style.opacity = "1";
+            header.style.transition = "opacity .35s linear";
+            footer.style.opacity = "1";
+            footer.style.transition = "opacity .35s linear";
+            footerLeft.querySelector(".hover-footer-author").style.display = "inline-block";
+
+            if(post.getAttribute("data-isAuthor")){
+                var html = '';
+                html += '<span class="hover-delete-confirm">Are you sure?</span>';
+                html += '<span class="hover-delete">Delete</span>';
+                html += '<span class="hover-delete-yes">Yes</span><span class="hover-delete-no">No</span>';
+                footerRight.innerHTML = html;
+
+                var footerDelete = footerRight.querySelector(".hover-delete");
+                footerDelete.addEventListener("click", function(){
+                    footerLeft.style.width = "0";
+                    footerRight.style.width = "100%";
+                    footerRight.style.display = "inline-flex";
+                    footerRight.style.justifyContent = "space-evenly";
+                    var footerYes = footerRight.querySelector(".hover-delete-yes");
+                    var footerNo = footerRight.querySelector(".hover-delete-no");
+                    var footerAuthor = footerLeft.querySelector(".hover-footer-author");
+                    var footerConfirm = footerRight.querySelector(".hover-delete-confirm");
+                    footerDelete.style.display = "none";
+                    footerYes.style.display = "inline-block";
+                    footerNo.style.display = "inline-block";
+                    footerAuthor.style.display = "none";
+                    footerConfirm.style.display = "inline-block";
+
+                    footerNo.addEventListener("click", function(){
+                        footerLeft.style.width = "49%";
+                        footerRight.style.width = "49%";
+                        footerRight.style.display = "inline-block";
+                        footerDelete.style.display = "inline-block";
+                        footerYes.style.display = "none";
+                        footerNo.style.display = "none";
+                        footerAuthor.style.display = "inline-block";
+                        footerConfirm.style.display = "none";
+                    })
+                    footerYes.addEventListener("click", function(){
+                        console.log(post.querySelector("a").getAttribute("data-id"));
+                        axios.delete("/api/home/" + post.querySelector("a").getAttribute("data-id"));
+                        post.outerHTML = '';
+                    })
+                })
+            } else {
+                footerRight.textContent = post.getAttribute("data-country");
+            }
+        })
+        post.addEventListener("mouseleave", function(){
+            footerLeft.style.width = "49%";
+            footerRight.style.width = "49%";
+            footerRight.style.display = "inline-block";
+            header.style.opacity = "0";
+            header.style.transition = "0s";
+            footer.style.opacity = "0";
+            footer.style.transition = "0s";
+        })
+    })
 }

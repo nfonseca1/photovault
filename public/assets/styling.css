@@ -273,6 +273,89 @@ body{
     background-color: transparent;
     width: 80px;
 }
+.post-hover-header{
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    max-height: 50px;
+    top: 0;
+    padding: 3px 5px 0 5px;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 50px;
+    color: #fdfdfd;
+    background-image: linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.5), rgba(0,0,0,.01));
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    z-index: 2;
+    opacity: 0;
+}
+.post-hover-footer{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    max-height: 40px;
+    bottom: 0;
+    padding: 6px 5px 0 5px;
+    overflow: hidden;
+    font-size: 18px;
+    color: #fdfdfd;
+    background-image: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.5), rgba(0,0,0,.01));
+    font-family: 'Roboto', sans-serif;
+    z-index: 2;
+    opacity: 0;
+}
+.hover-footer-left{
+    width: 49%;
+    height: 100%;
+    text-align: left;
+    overflow: hidden;
+}
+.hover-footer-author{
+    display: inline-block;
+}
+.hover-footer-right{
+    display: inline-block;
+    width: 49%;
+    height: 100%;
+    text-align: right;
+    overflow: hidden;
+}
+.hover-delete{
+    display: inline-block;
+    color: #ff2323;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+}
+.hover-delete-confirm{
+    display: none;
+    color: #fdfdfd;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+.hover-delete-options{
+    display: none;
+    width: 100%;
+    justify-content: space-around;
+}
+.hover-delete-yes{
+    display: none;
+    color: #ff2323;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+}
+.hover-delete-no{
+    display: none;
+    color: #fdfdfd;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+}
 
 #grid{
     margin-top: 15px;
