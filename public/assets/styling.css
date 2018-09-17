@@ -489,6 +489,11 @@ body{
     border: 1px solid #a0a0a0;
     color: #2a2a2a;
 }
+.snappir-btn-invisible{
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+}
 .account-upload-form{
     display: none;
     flex-wrap: wrap;

@@ -12,16 +12,15 @@ function setupPosts(posts, i, user, link) {
     for (i; i < max; i++) {
         if(posts[i] == null){continue;}
         html += '<figure class="newly-loaded" data-isAuthor="' + (posts[i].author.username == user.username) + '" data-country="' + posts[i].country + '"><i></i>';
-        html += '<div class="post-hover-container"></div>';
         html += '<div class="post-hover-header">' + posts[i].title + '</div>';
         html += '<div class="post-hover-footer"><div class="hover-footer-left">';
         html += '<span class="hover-footer-author">' + posts[i].author.username + '</span></div>';
         html += '<div class="hover-footer-right"></div></div>';
         html += '<a ';
-        if(link == "false" || link === undefined){
+        if(link == "false"){
             html += 'data-id="' + posts[i]._id + '" class="nostyle">';
         } else {
-            html += 'href="/home/' + posts[i]._id + '" class="nostyle">';
+            html += 'href="/home/' + posts[i]._id + '" data-id="' + posts[i]._id + '" class="nostyle">';
         }
         html += '<img src="' + posts[i].image + '"></a>';
         html += '</figure>';

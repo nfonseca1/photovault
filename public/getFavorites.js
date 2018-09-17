@@ -8,6 +8,9 @@ function getFavorites(params, user, postObj, found){
         listFilter = 'all';
     } else {
         listFilter = params.list;
+        if(listFilter == 'unlisted'){
+            listFilter = '';
+        }
     }
     if(user.feedback.length == 0){
         return false;

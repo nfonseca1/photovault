@@ -35,64 +35,32 @@
 
 <div class="snappir-container">
     <div class="account-favorites-container">
-        <select name="list" class="home-dropdown favorites-bar-item">
-            <option value="all" selected="selected">All</option>
-            <option value="unlisted">unlisted</option>
-            <%lists.forEach(function(list){%>
-            <option value="<%=list.name%>"><%=list.name%></option>
-            <%})%>
-        </select>
-        <a class="account-nav-item favorites-bar-item">Filter</a>
+        <form action="/account/favorites" method="GET" style="display: inline">
+            <select name="list" id="lists" name="list" class="home-dropdown favorites-bar-item">
+                <option value="all" selected="selected">All</option>
+                <option value="unlisted">unlisted</option>
+                <%lists.forEach(function(list){%>
+                <option value="<%=list.name%>"><%=list.name%></option>
+                <%})%>
+            </select>
+            <button type="submit" class="snappir-btn-invisible account-nav-item favorites-bar-item">Filter</button>
+        </form>
         <a class="account-nav-item favorites-bar-item favorites-edit-btn">Edit List</a>
         <a class="account-nav-item favorites-bar-item favorites-create-btn">Create New List</a>
     </div>
     <div class="favorites-edit-container favorites-edit">
         Change:
-        <input type="text" class="list-bar-input" placeholder="List">
+        <input type="text" id="currentList" class="list-bar-input" placeholder="List">
         to:
-        <input type="text" class="list-bar-input" placeholder="New Name">
-        <button class="snappir-btn favorites-bar-btn">Change Name</button>
-        <button class="snappir-btn snappir-btn-red list-bar-btn">Delete List</button>
+        <input type="text" id="newListName" class="list-bar-input" placeholder="New Name">
+        <button id="updateBtn" class="snappir-btn favorites-bar-btn">Change Name</button>
+        <button id="deleteBtn" class="snappir-btn snappir-btn-red list-bar-btn">Delete List</button>
     </div>
     <div class="favorites-edit-container favorites-create">
-        <input type="text" class="list-bar-input" placeholder="List">
-        <button class="snappir-btn favorites-bar-btn">Create</button>
+        <input type="text" id="newList" class="list-bar-input" placeholder="List">
+        <button id="uploadBtn" class="snappir-btn favorites-bar-btn">Create</button>
     </div>
 
-    <form action="/home" method="POST" class="account-upload-form" enctype="multipart/form-data">
-        <div class="account-upload-field">
-            <label for="image" class="snappir-label">Image Link</label>
-            <input type="file" id="image" class="" name="image" accept="image/*" required>
-        </div>
-        <div class="account-upload-field">
-            <label for="Title" class="snappir-label">Title</label>
-            <input type="text" name="title" id="title" class="snappir-input">
-        </div>
-        <div class="account-upload-field">
-            <label for="Description" class="snappir-label">Description</label>
-            <input type="text" name="description" id="description" class="snappir-input">
-        </div>
-        <div class="account-upload-field">
-            <label for="country" class="snappir-label">Photo was taken in: </label>
-            <select id="countriesList" class="snappir-input input-select" name="country" id="country">
-
-            </select>
-        </div>
-        <div class="account-upload-field">
-            <label class="snappir-label" for="photoType">Photo Type</label>
-            <select class="snappir-input input-select" name="photoType" id="photoType">
-                <option value="landscape" selected="selected">Landscape</option>
-                <option value="cityscape">Cityscape</option>
-            </select>
-        </div>
-        <div class="account-upload-field">
-            <label class="snappir-label label-inline" for="isPrivate">Private</label>
-            <input class="" type="checkbox" name="isPrivate" id="isPrivate">
-        </div>
-        <div class="account-upload-field">
-            <button type="submit" name="upload" class="snappir-btn">Upload</button>
-        </div>
-    </form>
     <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 
     </div>

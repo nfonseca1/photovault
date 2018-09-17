@@ -142,15 +142,12 @@ function configureHoverEffects(){
     var newlyLoaded = document.querySelectorAll(".newly-loaded");
 
     newlyLoaded.forEach(function(post){
-        var container = post.querySelector(".post-hover-container");
         var header = post.querySelector(".post-hover-header");
         var footer = post.querySelector(".post-hover-footer");
         var footerLeft = footer.querySelector(".hover-footer-left");
         var footerRight = footer.querySelector(".hover-footer-right");
 
         post.addEventListener("mouseenter", function(){
-            container.style.opacity = "1";
-            container.style.transition = "opacity .35s linear";
             header.style.opacity = "1";
             header.style.transition = "opacity .35s linear";
             footer.style.opacity = "1";
