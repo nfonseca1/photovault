@@ -5,7 +5,7 @@ var express               = require("express"),
 
 
 router.get("/", function(req, res){
-    console.log("index arrived");
+    console.log("update");
     res.render("index.ejs");
 });
 
