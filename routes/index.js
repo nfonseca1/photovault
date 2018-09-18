@@ -27,7 +27,12 @@ router.post("/", function(req, res){
 });
 
 router.get("/login", function(req, res){
-    console.log("login arrived");
+    User.find({}, function(err, result){
+        if(err){console.log(err)}
+        else {
+            console.log(result);
+        }
+    })
     res.redirect("/");
 });
 
