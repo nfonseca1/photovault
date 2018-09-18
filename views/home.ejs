@@ -42,13 +42,30 @@
 
 <div class="snappir-container">
     <%if(user != undefined){%>
-    <table style="width: 100%">
-        <tr>
-            <td><%=user.username%></td>
-            <td><%=user.firstName%></td>
-            <td><%=user.lastName%></td>
-        </tr>
-    </table>
+    <div class="user-info-bar" data-id="<%=user._id%>">
+        <div class="info-bar-image">
+
+        </div>
+        <div class="info-bar-details">
+            <div class="info-bar-half">
+                <div class="info-bar-name"><%=user.username%></div>
+                <div class="info-bar-name"><%=user.firstName%></div>
+                <div class="info-bar-name"><%=user.lastName%></div>
+                <div class="info-bar-meta">Following: <%=user.following.length%></div>
+            </div>
+            <div class="info-bar-half">
+                <div class="info-bar-bio">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+                    Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                </div>
+                <div class="info-bar-meta">Followers: <%=user.followers.length%></div>
+            </div>
+        </div>
+        <div class="info-bar-actions">
+            <button class="snappir-btn user-message-btn">Message</button>
+            <button class="account-follow-btn snappir-btn snappir-btn-inverse" data-following="yes">Unfollow</button>
+        </div>
+    </div>
     <%}%>
     <div id="grid" class="grid" data-posts="<%=htmlPosts.html%>" data-index="<%=htmlPosts.currentIndex%>">
 

@@ -1,37 +1,218 @@
 <% include partials/header.ejs %>
 
-<h3><%=user.username%>'s Account</h3>
+<script type="text/javascript" src="countries.js"></script>
 
-<div id="data" data-userId="<%=user._id%>"></div>
-<button class="btn btn-xs" id="followButton" style="<%if(!following){%>display: block;<%}else{%>display: none;<%}%>">Follow</button>
-<button class="btn btn-xs" id="unfollowButton" style="<%if(following){%>display: block;<%}else{%>display: none;<%}%>">Unfollow</button>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: solid 1px #333333">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/account/<%=user.username%>">Photos <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link active" href="/account/<%=user.username%>/following">Following</a>
-        <a class="nav-item nav-link" href="/account/<%=user.username%>/followers">Followers</a>
+<div id="data" data-searched="no"></div>
+
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-id="<%=user._id%>" data-username="<%=user.username%>"><%=user.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
     </div>
-</nav>
+</div>
 
-<h3>Following (<%=user.following.length%>)</h3>
+<div class="user-account-nav">
+    <button class="account-message-btn snappir-btn">Message</button>
+    <button class="account-follow-btn snappir-btn <% if(following){ %>snappir-btn-inverse<%}%>" data-following="<%if(following){%>yes<%}else{%>no<%}%>">
+        <%if(following){%>Unfollow<%}else{%>Follow<%}%></button>
+    <a class="account-nav-item" href="/account">Photos</a>
+    <a class="account-nav-item account-nav-active" href="/account/<%=user.username%>/following">Following</a>
+    <a class="account-nav-item" href="/account/<%=user.username%>/followers">Followers</a>
+</div>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Firstname</th>
-        <th scope="col">Lastname</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%user.following.forEach(function(follower){%>
-    <tr>
-        <td><%=follower.username%></td>
-        <td><%=follower.firstName%></td>
-        <td><%=follower.lastName%></td>
-    </tr>
-    <%});%>
-    </tbody>
-</table>
+<div class="snappir-container">
+    <div class="account-message-form">
+        <textarea class="account-message-text" placeholder="Message"></textarea>
+        <button class="account-message-send snappir-btn">Send</button>
+    </div>
 
-<% include partials/footer.ejs %>s
+    <div class="user-info-container">
+        <% user.following.forEach(function(follow){ %>
+        <div class="user-info-bar" data-id="<%=follow._id%>">
+            <div class="info-bar-image">
+
+            </div>
+            <div class="info-bar-details">
+                <div class="info-bar-half">
+                    <div class="info-bar-name"><%=follow.username%></div>
+                    <div class="info-bar-name"><%=follow.firstName%></div>
+                    <div class="info-bar-name"><%=follow.lastName%></div>
+                    <div class="info-bar-meta">Following: <%=follow.following.length%></div>
+                </div>
+                <div class="info-bar-half">
+                    <div class="info-bar-bio">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+                        Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                    </div>
+                    <div class="info-bar-meta">Followers: <%=follow.followers.length%></div>
+                </div>
+            </div>
+            <div class="info-bar-actions">
+                <% if(currentUser.username != follow.username){ %>
+                    <button class="snappir-btn user-message-btn">Message</button>
+                    <% var match = false; %>
+                    <% currentUser.following.forEach(function(user){ %>
+                        <% if(user.username == follow.username){ %>
+                            <% match = true; %>
+                        <% } %>
+                    <% }) %>
+                    <button class="account-follow-btn snappir-btn <% if(match){ %>snappir-btn-inverse<%}%>" data-following="<%if(match){%>yes<%}else{%>no<%}%>">
+                        <%if(match){%>Unfollow<%}else{%>Follow<%}%></button>
+                <% } %>
+            </div>
+        </div>
+        <div class="info-message-bar">
+            <input type="text" class="message-bar-input">
+            <button type="submit" class="account-message-send snappir-btn snappir-btn-green">Send</button>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<script>
+    var followButton = document.querySelector(".account-follow-btn");
+    var msgFormButton = document.querySelector(".account-message-btn");
+    var msgSendButton = document.querySelector(".account-message-send")
+    var msgForm = document.querySelector(".account-message-form");
+    var msgText = document.querySelector(".account-message-text");
+    var isFollowing = followButton.getAttribute("data-following");
+    var formOn = false;
+
+    followButton.addEventListener("click", function(){
+        if(isFollowing == 'yes'){
+            axios.put("/api/users/unfollow", {
+                accountUserId: userData.getAttribute("data-id")
+            })
+                .then(function(){
+                    followButton.classList.remove("snappir-btn-inverse");
+                    followButton.textContent = 'Follow';
+                    isFollowing = 'no';
+                })
+        } else {
+            axios.put("/api/users/follow", {
+                accountUserId: userData.getAttribute("data-id")
+            })
+                .then(function(){
+                    followButton.classList.add("snappir-btn-inverse");
+                    followButton.textContent = 'Unfollow';
+                    isFollowing = 'yes';
+                })
+        }
+    });
+
+    msgFormButton.addEventListener("click", function(){
+        formOn = !formOn;
+        if (formOn){
+            msgForm.style.display = "block";
+        } else {
+            msgForm.style.display = "none";
+        }
+    });
+
+    msgSendButton.addEventListener("click", function(){
+        axios.get("/api/users/checkConversations", {
+            params: {
+                accountUserId: userData.getAttribute("data-id")
+            }
+        }).then(function(res){
+            if(res.data.existingConv){
+                axios.put("/api/users/conversations", {
+                    convId: res.data.convId,
+                    text: msgText.value
+                }).catch(function(err){console.log(err)})
+            } else {
+                axios.post("/api/users/conversations", {
+                    accountUserId: userData.getAttribute("data-id"),
+                    text: msgText.value
+                }).catch(function(err){console.log(err)})
+            }
+            msgText.value = "";
+        }).catch(function(err){console.log(err)})
+    });
+</script>
+
+<script>
+    var users = document.querySelectorAll(".user-info-bar");
+    var followBtns = document.querySelectorAll(".account-follow-btn");
+    var messageBtns = document.querySelectorAll(".user-message-btn");
+    var messageTexts = document.querySelectorAll(".message-bar-input");
+    var messageSendBtns = document.querySelectorAll(".account-message-send")
+    var infoMessageBars = document.querySelectorAll(".info-message-bar");
+    var isFollowing = [];
+
+    for(let i = 0; i < users.length; i++){
+        isFollowing.push(followBtns[i].getAttribute("data-following"))
+        setupFollowButtons(i);
+        messageBarSetup(i);
+    }
+
+    function setupFollowButtons(i){
+        followBtns[i].addEventListener("click", function(){
+            if(isFollowing[i] == 'yes'){
+                axios.put("/api/users/unfollow", {
+                    accountUserId: users[i].getAttribute("data-id")
+                })
+                    .then(function(){
+                        followBtns[i].classList.remove("snappir-btn-inverse");
+                        followBtns[i].textContent = 'Follow';
+                        isFollowing[i] = 'no';
+                    })
+            } else {
+                axios.put("/api/users/follow", {
+                    accountUserId: users[i].getAttribute("data-id")
+                })
+                    .then(function(){
+                        followBtns[i].classList.add("snappir-btn-inverse");
+                        followBtns[i].textContent = 'Unfollow';
+                        isFollowing[i] = 'yes';
+                    })
+            }
+        });
+    }
+
+    function messageBarSetup(i){
+        messageBtns[i].addEventListener("click", function(){
+            infoMessageBars[i].classList.toggle("visible");
+        })
+        messageSendBtns[i].addEventListener("click", function(){
+            axios.get("/api/users/checkConversations", {
+                params: {
+                    accountUserId: users[i].getAttribute("data-id")
+                }
+            }).then(function(res){
+                if(res.data.existingConv){
+                    axios.put("/api/users/conversations", {
+                        convId: res.data.convId,
+                        text: messageTexts[i].value
+                    }).catch(function(err){console.log(err)})
+                } else {
+                    axios.post("/api/users/conversations", {
+                        accountUserId: users[i].getAttribute("data-id"),
+                        text: messageTexts[i].value
+                    }).catch(function(err){console.log(err)})
+                }
+                messageTexts[i].value = "";
+            }).catch(function(err){console.log(err)})
+        });
+    }
+
+    setInterval(function(){
+        if(!window.matchMedia('(min-width: 768px)').matches){
+            infoMessageBars.forEach(function(infoMessageBar){
+                infoMessageBar.classList.remove("visible");
+            })
+        }
+    }, 300);
+</script>
+
+<% include partials/footer.ejs %>

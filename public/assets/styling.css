@@ -845,6 +845,32 @@ body{
     height: 50px;
     padding-left: 2px;
 }
+
+.user-account-nav{
+    display: block;
+    width: 100%;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #D3D3D3;
+    padding-bottom: 5px;
+    text-align: center;
+}
+.account-nav-item{
+    color: #444444;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 24px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.account-nav-active{
+    color: #206BC3;
+    border-bottom: 2px solid #206BC3;
+}
+.account-nav-danger{
+    color: #AE3232;
+}
 @media (min-width: 0px) {
     .nav-search{
         display: none;
@@ -1209,23 +1235,6 @@ body{
         border-bottom: 1px solid #D3D3D3;
         padding-bottom: 5px;
         text-align: center;
-    }
-    .account-nav-item{
-        color: #444444;
-        font-family: 'Roboto Slab', serif;
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        line-height: 24px;
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-    .account-nav-active{
-        color: #206BC3;
-        border-bottom: 2px solid #206BC3;
-    }
-    .account-nav-danger{
-        color: #AE3232;
     }
     .settings-col-half{
         width: 50%;

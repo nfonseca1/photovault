@@ -93,9 +93,9 @@ router.post("/users/conversations", middleware.isLoggedIn, function(req, res){
                     username: accountUser.username,
                     view: true
                 },
-                message: []
+                messages: []
             }
-            Conversation.create(conv, middleware.isLoggedIn, function(err, newConv){
+            Conversation.create(conv, function(err, newConv){
                 if(err){
                     console.log("conv creation");
                     console.log(err);

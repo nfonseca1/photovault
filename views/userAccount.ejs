@@ -21,15 +21,13 @@
     </div>
 </div>
 
-<div class="account-nav">
+<div class="user-account-nav">
     <button class="account-message-btn snappir-btn">Message</button>
     <button class="account-follow-btn snappir-btn <% if(following){ %>snappir-btn-inverse<%}%>" data-following="<%if(following){%>yes<%}else{%>no<%}%>">
         <%if(following){%>Unfollow<%}else{%>Follow<%}%></button>
     <a class="account-nav-item account-nav-active" href="/account">Photos</a>
-    <a class="account-nav-item" href="/account/<%=user.username%>/collections">Collections</a>
     <a class="account-nav-item" href="/account/<%=user.username%>/following">Following</a>
     <a class="account-nav-item" href="/account/<%=user.username%>/followers">Followers</a>
-    <a class="account-nav-item" href="/account/<%=user.username%>/favorites">Favorites</a>
 </div>
 
 <div class="snappir-container">
