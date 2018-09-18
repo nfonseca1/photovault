@@ -34,12 +34,12 @@
 
 <div class="snappir-container">
     <div class="account-upload-container">
-        <a href="/account/collection/new"><button id="addButton" class="snappir-btn">Create Collection</button></a>
+        <a href="/account/collections/new"><button id="addButton" class="snappir-btn">Create Collection</button></a>
     </div>
 
     <div class="grid">
         <% collections.forEach(function(col){ %>
-            <figure class="collections-grid-item"><i></i><a href="<%=col.id%>"><img class="col-img" data-img="<%=col.image%>"></a></figure>
+            <figure class="collections-grid-item"><i></i><a href="/home/collection/<%=col.id%>"><img class="col-img" data-img="<%=col.image%>"></a></figure>
         <% }) %>
     </div>
 </div>

@@ -3,6 +3,7 @@ var express               = require("express"),
     User                  = require("../models/user"),
     Post                  = require("../models/post"),
     Comment               = require("../models/comment"),
+    Collection            = require("../models/collection"),
     setupPosts            = require("../public/home.js"),
     middleware            = require("../middleware/index");
 
@@ -207,6 +208,18 @@ router.delete("/:id", middleware.checkPostOwnership, function(req, res){
         res.redirect("/home");
     });
 });
+
+router.get("/collection/:id", middleware.isLoggedIn, function(req, res){
+    res.redirect("/");
+    return;
+    Collection.findById(req.params.id).forEach().populate("posts").exec(function(err, col){
+        if(err){console.log(err)}
+        else {
+            console.log(col);
+            //res.render("viewCollection.ejs", {col: col});
+        }
+    })
+})
 
 
 //CREATE new comment

@@ -25,6 +25,8 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/collections", middleware.isLoggedIn, function(req, res){
+    res.redirect("/account");
+    return;
     Collection.find({'author.id': req.user._id}, function(err, found){
         if(err) {console.log(err)}
         else {
@@ -83,6 +85,8 @@ router.post("/collections", middleware.isLoggedIn, function(req, res){
 })
 
 router.get("/collections/new", middleware.isLoggedIn, function(req, res){
+    res.redirect("/account");
+    return;
     Post.find({'author.id': req.user._id}, function(err, foundPosts) {
         if (err) {
             console.log(err);
@@ -125,7 +129,6 @@ router.get("/messages", middleware.isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         } else {
-            console.log(convs);
             res.render("messages.ejs", {convs: convs});
         }
     })

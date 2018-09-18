@@ -1,0 +1,56 @@
+<% include partials/header.ejs %>
+
+<script type="text/javascript" src="countries.js"></script>
+
+<div id="data" data-searched="no"></div>
+
+<div class="account-header">
+    <div class="snappir-container">
+        <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
+        <div class="account-info-container">
+            <div class="account-info">Photos: XX</div>
+            <div class="account-info">Collections: XX</div>
+            <div class="account-info">Followers: XX</div>
+            <div class="account-info">Following: XX</div>
+            <div class="account-info">Favorites: XX</div>
+        </div>
+        <div class="account-bio">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
+            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+        </div>
+    </div>
+</div>
+
+<div class="account-nav">
+    <a class="account-nav-item account-nav-active" href="/account">Photos</a>
+    <a class="account-nav-item" href="/account/collections">Collections</a>
+    <a class="account-nav-item" href="/account/following">Following</a>
+    <a class="account-nav-item" href="/account/followers">Followers</a>
+    <a class="account-nav-item" href="/account/messages">Messages</a>
+    <a class="account-nav-item" href="/account/favorites">Favorites</a>
+    <a class="account-nav-item" href="/account/settings">Settings</a>
+    <a class="account-nav-item account-nav-danger " href="/logout">Logout</a>
+</div>
+
+<div class="snappir-container">
+    <div class="view-collection-container">
+        <h2><%=col.title%></h2>
+        <% col.sections.forEach(function(sec){ %>
+            <div class="collection-section">
+                <h4 class="collection-heading"><%=sec.heading%></h4>
+                <p class="collection-description"><%=sec.description%></p>
+                <div class="grid">
+                    <% sec.posts.forEach(function(post){ %>
+                    <figure class="newly-loaded" data-isauthor="' + isAuthor + '" data-country="' + posts[i].country + '"><i></i>;
+                        <div class="post-hover-header">' + posts[i].title + '</div>;
+                        <div class="post-hover-footer"><div class="hover-footer-left">;
+                                <span class="hover-footer-author">' + posts[i].author.username + '</span></div>;
+                            <div class="hover-footer-right"></div></div>;
+                    <% }) %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
