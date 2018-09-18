@@ -27,6 +27,7 @@ router.post("/", function(req, res){
 });
 
 router.get("/login", function(req, res){
+    console.log("arrive");
     User.find({}, function(err, results){
         if(err){console.log(err)}
         else{
