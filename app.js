@@ -43,6 +43,9 @@ app.use("/", indexRoutes);
 app.use("/home", postRoutes);
 app.use("/account", accountRoutes);
 app.use("/api", apiRoutes);
+app.get("/*", function(req, res){
+    res.send("You've arrived");
+})
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started.......");
