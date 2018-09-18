@@ -12,7 +12,9 @@ var postRoutes = require("./routes/posts"),
     apiRoutes = require("./routes/api"),
     indexRoutes = require("./routes/index");
 
-mongoose.connect("mongodb://localhost/photoVault");
+require('dotenv').config();
+//mongoose.connect("mongodb://localhost/photoVault");
+mongoose.connect("mongodb://nfonseca1:" + process.env.MONGO_PASS + "@ds261332.mlab.com:61332/snappir");
 var app = express();
 
 app.use(express.static(__dirname +'/public'));
