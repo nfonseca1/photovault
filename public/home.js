@@ -11,7 +11,13 @@ function setupPosts(posts, i, user, link) {
     }
     for (i; i < max; i++) {
         if(posts[i] == null){continue;}
-        html += '<figure class="newly-loaded" data-isAuthor="' + (posts[i].author.username == user.username) + '" data-country="' + posts[i].country + '"><i></i>';
+        var isAuthor = 'no';
+        if(posts[i].author.username == user.username){
+            isAuthor = 'yes';
+        } else {
+            isAuthor = 'no';
+        }
+        html += '<figure class="newly-loaded" data-isauthor="' + isAuthor + '" data-country="' + posts[i].country + '"><i></i>';
         html += '<div class="post-hover-header">' + posts[i].title + '</div>';
         html += '<div class="post-hover-footer"><div class="hover-footer-left">';
         html += '<span class="hover-footer-author">' + posts[i].author.username + '</span></div>';

@@ -469,7 +469,7 @@ body{
 .snappir-btn{
     display: inline-block;
     background-color: #0170CA;
-    border: 1px solid #CDCDFD;
+    border: 1px solid #AACCFF;
     border-radius: 4px;
     height: 25px;
     padding: 1px 6px 1px 6px;
@@ -493,6 +493,11 @@ body{
     display: inline-block;
     background-color: transparent;
     border: none;
+}
+.snappir-btn-inverse{
+    background-color: #F7F7F7;
+    border: 1px solid #AAAABB;
+    color: #0060CA;
 }
 .account-upload-form{
     display: none;
@@ -632,6 +637,7 @@ body{
 
 .message-table-container{
     display: none;
+    width: 100%;
     background-color: #EBEBEB;
     border: 1px solid #D3D3D3;
     color: #444444;
@@ -822,6 +828,22 @@ body{
 .collection-upload-field{
     display: inline-block;
     padding-right: 5%;
+}
+.account-message-form{
+    display: none;
+}
+.account-follow-btn{
+    margin-left: 2%;
+    margin-right: 8%;
+}
+.account-message-text{
+    display: block;
+    background-color: #fafafa;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+    padding-left: 2px;
 }
 @media (min-width: 0px) {
     .nav-search{
@@ -1036,6 +1058,12 @@ body{
         float: right;
         font-size: 16px;
     }
+    .account-message-form{
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        background-color: #EEEEEE;
+        border: 1px solid #D3D3D3;
+    }
 }
 @media (min-width: 992px) {
     .nav-account {
@@ -1202,6 +1230,12 @@ body{
     .settings-col-half{
         width: 50%;
         height: auto;
+    }
+    .account-message-form{
+        width: 50%;
+        padding: 10px 15px 10px 15px;
+        background-color: #EEEEEE;
+        border: 1px solid #D3D3D3;
     }
 }
 @media (min-width: 1200px){

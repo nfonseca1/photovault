@@ -110,7 +110,7 @@ router.get("/following", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/followers", middleware.isLoggedIn, function(req, res){
-    User.findById(req.user._id).populate("followers").exec(function(err, myUser){
+    User.findById(req.user._id).populate("followers").populate("following").exec(function(err, myUser){
         if(err){
             console.log(err);
         } else {
@@ -120,7 +120,8 @@ router.get("/followers", middleware.isLoggedIn, function(req, res){
 });
 
 router.get("/messages", middleware.isLoggedIn, function(req, res){
-    Conversation.find({$or: [{'user1.id': req.user._id}, {'user2.id': req.user._id}]}).sort('-lastMessage').exec(function(err, convs){
+    Conversation.find({$or: [{'user1.id': req.user._id}, {'user2.id': req.user._id}]}).populate({ path: 'user1.id', select: ['firstName', 'lastName'] })
+        .populate({ path: 'user2.id', select: ['firstName', 'lastName'] }).sort('-lastMessage').exec(function(err, convs){
         if(err){
             console.log(err);
         } else {
@@ -178,6 +179,9 @@ router.get("/:username", middleware.isLoggedIn, function(req, res){
         if(err || user == null) {
             console.log(err);
             res.redirect("/home");
+        } else if(user.username == req.user.username) {
+            res.redirect("/account");
+            return;
         } else {
             var amFollowing = false;
             for(var i = 0; i < req.user.following.length; i++){

@@ -154,7 +154,7 @@ function configureHoverEffects(){
             footer.style.transition = "opacity .35s linear";
             footerLeft.querySelector(".hover-footer-author").style.display = "inline-block";
 
-            if(post.getAttribute("data-isAuthor")){
+            if(post.getAttribute("data-isauthor") == 'yes'){
                 var html = '';
                 html += '<span class="hover-delete-confirm">Are you sure?</span>';
                 html += '<span class="hover-delete">Delete</span>';

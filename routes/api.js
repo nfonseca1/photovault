@@ -26,6 +26,7 @@ router.put("/users/follow", middleware.isLoggedIn, function(req, res){
             req.user.save();
             accountUser.followers.push(req.user);
             accountUser.save();
+            res.send({});
         }
     })
 });
@@ -49,6 +50,7 @@ router.put("/users/unfollow", middleware.isLoggedIn, function(req, res){
                     break;
                 }
             }
+            res.send({});
         }
     })
 })

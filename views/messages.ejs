@@ -30,24 +30,25 @@
 
 <div class="snappir-container">
     <div class="user-info-container">
-        <% for(let i = 0; i < 5; i++){ %>
-        <div class="user-info-bar">
+        <% var user; %>
+        <% convs.forEach(function(conv){ %>
+        <%if(conv.user1.username == currentUser.username){user = conv.user2} else {user = conv.user1};%>
+        <div class="user-info-bar" data-id="<%=conv._id%>">
             <div class="info-bar-image">
 
             </div>
             <div class="info-bar-details">
                 <div class="info-bar-half">
-                    <div class="info-bar-name">Username</div>
-                    <div class="info-bar-name">FirstName</div>
-                    <div class="info-bar-name">LastName</div>
-                    <div class="info-bar-meta">Messages: XX</div>
+                    <div class="info-bar-name"><%=user.username%></div>
+                    <div class="info-bar-name"><%=user.id.firstName%></div>
+                    <div class="info-bar-name"><%=user.id.lastName%></div>
+                    <div class="info-bar-meta">Messages: <%=conv.messages.length%></div>
                 </div>
                 <div class="info-bar-half">
                     <div class="info-bar-bio">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
-                        Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                        <%=conv.messages[conv.messages.length - 1].text%>
                     </div>
-                    <div class="info-bar-meta">XX/XX/XX</div>
+                    <div class="info-bar-meta"><%=conv.lastMessage.toLocaleString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit', hour: 'numeric', minute: '2-digit' })%></div>
                 </div>
             </div>
             <div class="info-bar-actions">
@@ -56,27 +57,47 @@
             </div>
         </div>
         <div class="info-message-bar">
-            <form action="#" method="post">
-                <input type="text" class="message-bar-input">
-                <button type="submit" class="snappir-btn snappir-btn-green message-btn">Send</button>
-            </form>
+            <input type="text" class="message-bar-input">
+            <button type="submit" class="snappir-btn snappir-btn-green message-btn">Send</button>
         </div>
         <div class="message-table-container">
-            <table>
-                <% for(let i = 0; i < 5; i++){ %>
+            <table style="width: 100%">
+                <% conv.messages.reverse().forEach(function(message){ %>
                     <tr class="message-table-row">
-                        <td class="message-table-info"><div class="message-info-user">Username1746</div>Thur, Aug 23, 2018 - 7:30PM</td>
+                        <td class="message-table-info"><div class="message-info-user"><%=message.author%></div><%=message.date.toLocaleString("en-US", { weekday: 'narrow', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'})%></td>
                         <td class="message-table-text">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex sit amet augue hendrerit fermentum.
-                            Ut pellentesque tempus lobortis. Cras leo ligula, venenatis ut ipsum volutpat, pellentesque laoreet mi.
+                            <%=message.text%>
                         </td>
                     </tr>
-                <% } %>
+                <% }) %>
             </table>
         </div>
-        <% } %>
+        <% }) %>
     </div>
 </div>
+
+<script>
+    var convs = document.querySelectorAll(".user-info-bar");
+    var messageInputs = document.querySelectorAll(".message-bar-input");
+    var messageSends = document.querySelectorAll(".message-btn");
+
+    for(let i = 0; i < convs.length; i++){
+        sendMessagePrep(i);
+    }
+
+    function sendMessagePrep(i){
+        messageSends[i].addEventListener("click", function(){
+            axios.put("/api/users/conversations", {
+                convId: convs[i].getAttribute("data-id"),
+                text: messageInputs[i].value
+            })
+                .then(function(){
+                    messageInputs[i].value = '';
+                })
+        })
+    }
+
+</script>
 
 <script>
     var messageBtns = document.querySelectorAll(".user-message-btn");
