@@ -4,7 +4,7 @@ body{
 .index-background{
     height: 800px;
     width: 100%;
-    background-image: url("index.jpg");
+    background-image: url("https://res.cloudinary.com/dfuxqmces/image/upload/v1537302957/index1.jpg");
     background-size: cover;
 }
 .index-background-darken{
