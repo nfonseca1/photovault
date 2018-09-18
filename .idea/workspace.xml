@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="339b5e5c-2286-43d1-8e69-02352dfafabe" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/public/assets/styling.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/styling.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/account.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/account.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/collections.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/collections.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/favorites.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/favorites.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/followers.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/followers.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/following.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/following.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/messages.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/messages.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/settings.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/settings.ejs" afterDir="false" />
-    </list>
+    <list default="true" id="339b5e5c-2286-43d1-8e69-02352dfafabe" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -52,7 +41,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="account.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="account.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/account.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="273">
@@ -79,10 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.ejs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="settings.ejs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/settings.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
+            <state relative-caret-position="-1344">
               <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
             </state>
           </provider>
@@ -357,12 +346,12 @@
       <workItem from="1536840189154" duration="75693000" />
       <workItem from="1537112454234" duration="32086000" />
       <workItem from="1537200434979" duration="12000" />
-      <workItem from="1537202215198" duration="28426000" />
+      <workItem from="1537202215198" duration="28712000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="830270000" />
+    <option name="totallyTimeSpent" value="830556000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1618" height="917" extended-state="6" />
@@ -375,7 +364,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32948717" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.23717949" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.21410257" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -764,13 +753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/settings.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/messages.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -782,6 +764,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
           <caret line="130" column="16" selection-start-line="130" selection-start-column="16" selection-end-line="130" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/settings.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1344">
+          <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
         </state>
       </provider>
     </entry>
