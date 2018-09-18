@@ -5,6 +5,7 @@ var express               = require("express"),
 
 
 router.get("/", function(req, res){
+    console.log("index arrived");
     res.render("index.ejs");
 });
 
@@ -26,6 +27,7 @@ router.post("/", function(req, res){
 });
 
 router.get("/login", function(req, res){
+    console.log("login arrived");
     res.redirect("/");
 });
 
