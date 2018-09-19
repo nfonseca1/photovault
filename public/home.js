@@ -9,6 +9,7 @@ function setupPosts(posts, i, user, link) {
     } else {
         max = i + 30;
     }
+    //Assemble 30 more posts
     for (i; i < max; i++) {
         if(posts[i] == null){continue;}
         var isAuthor = 'no';
@@ -20,7 +21,7 @@ function setupPosts(posts, i, user, link) {
         html += '<figure class="newly-loaded" data-isauthor="' + isAuthor + '" data-country="' + posts[i].country + '"><i></i>';
         html += '<div class="post-hover-header">' + posts[i].title + '</div>';
         html += '<div class="post-hover-footer"><div class="hover-footer-left">';
-        html += '<span class="hover-footer-author">' + posts[i].author.username + '</span></div>';
+        html += '<span class="hover-footer-author"><a href="/account/' + posts[i].author.username + '" class="nostyle">' + posts[i].author.username + '</a></span></div>';
         html += '<div class="hover-footer-right"></div></div>';
         html += '<a ';
         if(link == "false"){

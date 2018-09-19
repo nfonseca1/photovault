@@ -34,7 +34,7 @@ cloudinary.config({
 
 router.get("/", middleware.isLoggedIn, function(req, res){
     if(req.query.search == undefined){
-        Post.find({}).limit(1000).exec(function(err, posts){
+        Post.find({}).limit(1000).sort("-date").exec(function(err, posts){
             if (err) {
                 console.log(err);
             }
@@ -49,7 +49,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
         })
     } else {
         var search = req.query.search;
-        Post.find({'author.username': search}).limit(1000).exec(function(err, posts){
+        Post.find({'author.username': search}).limit(1000).sort("-date").exec(function(err, posts){
             if (err) {console.log(err)}
             else if(posts.length >= 1){
                 User.findOne({username: search}, function(err, user){
@@ -64,7 +64,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                     }
                 })
             } else {
-                Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
+                Post.find({title: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).sort("-date").exec(function(err, posts){
                     if (err) {console.log(err)}
                     else if (posts.length >= 1){
                         req.session.allPosts = posts;
@@ -75,7 +75,7 @@ router.get("/", middleware.isLoggedIn, function(req, res){
                         res.render("home.ejs", {htmlPosts: htmlPosts, user: undefined});
                     }
                     else {
-                        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).exec(function(err, posts){
+                        Post.find({description: new RegExp('\\b' + search + '\\b', 'i')}).limit(1000).sort("-date").exec(function(err, posts){
                             if (err) {console.log(err)}
                             else {
                                 req.session.allPosts = posts;

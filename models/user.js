@@ -36,7 +36,8 @@ var UserSchema = new mongoose.Schema({
             name: String,
             privacy: String
         }
-    ]
+    ],
+    bio: String
 });
 
 UserSchema.plugin(passportLocalMongoose);

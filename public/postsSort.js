@@ -95,7 +95,6 @@ function setupLayout(i){
             count++;
         } while((height[t] == 0 || width[t] == 0) && count < 100)
     }
-    //grid.classList.add('grid');
     for(x; x < images.length; x++){
         var h = height[x];
         var w = width[x];

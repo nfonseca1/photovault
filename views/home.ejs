@@ -48,15 +48,14 @@
         </div>
         <div class="info-bar-details">
             <div class="info-bar-half">
-                <div class="info-bar-name"><%=user.username%></div>
+                <div class="info-bar-name"><a href="/account/<%=user.username%>"><%=user.username%></a></div>
                 <div class="info-bar-name"><%=user.firstName%></div>
                 <div class="info-bar-name"><%=user.lastName%></div>
                 <div class="info-bar-meta">Following: <%=user.following.length%></div>
             </div>
             <div class="info-bar-half">
                 <div class="info-bar-bio">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
-                    Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+                    <%=user.bio%>
                 </div>
                 <div class="info-bar-meta">Followers: <%=user.followers.length%></div>
             </div>
