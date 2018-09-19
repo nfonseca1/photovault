@@ -4,15 +4,14 @@
     <div class="snappir-container">
         <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
         <div class="account-info-container">
-            <div class="account-info">Photos: XX</div>
-            <div class="account-info">Collections: XX</div>
-            <div class="account-info">Followers: XX</div>
-            <div class="account-info">Following: XX</div>
-            <div class="account-info">Favorites: XX</div>
+            <!--<div class="account-info">Photos: XX</div>-->
+            <!--<div class="account-info">Collections: XX</div>-->
+            <div class="account-info">Followers: <%=currentUser.followers.length%></div>
+            <div class="account-info">Following: <%=currentUser.following.length%></div>
+            <!--<div class="account-info">Favorites: XX</div>-->
         </div>
         <div class="account-bio">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
-            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+            <%=currentUser.bio%>
         </div>
     </div>
 </div>
@@ -30,6 +29,7 @@
 
 <div class="snappir-container">
     <div class="settings-container">
+        <form action="/account/settings?_method=put" method="POST">
         <div class="settings-heading">Change Email</div>
         <div class="settings-section">
             <div class="settings-col">
@@ -63,73 +63,36 @@
         <div class="settings-heading">Profile Picture</div>
         <div class="settings-section">
             <div class="settings-col-half">
-                <input type="file" id="image" name="image" accept="image/*">
+                <input type="file" id="image" accept="image/*">
             </div>
         </div>
         <div class="settings-heading">Bio</div>
         <div class="settings-section">
             <div class="settings-col-half">
-                <textarea name="bio" class="settings-input-textarea"></textarea>
+                <textarea name="bio" id="bio" class="settings-input-textarea"></textarea>
             </div>
         </div>
         <div class="settings-heading"></div>
         <div class="settings-section">
             <div class="settings-col-half">
                 <label for="hideFirstName" class="snappir-label visible">Hide First Name</label>
-                <input type="checkbox" id="hideFirstName" name="hideFirstName">
+                <input type="checkbox" id="hideFirstName">
             </div>
         </div>
         <div class="settings-section">
             <div class="settings-col-half">
                 <label for="hideLastName" class="snappir-label visible">Hide Last Name</label>
-                <input type="checkbox" id="hideLastName" name="hideLastName">
+                <input type="checkbox" id="hideLastName">
             </div>
         </div>
         <div class="settings-heading"></div>
-        <button id="settings-submit" class="snappir-btn">Update</button>
+        <button type="submit" id="settings-submit" class="snappir-btn">Update</button>
+        </form>
     </div>
 </div>
 
 <script>
-    var form = document.querySelector("form");
-    var currentEmail = document.querySelector("#currentEmail");
-    var newEmail = document.querySelector("#newEmail");
-    var newEmail2 = document.querySelector("#newEmail2");
-    var hidden = document.querySelector("#hidden");
-    var currentPassword = document.querySelector("#currentPassword");
-    var newPassword = document.querySelector("#newPassword");
-    var newPassword2 = document.querySelector("#newPassword");
-    var button = document.querySelector("#settingsButton");
-    var error = document.querySelectorAll(".validation");
-    var readyToSubmit = false;
 
-    button.addEventListener("click", function(){
-
-        if(currentEmail.value != "" && newEmail.value != "" && newEmail2.value != ""){
-            if(newEmail.value == newEmail2.value){
-                readyToSubmit = true;
-            }
-        }
-
-        if(currentPassword.value != "" && newPassword.value != "" && newPassword2.value != ""){
-            if(newPassword.value == newPassword2.value){
-                axios.post("/api/settings/validate", {
-                    username: hidden.value,
-                    password: currentPassword.value
-                })
-                    .then(function(res){
-                        if(res.data.validated){
-                            form.submit();
-                        } else {
-                            error[3].textContent = "Current password is incorrect.";
-                        }
-                    })
-            }
-        }
-        if(readyToSubmit){
-            form.submit();
-        }
-    })
 
 </script>
 

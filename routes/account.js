@@ -11,7 +11,7 @@ var express               = require("express"),
 
 //Go to account page to ADD post
 router.get("/", middleware.isLoggedIn, function(req, res){
-    Post.find({'author.id': req.user._id}, function(err, foundPosts){
+    Post.find({'author.id': req.user._id}).sort("-date").exec(function(err, foundPosts){
         if (err) {
             console.log(err);
         }
@@ -161,19 +161,9 @@ router.put("/settings", middleware.isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         } else {
-            if(req.body.email != ""){
-                user.email = "req.body.email";
-                user.save();
-                console.log(user);
-            }
-            if(req.body.password != ""){
-                user.setPassword(req.body.password, function(){
-                    user.save();
-                    res.redirect("/account/settings");
-                })
-            } else {
-                res.redirect("/account/settings");
-            }
+            user.bio = req.body.bio;
+            user.save();
+            res.redirect("/account/settings");
         }
     })
 });
@@ -194,7 +184,7 @@ router.get("/:username", middleware.isLoggedIn, function(req, res){
                     break;
                 }
             }
-            Post.find({'author.username': user.username}, function(err, foundPosts){
+            Post.find({'author.username': user.username}).sort("-date").exec(function(err, foundPosts){
                 if(err) {
                     console.log(err);
                 }
