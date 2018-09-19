@@ -996,6 +996,7 @@ body{
         width: 0px;
     }
     .post-info-map{
+        display: inline-block;
         width: 31.5%;
         height: 100%;
         padding: 4px;
@@ -1207,6 +1208,7 @@ body{
         width: 0px;
     }
     .post-info-map{
+        display: inline-block;
         height: 31.5%;
         width: 100%;
         padding: 4px;
