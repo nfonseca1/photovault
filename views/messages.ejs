@@ -4,15 +4,14 @@
     <div class="snappir-container">
         <div id="userData" class="account-username" data-username="<%=currentUser.username%>"><%=currentUser.username%></div>
         <div class="account-info-container">
-            <div class="account-info">Photos: XX</div>
-            <div class="account-info">Collections: XX</div>
-            <div class="account-info">Followers: XX</div>
-            <div class="account-info">Following: XX</div>
-            <div class="account-info">Favorites: XX</div>
+            <!--<div class="account-info">Photos: XX</div>-->
+            <!--<div class="account-info">Collections: XX</div>-->
+            <div class="account-info">Followers: <%=currentUser.followers.length%></div>
+            <div class="account-info">Following: <%=currentUser.following.length%></div>
+            <!--<div class="account-info">Favorites: XX</div>-->
         </div>
         <div class="account-bio">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac pellentesque justo, vitae aliquam tellus.
-            Fusce in lorem non leo vestibulum pulvinar. Curabitur nec mi dictum, tristique felis ac, pulvinar velit.
+            <%=currentUser.bio%>
         </div>
     </div>
 </div>

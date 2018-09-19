@@ -61,8 +61,17 @@
             </div>
         </div>
         <div class="info-bar-actions">
+            <% if(currentUser.username != user.username){ %>
             <button class="snappir-btn user-message-btn">Message</button>
-            <button class="account-follow-btn snappir-btn snappir-btn-inverse" data-following="yes">Unfollow</button>
+            <% var match = false; %>
+            <% currentUser.following.forEach(function(fol){ %>
+            <% if(fol.username == user.username){ %>
+            <% match = true; %>
+            <% } %>
+            <% }) %>
+            <button class="account-follow-btn snappir-btn <% if(match){ %>snappir-btn-inverse<%}%>" data-following="<%if(match){%>yes<%}else{%>no<%}%>">
+                <%if(match){%>Unfollow<%}else{%>Follow<%}%></button>
+            <% } %>
         </div>
     </div>
     <%}%>
