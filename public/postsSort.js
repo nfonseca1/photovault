@@ -187,8 +187,7 @@ function configureHoverEffects(){
                         footerConfirm.style.display = "none";
                     })
                     footerYes.addEventListener("click", function(){
-                        console.log(post.querySelector("a").getAttribute("data-id"));
-                        axios.delete("/api/home/" + post.querySelector("a").getAttribute("data-id"));
+                        axios.delete("/api/home/" + post.querySelectorAll("a")[1].getAttribute("data-id"));
                         post.outerHTML = '';
                     })
                 })

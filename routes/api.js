@@ -496,7 +496,7 @@ router.get("/collections", middleware.isLoggedIn, function(req, res){
 
 router.delete("/home/:id", middleware.isLoggedIn, function(req, res){
     Post.findById(req.params.id, function(err, post){
-        if(err || post == null){
+        if(err){
             console.log(err);
         } else if(post.author.username == req.user.username){
             cloudinary.v2.uploader.destroy(post.imageId);
