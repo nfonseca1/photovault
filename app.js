@@ -44,10 +44,10 @@ app.use("/home", postRoutes);
 app.use("/account", accountRoutes);
 app.use("/api", apiRoutes);
 
-var port = process.env.PORT || 3000;
-var ip = process.env.IP || 'localhost';
+//var port = process.env.PORT || 3000;
+//var ip = process.env.IP || 'localhost';
 
-app.listen(port, ip, function(){
+app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started.......");
 });
 
