@@ -13,7 +13,7 @@ var postRoutes = require("./routes/posts"),
     indexRoutes = require("./routes/index");
 
 require('dotenv').config();
-mongoose.connect("mongodb://localhost/snappir");
+mongoose.connect("mongodb://nfonseca1:dXu7ce5yqWUaLKt@ds261332.mlab.com:61332/snappir");
 
 var app = express();
 
@@ -44,7 +44,7 @@ app.use("/home", postRoutes);
 app.use("/account", accountRoutes);
 app.use("/api", apiRoutes);
 
-app.listen(3000, function(){
+app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started.......");
 });
 
