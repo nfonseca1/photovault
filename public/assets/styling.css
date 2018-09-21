@@ -1,4 +1,5 @@
 body{
+    margin: 0;
     background-color: #E8E8E8;
 }
 .index-background{
@@ -64,13 +65,16 @@ body{
     text-align: left;
 }
 .input {
+    display: block;
     background-color: #E0E0E0;
+    border: none;
     border-radius: 5px;
     width: 408px;
     height: 25px;
+    margin-bottom: 30px;
 }
 .login-btn{
-    margin-top: 30px;
+    margin-top: 15px;
 }
 .center-div-container{
     display: block;
@@ -140,9 +144,6 @@ body{
     font-weight: 400;
     letter-spacing: 2px;
     line-height: 33px;
-    text-align: center;
-}
-.index-side-container{
     text-align: center;
 }
 .index-side{
@@ -428,7 +429,7 @@ body{
 }
 .account-username{
     text-align: center;
-    color: #424242;
+    color: #434343;
     font-family: 'Roboto', sans-serif;
     font-size: 26px;
     font-weight: 400;
@@ -448,7 +449,7 @@ body{
     font-weight: 400;
 }
 .account-bio{
-    color: #424242;
+    color: #434343;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -495,7 +496,7 @@ body{
     border: none;
 }
 .snappir-btn-inverse{
-    background-color: #F7F7F7;
+    background-color: #F6F6F6;
     border: 1px solid #AAAABB;
     color: #0060CA;
 }
@@ -506,7 +507,7 @@ body{
     align-items: flex-end;
     width: 100%;
     padding: 10px 15px 10px 15px;
-    background-color: #EEEEEE;
+    background-color: #ECECEC;
     border: 1px solid #D3D3D3;
 }
 .account-upload-field{
@@ -515,7 +516,7 @@ body{
 }
 .snappir-label{
     display: block;
-    color: #444444;
+    color: #434343;
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 400;
@@ -638,9 +639,9 @@ body{
 .message-table-container{
     display: none;
     width: 100%;
-    background-color: #EBEBEB;
+    background-color: #ECECEC;
     border: 1px solid #D3D3D3;
-    color: #444444;
+    color: #434343;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
 }
@@ -686,7 +687,7 @@ body{
     display: none;
     width: 100%;
     height: auto;
-    background-color: #EBEBEB;
+    background-color: #ECECEC;
     border: 1px solid #D3D3D3;
     padding: 5px 5px;
     font-family: 'Roboto', sans-serif;
@@ -811,7 +812,7 @@ body{
     display: block;
     min-height: 100px;
     border: 1px solid #dddddd;
-    background-color: #f5f5f5;
+    background-color: #F6F6F6;
     margin: 10px 0 15px 0;
 }
 .photos-list{
@@ -863,7 +864,7 @@ body{
     text-align: center;
 }
 .account-nav-item{
-    color: #444444;
+    color: #434343;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
     font-weight: 600;
@@ -888,6 +889,15 @@ body{
 }
 
 @media (min-width: 0px) {
+    .index-row{
+        display: block;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .index-side-container{
+        display: block;
+        text-align: center;
+    }
     .nav-search{
         display: none;
     }
@@ -963,7 +973,7 @@ body{
         width: 0px;
     }
     .info-title{
-        color: #424242;
+        color: #434343;
         font-family: 'Roboto', sans-serif;
         font-size: 25px;
         font-weight: 500;
@@ -1051,7 +1061,7 @@ body{
     .info-bar-name{
         display: inline-block;
         width: 32%;
-        color: #474747;
+        color: #484848;
         font-family: 'Roboto', sans-serif;
         font-size: 17px;
         text-align: left;
@@ -1084,7 +1094,6 @@ body{
 @media (min-width: 768px) {
     .nav-search{
         display: inline-block;
-        width: 83%;
         text-align: center;
     }
     .nav-more{
@@ -1115,11 +1124,21 @@ body{
     .account-message-form{
         width: 100%;
         padding: 10px 15px 10px 15px;
-        background-color: #EEEEEE;
+        background-color: #ECECEC;
         border: 1px solid #D3D3D3;
     }
 }
 @media (min-width: 992px) {
+    .index-row{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .index-side-container{
+        display: inline-block;
+        width: 40%;
+        text-align: center;
+    }
     .nav-account {
         display: inline-block;
         color: #484848;
@@ -1180,7 +1199,7 @@ body{
          width: 0px;
      }
     .info-title{
-        color: #424242;
+        color: #434343;
         font-family: 'Roboto', sans-serif;
         font-size: 25px;
         font-weight: 500;
@@ -1279,7 +1298,7 @@ body{
     .account-message-form{
         width: 50%;
         padding: 10px 15px 10px 15px;
-        background-color: #EEEEEE;
+        background-color: #ECECEC;
         border: 1px solid #D3D3D3;
     }
 }

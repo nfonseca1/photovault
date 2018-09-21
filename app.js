@@ -13,8 +13,8 @@ var postRoutes = require("./routes/posts"),
     indexRoutes = require("./routes/index");
 
 require('dotenv').config();
-//mongoose.connect("mongodb://localhost/photoVault");
-mongoose.connect("mongodb://nfonseca1:dXu7ce5yqWUaLKt@ds261332.mlab.com:61332/snappir");
+mongoose.connect("mongodb://localhost/snappir");
+
 var app = express();
 
 app.use(express.static(__dirname +'/public'));
@@ -44,7 +44,7 @@ app.use("/home", postRoutes);
 app.use("/account", accountRoutes);
 app.use("/api", apiRoutes);
 
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(3000, function(){
     console.log("server started.......");
 });
 
