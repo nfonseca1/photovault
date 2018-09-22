@@ -100,6 +100,9 @@ function setupLayout(i){
         var w = width[x];
         var flexGrow = (w * 100) / h;
         var size = 240;
+        if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi)')){
+            size = 320;
+        }
         if(userData.getAttribute("data-rowSize") != undefined){
             size = parseInt(userData.getAttribute("data-rowSize"));
         }
