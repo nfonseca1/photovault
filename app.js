@@ -7,7 +7,6 @@ var express               = require("express"),
     methodOverride        = require("method-override");
 
 var postRoutes = require("./routes/posts"),
-    commentRoutes = require("./routes/comments"),
     accountRoutes = require("./routes/account"),
     apiRoutes = require("./routes/api"),
     indexRoutes = require("./routes/index");
@@ -42,10 +41,7 @@ app.use(function(req, res, next){
 app.use("/", indexRoutes);
 app.use("/home", postRoutes);
 app.use("/account", accountRoutes);
-app.use("/api", apiRoutes);
-
-//var port = process.env.PORT || 3000;
-//var ip = process.env.IP || 'localhost';
+app.use("/api", apiRoutes)
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started.......");

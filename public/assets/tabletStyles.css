@@ -1,12 +1,12 @@
 @media (min-width: 1151px) and (orientation: portrait), (max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9){
     .index-background{
-        height: 70vh;
+        height: 112vw;
         width: 100%;
         background-image: url("https://res.cloudinary.com/dfuxqmces/image/upload/v1537302957/index1.jpg");
         background-size: cover;
     }
     .index-background-darken{
-        height: 70vh;
+        height: 112vw;
         width: 100%;
         background-color: rgba(0,0,0,.50);
     }
@@ -39,7 +39,7 @@
         font-size: 4vw;
         font-weight: 400;
         letter-spacing: 2px;
-        text-align: left;
+        text-align: center;
     }
     .index-form{
         padding-top: 6vw;
@@ -53,6 +53,7 @@
         font-size: 4vw;
         font-weight: 400;
         text-align: left;
+        width: 100%;
     }
     .input {
         display: block;
@@ -87,7 +88,7 @@
     .division-container{
         position: absolute;
         display: inline-block;
-        top: 66vh;
+        top: 106vw;
         left: 50%;
     }
     .index-division {
@@ -141,5 +142,6 @@
         font-weight: 400;
         line-height: 31px;
         text-align: left;
+        width: 100%;
     }
 }
