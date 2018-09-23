@@ -1,4 +1,4 @@
-@media /*(min-width: 1151px) and (orientation: portrait),*/(max-width: 1150px) and (orientation: portrait)/*and (max-resolution: 220dpi)*/, (max-width: 1150px)/* and (max-resolution: 220dpi)*/ and (max-aspect-ratio: 13/9){
+@media /*(min-width: 1151px) and (orientation: portrait),*/(max-width: 1150px) and (min-height: 1100px) and (orientation: portrait)/*and (max-resolution: 220dpi)*/, (max-width: 1150px) and (max-height: 700px)/*(max-resolution: 220dpi) and (max-aspect-ratio: 13/9)*/{
     .index-background{
         height: 112vw;
         width: 100%;
