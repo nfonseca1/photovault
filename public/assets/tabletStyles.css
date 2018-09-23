@@ -450,4 +450,102 @@
         font-size: 2vw;
         padding: 1vw 3px 0 3px;
     }
+
+    .account-header{
+        padding-top: 7vw;
+        width: 100%;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #D3D3D3;
+    }
+    .account-username{
+        text-align: center;
+        color: #434343;
+        font-family: 'Roboto', sans-serif;
+        font-size: 4vw;
+        font-weight: 400;
+        line-height: 4.5vw;
+    }
+    .account-info{
+        display: inline-block;
+        padding: 0 1vw 0 1vw;
+        color: #6C6C6C;
+        font-family: 'Roboto', sans-serif;
+        font-size: 2vw;
+        font-weight: 400;
+    }
+    .account-bio{
+        color: #434343;
+        font-family: 'Roboto', sans-serif;
+        font-size: 2.5vw;
+        font-weight: 400;
+        line-height: 2.5vw;
+        width: 55%;
+        margin: 0 auto;
+        padding-bottom: 1vw;
+        text-align: center;
+    }
+    .account-nav{
+        display: none;
+    }
+    .account-upload-container{
+        margin-top: 2vw;
+        width: 100%;
+        padding: 1vw 0;
+        background-color: #F0F0F0;
+        border: 1px solid #D3D3D3;
+        text-align: center;
+    }
+    .account-upload-container{
+        margin-top: 2vw;
+        width: 100%;
+        padding: 1vw 0;
+        background-color: #F0F0F0;
+        border: 1px solid #D3D3D3;
+        text-align: center;
+    }
+    .account-upload-form{
+        display: none;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        background-color: #ECECEC;
+        border: 1px solid #D3D3D3;
+    }
+    .account-upload-field{
+        display: inline-block;
+        padding: 1vw;
+    }
+    .snappir-label{
+        display: block;
+        color: #434343;
+        font-family: 'Roboto', sans-serif;
+        font-size: 3vw;
+        font-weight: 400;
+        letter-spacing: 1px;
+        line-height: 4vw;
+        text-align: left;
+    }
+    .snappir-file{
+        display: block;
+        font-size: 2.75vw;
+    }
+    .snappir-input{
+        background-color: #fafafa;
+        border: 1px solid #b4b4b4;
+        border-radius: 5px;
+        width: 85vw;
+        height: 4vw;
+        font-size: 2.5vw;
+    }
+    .input-select{
+        width: 20vw;
+    }
+    .snappir-checkbox{
+        margin: 1vw 0 0 0;
+        line-height: normal;
+        width: 3vw;
+        height: 3vw;
+    }
 }

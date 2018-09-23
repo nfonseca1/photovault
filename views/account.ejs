@@ -39,7 +39,7 @@
     <form action="/home" method="POST" class="account-upload-form" enctype="multipart/form-data">
         <div class="account-upload-field">
             <label for="image" class="snappir-label">Image Link</label>
-            <input type="file" id="image" class="" name="image" accept="image/*" required>
+            <input type="file" id="image" class="snappir-file" name="image" accept="image/*" required>
         </div>
         <div class="account-upload-field">
             <label for="Title" class="snappir-label">Title</label>
@@ -50,7 +50,7 @@
             <input type="text" name="description" id="description" class="snappir-input">
         </div>
         <div class="account-upload-field">
-            <label for="country" class="snappir-label">Photo was taken in: </label>
+            <label for="country" class="snappir-label">Photo taken in: </label>
             <select id="countriesList" class="snappir-input input-select" name="country" id="country">
 
             </select>
@@ -64,7 +64,7 @@
         </div>
         <div class="account-upload-field">
             <label class="snappir-label label-inline" for="isPublic">Public</label>
-            <input type="checkbox" name="isPublic" id="isPublic" checked="checked">
+            <input type="checkbox" class="snappir-checkbox" name="isPublic" id="isPublic" checked="checked">
         </div>
         <div class="account-upload-field">
             <button type="submit" name="upload" class="snappir-btn">Upload</button>
