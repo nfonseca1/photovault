@@ -1,16 +1,15 @@
-@media /*(min-width: 1151px) and (orientation: portrait),*/(max-width: 1150px) and (min-height: 1100px) and (orientation: portrait)/*and (max-resolution: 220dpi)*/, (max-width: 1150px) and (max-height: 720px)/*(max-resolution: 220dpi) and (max-aspect-ratio: 13/9)*/{
-    .index-background{
+    .mobile > .index-background{
         height: 112vw;
         width: 100%;
         background-image: url("https://res.cloudinary.com/dfuxqmces/image/upload/v1537302957/index1.jpg");
         background-size: cover;
     }
-    .index-background-darken{
+    .mobile > .index-background-darken{
         height: 112vw;
         width: 100%;
         background-color: rgba(0,0,0,.50);
     }
-    .index-logo {
+    .mobile > .index-logo {
         color: #F0F0F0;
         font-family: 'Varela Round', sans-serif;
         font-size: 11vw;
@@ -18,7 +17,7 @@
         letter-spacing: 1.5vw;
         text-align: center;
     }
-    .index-slogan {
+    .mobile > .index-slogan {
         color: #ABABAB;
         font-family: 'Lato', sans-serif;
         font-size: 4vw;
@@ -26,14 +25,14 @@
         text-align: center;
         padding-bottom: 5vw;
     }
-    .index-sign-in-title {
+    .mobile > .index-sign-in-title {
         color: #F0F0F0;
         font-family: 'Varela Round', sans-serif;
         font-size: 7.5vw;
         font-weight: 400;
         text-align: center;
     }
-    .index-sign-in-slogan {
+    .mobile > .index-sign-in-slogan {
         color: #ABABAB;
         font-family: 'Lato', sans-serif;
         font-size: 4vw;
@@ -41,13 +40,13 @@
         letter-spacing: 2px;
         text-align: center;
     }
-    .index-form{
+    .mobile > .index-form{
         padding-top: 6vw;
     }
-    .index-form-right{
+    .mobile > .index-form-right{
         padding-top: 0;
     }
-    .sign-in-label {
+    .mobile > .sign-in-label {
         color: #EEEEEE;
         font-family: 'Lato', sans-serif;
         font-size: 4vw;
@@ -55,7 +54,7 @@
         text-align: left;
         width: 100%;
     }
-    .input {
+    .mobile > .input {
         display: block;
         background-color: #E0E0E0;
         border: none;
@@ -68,7 +67,7 @@
         color: #333333;
         padding-left: 1vw;
     }
-    .button {
+    .mobile > .button {
         padding: 1vw 2vw 4vw 2vw;
         display: inline-block;
         background-color: #0052CF;
@@ -82,16 +81,16 @@
         line-height: 28px;
         text-align: center;
     }
-    .login-btn{
+    .mobile > .login-btn{
         margin-top: 3vw;
     }
-    .division-container{
+    .mobile > .division-container{
         position: absolute;
         display: inline-block;
         top: 106vw;
         left: 50%;
     }
-    .index-division {
+    .mobile > .index-division {
         z-index: 2;
         position: relative;
         background-color: #E8E8E8;
@@ -100,7 +99,7 @@
         width: 12.5vw;
         height: 12.5vw;
     }
-    .index-division-or {
+    .mobile > .index-division-or {
         color: #292929;
         padding-top: 2.75vw;
         padding-left: 1.5vw;
@@ -110,7 +109,7 @@
         line-height: 71px;
         text-align: left;
     }
-    .index-sign-up-title {
+    .mobile > .index-sign-up-title {
         display: block;
         text-align: center;
         color: #353535;
@@ -119,7 +118,7 @@
         font-weight: 400;
         line-height: 61px;
     }
-    .index-sign-up-slogan {
+    .mobile > .index-sign-up-slogan {
         font-family: 'Lato', sans-serif;
         font-size: 4vw;
         font-weight: 400;
@@ -129,13 +128,13 @@
         padding-top: 1vw;
         color: #444444
     }
-    .index-side{
+    .mobile > .index-side{
         display: inline-block;
         margin: 0 auto;
         text-align: left;
         width: 85%;
     }
-    .sign-up-label {
+    .mobile > .sign-up-label {
         color: #111111;
         font-family: 'Lato', sans-serif;
         font-size: 3.5vw;
@@ -145,7 +144,7 @@
         width: 100%;
     }
 
-    .nav-snappir-logo {
+    .mobile > .nav-snappir-logo {
         display: inline-block;
         color: #E36C10;
         font-family: 'Roboto Slab', serif;
@@ -156,16 +155,16 @@
         text-align: left;
         width: auto;
     }
-    .nav-search{
+    .mobile > .nav-search{
         display: none;
     }
-    .snappir-search{
+    .mobile > .snappir-search{
         display: none;
     }
-    .snappir-search-btn{
+    .mobile > .snappir-search-btn{
         display: none;
     }
-    .nav-more{
+    .mobile > .nav-more{
         z-index: 25;
         display: none;
         position: fixed;
@@ -175,7 +174,7 @@
         border: 1px solid #d3d3d3;
         padding-top: 7vw;
     }
-    .nav-more-btn{
+    .mobile > .nav-more-btn{
         display: inline-block;
         color: #484848;
         font-family: 'Roboto', sans-serif;
@@ -188,26 +187,26 @@
         background-color: transparent;
         width: auto;
     }
-    .nav-more-header{
+    .mobile > .nav-more-header{
         font-family: 'Roboto Slab', serif;
         text-align: center;
         font-weight: bold;
         font-size: 4.5vw;
         margin: 1vw auto 2vw auto;
     }
-    .nav-more-item {
+    .mobile > .nav-more-item {
         font-family: 'Roboto Slab', serif;
         text-align: center;
         background-color: #f0f0f0;
         font-size: 3.5vw;
         margin-bottom: 2vw;
     }
-    .nav-more-item:hover{
+    .mobile > .nav-more-item:hover{
         font-family: 'Roboto Slab', serif;
         text-align: center;
         background-color: #d1d1d1;
     }
-    .nav-more-search{
+    .mobile > .nav-more-search{
         display: inline-block;
         width: 60%;
         height: 4vw;
@@ -217,7 +216,7 @@
         font-size: 3vw;
         padding-left: 1vw;
     }
-    .more-search-btn{
+    .mobile > .more-search-btn{
         display: inline-block;
         height: 4vw;
         background-color: #0170CA;
@@ -228,13 +227,13 @@
         margin-left: -2%;
         padding: 0 1vw 1vw 1vw;
     }
-    .home-header{
+    .mobile > .home-header{
         width: 100%;
         background-color: #f0f0f0;
         padding-top: 8vw;
         border-bottom: 1px solid #d3d3d3;
     }
-    .home-title {
+    .mobile > .home-title {
         color: #3D3D3D;
         font-family: 'Roboto', sans-serif;
         font-size: 6vw;
@@ -244,22 +243,22 @@
         text-align: left;
         margin: 15px auto 15px 0;
     }
-    .home-header-nav{
+    .mobile > .home-header-nav{
         width: 100%;
     }
-    .home-header-left{
+    .mobile > .home-header-left{
         display: inline-block;
         width: 65%;
         text-align: left;
         padding-top: 1.5vw;
     }
-    .home-header-right{
+    .mobile > .home-header-right{
         display: inline-block;
         width: 34%;
         text-align: right;
         padding-top: 1.5vw;
     }
-    .home-dropdown{
+    .mobile > .home-dropdown{
         display: inline-block;
         border: none;
         background-color: transparent;
@@ -268,7 +267,7 @@
         font-size: 3vw;
         margin-right: 1vw;
     }
-    .home-sort-dropdown{
+    .mobile > .home-sort-dropdown{
         display: inline-block;
         border: none;
         border-bottom: 1px solid #dddddd;
@@ -277,17 +276,17 @@
         height: 4vw;
         font-size: 3vw;
     }
-    .home-link{
+    .mobile > .home-link{
         display: none;
         margin-left: 5%;
     }
 
-    .post-container{
+    .mobile > .post-container{
         width: 100%;
         height: 105vw;
         padding-top: 7vw;
     }
-    .post-info{
+    .mobile > .post-info{
         position: absolute;
         display: inline-block;
         background-color: #F0F0F0;
@@ -296,7 +295,7 @@
         height: 45vw;
         top: 60vw;
     }
-    .post-info-details{
+    .mobile > .post-info-details{
         display: block;
         position:absolute;
         width: 100%;
@@ -307,10 +306,10 @@
         padding: 1vw;
         overflow: auto;
     }
-    .post-info-details::-webkit-scrollbar {
+    .mobile > .post-info-details::-webkit-scrollbar {
         width: 0px;
     }
-    .post-update-input{
+    .mobile > .post-update-input{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -322,7 +321,7 @@
         margin-top: 2px;
         font-size: 2.5vw;
     }
-    .post-update-textarea{
+    .mobile > .post-update-textarea{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -334,7 +333,7 @@
         margin-top: 6px;
         font-size: 2.5vw;
     }
-    .snappir-btn{
+    .mobile > .snappir-btn{
         display: inline-block;
         border-radius: 4px;
         height: 5vw;
@@ -342,7 +341,7 @@
         font-size: 3vw;
         font-weight: 400;
     }
-    .info-details-box{
+    .mobile > .info-details-box{
         position: absolute;
         background-color: #f0f0f0;
         border: none;
@@ -351,10 +350,10 @@
         padding: 5px 5px;
         overflow: scroll;
     }
-    .info-details-box::-webkit-scrollbar {
+    .mobile > .info-details-box::-webkit-scrollbar {
         width: 0px;
     }
-    .info-title{
+    .mobile > .info-title{
         color: #434343;
         font-family: 'Roboto', sans-serif;
         font-size: 3vw;
@@ -362,7 +361,7 @@
         line-height: 32px;
         text-align: center;
     }
-    .info-description{
+    .mobile > .info-description{
         color: #595959;
         font-family: 'Roboto', sans-serif;
         font-size: 2.25vw;
@@ -376,7 +375,7 @@
         width: 0px;
     }
     */
-    .post-info-comments{
+    .mobile > .post-info-comments{
         display: inline-block;
         width: 50%;
         height: 100%;
@@ -385,14 +384,14 @@
         border-right: 1px solid #bababa;
         padding: 10vw 5px 5px 5px;
     }
-    .post-info-comments::-webkit-scrollbar {
+    .mobile > .post-info-comments::-webkit-scrollbar {
         width: 0px;
     }
-    .post-comment-form{
+    .mobile > .post-comment-form{
         text-align: center;
         margin-bottom: 1vw;
     }
-    .post-comment-input{
+    .mobile > .post-comment-input{
         display: inline-block;
         width: 80%;
         height: 3.5vw;
@@ -402,7 +401,7 @@
         font-size: 2.5vw;
         padding-left: 1%;
     }
-    .post-comment-btn{
+    .mobile > .post-comment-btn{
         display: inline-block;
         height: 3.5vw;
         background-color: #0170CA;
@@ -413,7 +412,7 @@
         margin-left: -1%;
         padding: 5px 2vw
     }
-    .post-comment{
+    .mobile > .post-comment{
         font-family: 'Roboto', sans-serif;
         font-size: 2.5vw;
         background: #dddddd;
@@ -421,13 +420,13 @@
         text-align: left;
         line-height: 3vw;
     }
-    .post-info-map{
+    .mobile > .post-info-map{
         display: inline-block;
         width: 49%;
         height: 100%;
         padding: 8vw 5px 5px 5px;
     }
-    .post-photo-area{
+    .mobile > .post-photo-area{
         display: flex;
         background-color: #f0f0f0;
         justify-content: center;
@@ -437,7 +436,7 @@
         margin: 0 auto;
         text-align: center;
     }
-    .post-meta {
+    .mobile > .post-meta {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -451,13 +450,13 @@
         padding: 1vw 3px 0 3px;
     }
 
-    .account-header{
+    .mobile > .account-header{
         padding-top: 7vw;
         width: 100%;
         background-color: #f0f0f0;
         border-bottom: 1px solid #D3D3D3;
     }
-    .account-username{
+    .mobile > .account-username{
         text-align: center;
         color: #434343;
         font-family: 'Roboto', sans-serif;
@@ -465,7 +464,7 @@
         font-weight: 400;
         line-height: 4.5vw;
     }
-    .account-info{
+    .mobile > .account-info{
         display: inline-block;
         padding: 0 1vw 0 1vw;
         color: #6C6C6C;
@@ -473,7 +472,7 @@
         font-size: 2vw;
         font-weight: 400;
     }
-    .account-bio{
+    .mobile > .account-bio{
         color: #434343;
         font-family: 'Roboto', sans-serif;
         font-size: 2.5vw;
@@ -484,10 +483,10 @@
         padding-bottom: 1vw;
         text-align: center;
     }
-    .account-nav{
+    .mobile > .account-nav{
         display: none;
     }
-    .account-upload-container{
+    .mobile > .account-upload-container{
         margin-top: 2vw;
         width: 100%;
         padding: 1vw 0;
@@ -495,7 +494,7 @@
         border: 1px solid #D3D3D3;
         text-align: center;
     }
-    .account-upload-container{
+    .mobile > .account-upload-container{
         margin-top: 2vw;
         width: 100%;
         padding: 1vw 0;
@@ -503,7 +502,7 @@
         border: 1px solid #D3D3D3;
         text-align: center;
     }
-    .account-upload-form{
+    .mobile > .account-upload-form{
         display: none;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -513,11 +512,11 @@
         background-color: #ECECEC;
         border: 1px solid #D3D3D3;
     }
-    .account-upload-field{
+    .mobile > .account-upload-field{
         display: inline-block;
         padding: 1vw;
     }
-    .snappir-label{
+    .mobile > .snappir-label{
         display: block;
         color: #434343;
         font-family: 'Roboto', sans-serif;
@@ -527,11 +526,11 @@
         line-height: 4vw;
         text-align: left;
     }
-    .snappir-file{
+    .mobile > .snappir-file{
         display: block;
         font-size: 2.75vw;
     }
-    .snappir-input{
+    .mobile > .snappir-input{
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
         border-radius: 5px;
@@ -539,20 +538,20 @@
         height: 4vw;
         font-size: 2.5vw;
     }
-    .input-select{
+    .mobile > .input-select{
         width: 20vw;
     }
-    .snappir-checkbox{
+    .mobile > .snappir-checkbox{
         margin: 1vw 0 0 0;
         line-height: normal;
         width: 3vw;
         height: 3vw;
     }
 
-    .user-info-container{
+    .mobile > .user-info-container{
         margin-top: 2vw;
     }
-    .user-info-bar{
+    .mobile > .user-info-bar{
         margin-top: 1vw;
         width: 100%;
         height: 8vw;
@@ -560,21 +559,21 @@
         border: 1px solid #D3D3D3;
         padding: 0.75vw;
     }
-    .info-bar-image{
+    .mobile > .info-bar-image{
         width: 0;
     }
-    .info-bar-details{
+    .mobile > .info-bar-details{
         display: inline-block;
         width: 60%;
         height: 100%;
     }
-    .info-bar-half{
+    .mobile > .info-bar-half{
         display: inline-block;
         width: 100%;
         height: 50%;
         float: left;
     }
-    .info-bar-name{
+    .mobile > .info-bar-name{
         display: inline-block;
         width: 31%;
         color: #484848;
@@ -583,11 +582,11 @@
         text-align: left;
         overflow: hidden;
     }
-    .info-bar-meta{
+    .mobile > .info-bar-meta{
         display: none;
         width: 0;
     }
-    .info-bar-bio{
+    .mobile > .info-bar-bio{
         display: inline-block;
         width: 100%;
         height: 100%;
@@ -598,7 +597,7 @@
         font-size: 2vw;
         text-align: left;
     }
-    .info-bar-actions{
+    .mobile > .info-bar-actions{
         display: inline-flex;
         justify-content: space-evenly;
         align-items: center;
@@ -606,14 +605,14 @@
         height: 100%;
         float: right;
     }
-    .info-message-bar{
+    .mobile > .info-message-bar{
         width: 100%;
         height: 6vw;
         background-color: #F0F0F0;
         border: 1px solid #D3D3D3;
         padding: 3px 5% 3px 5%;
     }
-    .message-bar-input{
+    .mobile > .message-bar-input{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -624,7 +623,7 @@
         float: left;
         font-size: 2.5vw;
     }
-    .message-table-container{
+    .mobile > .message-table-container{
         width: 100%;
         background-color: #ECECEC;
         border: 1px solid #D3D3D3;
@@ -632,25 +631,25 @@
         font-family: 'Roboto', sans-serif;
         font-size: 2.5vw;
     }
-    .message-table-row{
+    .mobile > .message-table-row{
         width: 100%;
         border-bottom: 1px solid #D3D3D3;
     }
-    .message-table-info{
+    .mobile > .message-table-info{
         padding: 2px 2% 2px 2%;
         width: 20%;
         font-size: 2.25vw;
     }
-    .message-info-user{
+    .mobile > .message-info-user{
         color: #206BC3;
         overflow: hidden;
     }
-    .message-table-text{
+    .mobile > .message-table-text{
         padding: 2px 2% 2px 2%;
         width: 80%;
     }
 
-    .account-nav-item{
+    .mobile > .account-nav-item{
         font-family: 'Roboto Slab', serif;
         font-size: 2.5vw;
         font-weight: 600;
@@ -659,7 +658,7 @@
         margin-left: 2vw;
         margin-right: 2vw;
     }
-    .favorites-edit-container{
+    .mobile > .favorites-edit-container{
         width: 100%;
         height: auto;
         background-color: #ECECEC;
@@ -669,7 +668,7 @@
         font-size: 2.5vw;
         text-align: left;
     }
-    .list-bar-input{
+    .mobile > .list-bar-input{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -680,12 +679,12 @@
         margin: auto 2% auto 2%;
         padding-left: 2px;
     }
-    .list-bar-btn{
+    .mobile > .list-bar-btn{
         display: inline-block;
         margin: auto 2% auto 2%;
     }
 
-    .settings-heading{
+    .mobile > .settings-heading{
         color: #2E2E2E;
         font-family: 'Roboto', sans-serif;
         font-size: 3.5vw;
@@ -694,7 +693,7 @@
         margin-top: 3.5vw;
         text-align: left;
     }
-    .settings-input{
+    .mobile > .settings-input{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -705,7 +704,7 @@
         padding-left: 2px;
         font-size: 2.5vw;
     }
-    .settings-input-textarea{
+    .mobile > .settings-input-textarea{
         display: inline-block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -717,7 +716,7 @@
         font-size: 2.5vw;
     }
 
-    .user-account-nav{
+    .mobile > .user-account-nav{
         display: block;
         width: 100%;
         background-color: #f0f0f0;
@@ -725,7 +724,7 @@
         padding: 1vw 0;
         text-align: center;
     }
-    .account-message-text{
+    .mobile > .account-message-text{
         display: block;
         background-color: #fafafa;
         border: 1px solid #b4b4b4;
@@ -735,4 +734,3 @@
         padding-left: 1vw;
         font-size: 2.5vw;
     }
-}
