@@ -89,7 +89,7 @@
         font-family: 'Lato', sans-serif;
         font-size: 4vw;
         font-weight: 400;
-        line-height: 28px;
+        line-height: 4vw;
         text-align: center;
     }
 
@@ -116,13 +116,12 @@
 
     .mobile .index-division-or {
         color: #292929;
-        padding-top: 2.75vw;
-        padding-left: 1.5vw;
         font-family: 'Varela Round', sans-serif;
         font-size: 6vw;
         font-weight: 400;
-        line-height: 71px;
-        text-align: left;
+        text-align: center;
+        line-height: 11vw;
+        padding: 1vw 0 0 0;
     }
 
     .mobile .index-sign-up-title {
@@ -383,9 +382,9 @@
     .mobile .snappir-btn {
         display: inline-block;
         border-radius: 4px;
-        height: 5vw;
+        height: 4vw;
         padding: 1px 6px 1px 6px;
-        font-size: 3vw;
+        font-size: 2.75vw;
         font-weight: 400;
     }
 
