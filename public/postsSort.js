@@ -74,14 +74,14 @@ function setupLayout(i){
     var figures = document.querySelectorAll("figure");
     var iTags = document.querySelectorAll("i");
 
-    var t = i - 30;
-    var x = i - 30;
-    if((i - 30) < 0 ){
+    var t = i - 21;
+    var x = i - 21;
+    if((i - 21) < 0 ){
         t = 0;
         x = 0;
     } else {
-        t = i - 30;
-        x = i - 30;
+        t = i - 21;
+        x = i - 21;
     }
 
     var height = [];

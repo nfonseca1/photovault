@@ -3,11 +3,11 @@ function setupPosts(posts, i, user, link) {
     var html = '';
     var max = 0;
     var end = false;
-    if(i + 30 >= posts.length){
+    if(i + 21 >= posts.length){
         max = posts.length;
         end = true;
     } else {
-        max = i + 30;
+        max = i + 21;
     }
     //Assemble 30 more posts
     for (i; i < max; i++) {
