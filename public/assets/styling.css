@@ -1127,7 +1127,7 @@ body{
         border: 1px solid #D3D3D3;
     }
 }
-@media (min-width: 992px) {
+@media (min-width: 952px) {
     .index-row{
         display: flex;
         width: 100%;
