@@ -7,6 +7,7 @@ var pagePosition = 0;
 var getFavorites = false;
 var linkPhotos = false;
 var user;
+var photoBatch = 21;
 if(userData.getAttribute("data-username") != undefined){
     user = userData.getAttribute("data-username");
 }
@@ -74,14 +75,14 @@ function setupLayout(i){
     var figures = document.querySelectorAll("figure");
     var iTags = document.querySelectorAll("i");
 
-    var t = i - 21;
-    var x = i - 21;
-    if((i - 21) < 0 ){
+    var t = i - photoBatch;
+    var x = i - photoBatch;
+    if((i - photoBatch) < 0 ){
         t = 0;
         x = 0;
     } else {
-        t = i - 21;
-        x = i - 21;
+        t = i - photoBatch;
+        x = i - photoBatch;
     }
 
     var height = [];
@@ -99,9 +100,9 @@ function setupLayout(i){
         var h = height[x];
         var w = width[x];
         var flexGrow = (w * 100) / h;
-        var size = 240;
+        var size = 200;
         if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi)')){
-            size = 320;
+            size = 280;
         }
         if(userData.getAttribute("data-rowSize") != undefined){
             size = parseInt(userData.getAttribute("data-rowSize"));
