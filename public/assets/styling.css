@@ -1189,7 +1189,7 @@ body{
         top: 50px;
     }
     .post-info-details{
-        height: 31%;
+        height: 25%;
         width: 100%;
         padding: 4px;
         overflow: scroll;
@@ -1200,7 +1200,7 @@ body{
     .info-title{
         color: #434343;
         font-family: 'Roboto', sans-serif;
-        font-size: 25px;
+        font-size: 1.5vw;
         font-weight: 500;
         line-height: 32px;
         text-align: center;
@@ -1208,14 +1208,14 @@ body{
     .info-description{
         color: #595959;
         font-family: 'Roboto', sans-serif;
-        font-size: 17px;
+        font-size: 1.1vw;
         font-weight: 400;
         line-height: 22px;
         text-align: left;
     }
 
     .post-info-comments{
-        height: 36%;
+        height: 42%;
         width: 100%;
         overflow: scroll;
         border-top: 1px solid #bababa;
@@ -1227,9 +1227,9 @@ body{
     }
     .post-info-map{
         display: inline-block;
-        height: 31.5%;
+        height: 32.5%;
         width: 100%;
-        padding: 4px;
+        margin: -2.5% 0 0 0;
     }
     /*
     ::-webkit-scrollbar {
