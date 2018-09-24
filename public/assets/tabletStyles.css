@@ -1,4 +1,4 @@
-@media (max-width: 1150px) and (max-resolution: 220dpi) {
+@media (max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9) {
     .mobile .index-background {
         height: 112vw;
         width: 100%;
