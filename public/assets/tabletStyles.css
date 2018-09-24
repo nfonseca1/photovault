@@ -198,6 +198,10 @@
         padding-top: 7vw;
     }
 
+    .mobile .nav-account {
+        display: none;
+    }
+
     .mobile .nav-more-btn {
         display: inline-block;
         color: #484848;

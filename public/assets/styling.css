@@ -1185,7 +1185,7 @@ body{
         background-color: #F0F0F0;
         border: 1px solid #BEBEBE;
         width: 21%;
-        height: 670px;
+        height: 45vw;
         top: 50px;
     }
     .post-info-details{
@@ -1274,7 +1274,7 @@ body{
         justify-content: center;
         flex-direction: column;
         width: 75%;
-        height: 670px;
+        height: 45vw;
         margin-left: 24.5%;
         text-align: center;
     }
