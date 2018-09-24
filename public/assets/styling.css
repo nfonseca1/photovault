@@ -1243,20 +1243,22 @@ body{
     .post-comment-input{
         display: inline-block;
         width: 80%;
-        height: 16px;
+        height: 1.2vw;
+        min-height: 18px;
         background-color: #DBDBDB;
         border: 1px solid #D1D1D1;
         border-radius: 60px 0 0 60px;
-        font-size: 12px;
+        font-size: 90%;
         padding-left: 1%;
     }
     .post-comment-btn{
         display: inline-block;
-        height: 16px;
+        height: 1.2vw;
+        min-height: 18px;
         background-color: #0170CA;
         border-radius: 0 60px 60px 0;
         border: none;
-        font-size: 10px;
+        font-size: 90%;
         color: #f0f0f0;
         margin-left: -2%;
     }
