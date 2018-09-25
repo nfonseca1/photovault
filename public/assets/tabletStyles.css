@@ -12,6 +12,11 @@
         background-color: rgba(0, 0, 0, .50);
     }
 
+    .mobile .index-contain{
+        padding-top: 10vw;
+        height: 800px;
+    }
+
     .mobile .index-logo {
         color: #F0F0F0;
         font-family: 'Varela Round', sans-serif;
