@@ -170,6 +170,11 @@ body{
     border-bottom: 1px solid #d3d3d3;
     padding-bottom: 5px;
 }
+.snappir-nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .nav-snappir-logo {
     display: inline-block;
     color: #E36C10;
@@ -178,13 +183,13 @@ body{
     font-style: italic;
     font-weight: 700;
     line-height: 32px;
-    width: 12%;
+    width: auto;
     text-align: left;
 }
 .snappir-search{
     display: inline-block;
     height: 35%;
-    width: 35%;
+    width: 80%;
     background-color: #DBDBDB;
     border: 1px solid #D1D1D1;
     border-radius: 100px 0 0 100px;
@@ -208,6 +213,7 @@ body{
 }
 .nav-more-item {
     font-family: 'Roboto Slab', serif;
+    font-size: 18px;
     text-align: center;
     background-color: #f0f0f0;
 }
@@ -222,7 +228,6 @@ body{
 .nav-more-search{
     display: inline-block;
     width: 70%;
-    height: 16px;
     background-color: #DBDBDB;
     border: 1px solid #D1D1D1;
     border-radius: 60px 0 0 60px;
@@ -231,14 +236,12 @@ body{
 }
 .more-search-btn{
     display: inline-block;
-    height: 16px;
     background-color: #0170CA;
     border-radius: 0 60px 60px 0;
-    border: none;
-    font-size: 10px;
+    border: 1px solid #0170CA;
+    font-size: 12px;
     color: #f0f0f0;
     margin-left: -2%;
-    padding: 0 1vw 1vw 1vw;
 }
 .home-header{
     width: 100%;
@@ -901,14 +904,13 @@ body{
         display: none;
     }
     .nav-more{
-        z-index: 25;
+        z-index: 15;
         display: none;
         position: static;
         width: 100%;
-        margin: 0 0 auto 0;
         background-color: #f0f0f0;
         border: 1px solid #d3d3d3;
-        padding-top: 7vw;
+        padding-top: 50px;
     }
     .nav-more-btn{
         display: inline-block;
@@ -1089,16 +1091,6 @@ body{
 }
 
 @media (min-width: 768px) {
-    .nav-search{
-        display: inline-block;
-        width: 75%;
-        text-align: center;
-    }
-    .nav-more{
-        width: 50%;
-        margin: 0 0 auto 50%;
-        padding-top: 7vw;
-    }
     .info-bar-name{
         width: 25%;
         font-size: 18px;
@@ -1138,6 +1130,11 @@ body{
         width: 40%;
         text-align: center;
     }
+    .nav-search{
+        display: inline-block;
+        width: 50%;
+        text-align: center;
+    }
     .nav-account {
         display: inline-block;
         color: #484848;
@@ -1145,7 +1142,7 @@ body{
         font-size: 25px;
         font-weight: 400;
         line-height: 32px;
-        width: 12%;
+        width: auto;
         text-align: right;
     }
     .nav-more-btn{
