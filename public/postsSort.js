@@ -162,8 +162,8 @@ function configureHoverEffects(){
 
 function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
     if(document.querySelector("body").classList.contains("mobile")){
-        info.style.opacity = '1';
-        header.style.paddingRight = '30px';
+        info.style.display = 'inline-block';
+        header.style.paddingRight = '40px';
         info.addEventListener("click", function(){
             if(infoOn[index]){
                 hideInfo(header, footer, footerLeft, footerRight);
