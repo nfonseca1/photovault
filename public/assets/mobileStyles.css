@@ -1,4 +1,13 @@
 @media (max-width: 1150px) and (min-resolution: 220dpi) and (orientation: portrait){
+    .mobile .grid > figure {
+        margin: 0.6vw;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+
+
     .mobile .index-background {
         height: 125vw;
         width: 100%;

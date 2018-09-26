@@ -2,6 +2,50 @@ body{
     margin: 0;
     background-color: #E8E8E8;
 }
+.grid-default{
+    opacity: 0;
+}
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+.grid > img {
+    max-height: 100px;
+}
+
+.grid::after {
+    content: '';
+    flex-grow: 10000;
+}
+
+.grid > figure {
+    margin: 0.25vw;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.grid > figure > i {
+    display: block;
+}
+
+.grid > figure > a > img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: auto;
+}
+.thumbnail img {
+    width: 100%;
+}
+a.nostyle:link, a.nostyle:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
 
 .index-background{
     height: 800px;
