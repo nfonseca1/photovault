@@ -19,7 +19,7 @@ function setupPosts(posts, i, user, link) {
             isAuthor = 'no';
         }
         html += '<figure class="newly-loaded" data-isauthor="' + isAuthor + '" data-country="' + posts[i].country + '"><i></i>';
-        html += '<div class="post-hover-header">' + posts[i].title + '</div><div class="post-hover-info">i</div>';
+        html += '<div class="post-hover-header">' + posts[i].title + '</div><div class="post-hover-info"></div>';
         html += '<div class="post-hover-footer"><div class="hover-footer-left">';
         html += '<span class="hover-footer-author"><a href="/account/' + posts[i].author.username + '" class="nostyle">' + posts[i].author.username + '</a></span></div>';
         html += '<div class="hover-footer-right"></div></div>';
