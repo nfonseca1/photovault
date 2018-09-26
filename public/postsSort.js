@@ -122,7 +122,7 @@ function applyImageProperties(x){
     if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9), (min-width: 1151px) and (orientation: portrait) and (min-resolution: 221dpi), (min-width: 1151px) and (min-resolution: 221dpi) and (max-aspect-ratio: 13/9)')){
         size = 250;
     } else if(window.matchMedia('(max-width: 1150px) and (min-resolution: 220dpi) and (orientation: portrait)')){
-        size = 300;
+        size = 330;
     }
     if(userData.getAttribute("data-rowSize") != undefined){
         size = parseInt(userData.getAttribute("data-rowSize"));
