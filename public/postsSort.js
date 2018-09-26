@@ -8,6 +8,9 @@ var getFavorites = false;
 var linkPhotos = false;
 var user;
 var photoBatch = 21;
+var infoOn = [];
+var timeouts = [];
+
 if(userData.getAttribute("data-username") != undefined){
     user = userData.getAttribute("data-username");
 }
@@ -144,69 +147,113 @@ function unpauseRequests(extendWait){
 function configureHoverEffects(){
     var newlyLoaded = document.querySelectorAll(".newly-loaded");
 
-    newlyLoaded.forEach(function(post){
-        var header = post.querySelector(".post-hover-header");
-        var footer = post.querySelector(".post-hover-footer");
-        var footerLeft = footer.querySelector(".hover-footer-left");
-        var footerRight = footer.querySelector(".hover-footer-right");
+    for(let n = 0; n < newlyLoaded.length; n++){
+        infoOn.push(false);
 
-        post.addEventListener("mouseenter", function(){
-            header.style.opacity = "1";
-            header.style.transition = "opacity .35s linear";
-            footer.style.opacity = "1";
-            footer.style.transition = "opacity .35s linear";
-            footerLeft.querySelector(".hover-footer-author").style.display = "inline-block";
+        var header = newlyLoaded[n].querySelector(".post-hover-header");
+        var info = newlyLoaded[n].querySelector(".post-hover-info");
+        var footer = newlyLoaded[n].querySelector(".post-hover-footer");
+        var footerLeft = newlyLoaded[n].querySelector(".hover-footer-left");
+        var footerRight = newlyLoaded[n].querySelector(".hover-footer-right");
 
-            if(post.getAttribute("data-isauthor") == 'yes'){
-                var html = '';
-                html += '<span class="hover-delete-confirm">Are you sure?</span>';
-                html += '<span class="hover-delete">Delete</span>';
-                html += '<span class="hover-delete-yes">Yes</span><span class="hover-delete-no">No</span>';
-                footerRight.innerHTML = html;
+        infoSetup(newlyLoaded[n], n, info, header, footer, footerLeft, footerRight);
+    }
+}
 
-                var footerDelete = footerRight.querySelector(".hover-delete");
-                footerDelete.addEventListener("click", function(){
-                    footerLeft.style.width = "0";
-                    footerRight.style.width = "100%";
-                    footerRight.style.display = "inline-flex";
-                    footerRight.style.justifyContent = "space-evenly";
-                    var footerYes = footerRight.querySelector(".hover-delete-yes");
-                    var footerNo = footerRight.querySelector(".hover-delete-no");
-                    var footerAuthor = footerLeft.querySelector(".hover-footer-author");
-                    var footerConfirm = footerRight.querySelector(".hover-delete-confirm");
-                    footerDelete.style.display = "none";
-                    footerYes.style.display = "inline-block";
-                    footerNo.style.display = "inline-block";
-                    footerAuthor.style.display = "none";
-                    footerConfirm.style.display = "inline-block";
-
-                    footerNo.addEventListener("click", function(){
-                        footerLeft.style.width = "49%";
-                        footerRight.style.width = "49%";
-                        footerRight.style.display = "inline-block";
-                        footerDelete.style.display = "inline-block";
-                        footerYes.style.display = "none";
-                        footerNo.style.display = "none";
-                        footerAuthor.style.display = "inline-block";
-                        footerConfirm.style.display = "none";
-                    })
-                    footerYes.addEventListener("click", function(){
-                        axios.delete("/api/home/" + post.querySelectorAll("a")[1].getAttribute("data-id"));
-                        post.outerHTML = '';
-                    })
-                })
+function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
+    if(document.querySelector("body").classList.contains("mobile")){
+        info.style.opacity = '1';
+        header.style.paddingRight = '30px';
+        info.addEventListener("click", function(){
+            if(infoOn[index]){
+                hideInfo(header, footer, footerLeft, footerRight);
+                infoOn[index] = false;
             } else {
-                footerRight.textContent = post.getAttribute("data-country");
+                if(timeouts[index] != undefined){
+                    clearTimeout(timeouts[index]);
+                }
+                showInfo(true, post, header, footer, footerLeft, footerRight);
+                for(let i = 0; i < infoOn.length; i++){
+                    infoOn[i] = false;
+                }
+                infoOn[index] = true;
+                timeouts[index] = setTimeout(function(){
+                    infoOn[index] = false;
+                    hideInfo(header, footer, footerLeft, footerRight);
+                }, 3500);
             }
         })
-        post.addEventListener("mouseleave", function(){
-            footerLeft.style.width = "49%";
-            footerRight.style.width = "49%";
-            footerRight.style.display = "inline-block";
-            header.style.opacity = "0";
-            header.style.transition = "0s";
-            footer.style.opacity = "0";
-            footer.style.transition = "0s";
-        })
+    }
+
+    post.addEventListener("mouseenter", function(){
+        showInfo(false, post, header, footer, footerLeft, footerRight);
     })
+    post.addEventListener("mouseleave", function(){
+        hideInfo(header, footer, footerLeft, footerRight);
+    })
+}
+
+function showInfo(isMobile, post, header, footer, footerLeft, footerRight){
+    header.style.opacity = "1";
+    footer.style.opacity = "1";
+    if(isMobile){
+        header.style.transition = "opacity .1s linear";
+        footer.style.transition = "opacity .1s linear";
+    } else{
+        header.style.transition = "opacity .35s linear";
+        footer.style.transition = "opacity .35s linear";
+    }
+    footerLeft.querySelector(".hover-footer-author").style.display = "inline-block";
+
+    if(post.getAttribute("data-isauthor") == 'yes'){
+        var html = '';
+        html += '<span class="hover-delete-confirm">Are you sure?</span>';
+        html += '<span class="hover-delete">Delete</span>';
+        html += '<span class="hover-delete-yes">Yes</span><span class="hover-delete-no">No</span>';
+        footerRight.innerHTML = html;
+
+        var footerDelete = footerRight.querySelector(".hover-delete");
+        footerDelete.addEventListener("click", function(){
+            footerLeft.style.width = "0";
+            footerRight.style.width = "100%";
+            footerRight.style.display = "inline-flex";
+            footerRight.style.justifyContent = "space-evenly";
+            var footerYes = footerRight.querySelector(".hover-delete-yes");
+            var footerNo = footerRight.querySelector(".hover-delete-no");
+            var footerAuthor = footerLeft.querySelector(".hover-footer-author");
+            var footerConfirm = footerRight.querySelector(".hover-delete-confirm");
+            footerDelete.style.display = "none";
+            footerYes.style.display = "inline-block";
+            footerNo.style.display = "inline-block";
+            footerAuthor.style.display = "none";
+            footerConfirm.style.display = "inline-block";
+
+            footerNo.addEventListener("click", function(){
+                footerLeft.style.width = "49%";
+                footerRight.style.width = "49%";
+                footerRight.style.display = "inline-block";
+                footerDelete.style.display = "inline-block";
+                footerYes.style.display = "none";
+                footerNo.style.display = "none";
+                footerAuthor.style.display = "inline-block";
+                footerConfirm.style.display = "none";
+            })
+            footerYes.addEventListener("click", function(){
+                axios.delete("/api/home/" + post.querySelectorAll("a")[1].getAttribute("data-id"));
+                post.outerHTML = '';
+            })
+        })
+    } else {
+        footerRight.textContent = post.getAttribute("data-country");
+    }
+}
+
+function hideInfo(header, footer, footerLeft, footerRight){
+    footerLeft.style.width = "49%";
+    footerRight.style.width = "49%";
+    footerRight.style.display = "inline-block";
+    header.style.opacity = "0";
+    header.style.transition = "0s";
+    footer.style.opacity = "0";
+    footer.style.transition = "0s";
 }

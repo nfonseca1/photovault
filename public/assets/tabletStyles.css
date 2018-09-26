@@ -321,6 +321,14 @@
         font-size: 3vw;
     }
 
+    .mobile .post-hover-header{
+        font-size: 23px;
+    }
+
+    .mobile .post-hover-footer{
+        font-size: 23px;
+    }
+
     .mobile .home-link {
         display: none;
         margin-left: 5%;
