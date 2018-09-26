@@ -194,8 +194,8 @@ function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
 }
 
 function showInfo(isMobile, post, header, footer, footerLeft, footerRight){
-    header.style.opacity = "1";
-    footer.style.opacity = "1";
+    header.style.display = "block";
+    footer.style.display = "flex";
     if(isMobile){
         header.style.transition = "opacity .1s linear";
         footer.style.transition = "opacity .1s linear";
@@ -252,8 +252,8 @@ function hideInfo(header, footer, footerLeft, footerRight){
     footerLeft.style.width = "49%";
     footerRight.style.width = "49%";
     footerRight.style.display = "inline-block";
-    header.style.opacity = "0";
+    header.style.display = "none";
     header.style.transition = "0s";
-    footer.style.opacity = "0";
+    footer.style.display = "none";
     footer.style.transition = "0s";
 }

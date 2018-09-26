@@ -276,7 +276,7 @@ body{
     width: 80px;
 }
 .post-hover-header{
-    display: block;
+    display: none;
     position: absolute;
     width: 100%;
     height: 40%;
@@ -292,9 +292,18 @@ body{
     font-family: 'Roboto', sans-serif;
     text-align: center;
     z-index: 2;
-    opacity: 0;
 }
 .post-hover-info{
+    display: inline-block;
+    width: 70px;
+    height: 55px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    z-index: 8;
+}
+.hover-info-square{
     display: inline-block;
     color: white;
     width: 40px;
@@ -307,11 +316,10 @@ body{
     top: 0;
     right: 0;
     text-align: center;
-    opacity: 0;
     z-index: 5;
 }
 .post-hover-footer{
-    display: flex;
+    display: none;
     justify-content: space-between;
     position: absolute;
     width: 100%;
@@ -325,7 +333,6 @@ body{
     background-image: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.5), rgba(0,0,0,.01));
     font-family: 'Roboto', sans-serif;
     z-index: 2;
-    opacity: 0;
 }
 .hover-footer-left{
     width: 49%;
