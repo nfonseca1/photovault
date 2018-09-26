@@ -336,7 +336,7 @@
 
     .mobile .post-container {
         width: 100%;
-        height: 105vw;
+        height: 109vw;
         padding-top: 7vw;
     }
 
@@ -346,7 +346,7 @@
         background-color: #F0F0F0;
         border: 1px solid #BEBEBE;
         width: 90%;
-        height: 45vw;
+        height: 49vw;
         top: 60vw;
     }
 
@@ -354,7 +354,7 @@
         display: block;
         position: absolute;
         width: 100%;
-        height: 9vw;
+        height: 11vw;
         background-color: #f0f0f0;
         border: 1px solid #bebebe;
         border-bottom: 2px solid #bebebe;
@@ -446,7 +446,7 @@
         overflow: scroll;
         border-left: 1px solid #bababa;
         border-right: 1px solid #bababa;
-        padding: 10vw 5px 5px 5px;
+        padding: 12vw 5px 5px 5px;
     }
 
     .mobile .post-info-comments::-webkit-scrollbar {
@@ -493,8 +493,8 @@
     .mobile .post-info-map {
         display: inline-block;
         width: 49%;
-        height: 100%;
-        padding: 8vw 5px 5px 5px;
+        height: 98%;
+        padding: 9.3vw 5px 5px 5px;
     }
 
     .mobile .post-photo-area {
