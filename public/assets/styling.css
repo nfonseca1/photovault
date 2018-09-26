@@ -593,38 +593,7 @@ a.nostyle:link, a.nostyle:visited {
     width: 200px;
 }
 
-.grid{
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-}
-.grid > img {
-    max-height: 100px;
-}
 
-.grid::after {
-    content: '';
-    flex-grow: 10000;
-}
-
-.grid > figure {
-    margin: 2px;
-    position: relative;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-}
-
-.grid > figure > i {
-    display: block;
-}
-
-.grid > figure > a > img {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: auto;
-}
 .user-info-container{
     margin-top: 15px;
 }

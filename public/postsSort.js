@@ -1,6 +1,7 @@
 var grid = document.querySelector("#grid");
 var userData = document.querySelector("#userData");
 
+var lastIndex = 0;
 var wait = false;
 var end = false;
 var pagePosition = 0;
@@ -44,7 +45,14 @@ function makeAJAXRequest(e, loadMore) {
                 pagePosition = photosList.scrollTop;
             }
             //sessionStorage.index = res.data.currentIndex;
-            if(res.data.end){end = res.data.end;}
+            if(res.data.end){
+                end = res.data.end;
+                if(res.data.currentIndex - photoBatch != lastIndex){
+                    photoBatch = res.data.currentIndex - lastIndex;
+                } else {
+                    lastIndex = res.data.currentIndex;
+                }
+            }
             applyPosts(res.data, true, loadMore)
         })
 }
@@ -118,11 +126,11 @@ function applyImageProperties(x){
     var h = height[x];
     var w = width[x];
     var flexGrow = (w * 100) / h;
-    var size = 200;
-    if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9), (min-width: 1151px) and (orientation: portrait) and (min-resolution: 221dpi), (min-width: 1151px) and (min-resolution: 221dpi) and (max-aspect-ratio: 13/9)')){
+    var size = 245;
+    if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9), (min-width: 1151px) and (orientation: portrait) and (min-resolution: 221dpi), (min-width: 1151px) and (min-resolution: 221dpi) and (max-aspect-ratio: 13/9)').matches){
         size = 250;
     }
-    if(window.matchMedia('(max-width: 1150px) and (min-resolution: 220dpi) and (orientation: portrait)')){
+    if(window.matchMedia('(max-width: 1150px) and (min-resolution: 220dpi) and (orientation: portrait)').matches){
         size = 300;
     }
     if(userData.getAttribute("data-rowSize") != undefined){
@@ -162,17 +170,17 @@ function unpauseRequests(extendWait){
 }
 
 function configureHoverEffects(n){
-    var newlyLoaded = document.querySelectorAll(".newly-loaded");
+    var newlyLoaded = document.querySelectorAll(".newly-loaded")[n];
 
         infoOn.push(false);
 
-        var header = newlyLoaded[n].querySelector(".post-hover-header");
-        var info = newlyLoaded[n].querySelector(".post-hover-info");
-        var footer = newlyLoaded[n].querySelector(".post-hover-footer");
-        var footerLeft = newlyLoaded[n].querySelector(".hover-footer-left");
-        var footerRight = newlyLoaded[n].querySelector(".hover-footer-right");
+        var header = newlyLoaded.querySelector(".post-hover-header");
+        var info = newlyLoaded.querySelector(".post-hover-info");
+        var footer = newlyLoaded.querySelector(".post-hover-footer");
+        var footerLeft = newlyLoaded.querySelector(".hover-footer-left");
+        var footerRight = newlyLoaded.querySelector(".hover-footer-right");
 
-        infoSetup(newlyLoaded[n], n, info, header, footer, footerLeft, footerRight);
+        infoSetup(newlyLoaded, n, info, header, footer, footerLeft, footerRight);
 }
 
 function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
@@ -201,6 +209,7 @@ function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
     }
 
     post.addEventListener("mouseenter", function(){
+        console.log("mouse enter");
         showInfo(false, post, header, footer, footerLeft, footerRight);
     })
     post.addEventListener("mouseleave", function(){
