@@ -325,6 +325,17 @@
         font-size: 23px;
     }
 
+    .mobile .post-hover-info{
+        display: none;
+        width: 70px;
+        height: 65px;
+        background-image: url("https://res.cloudinary.com/dfuxqmces/image/upload/v1537996296/infoButton.png");
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 5;
+    }
+
     .mobile .post-hover-footer{
         font-size: 23px;
     }

@@ -11,6 +11,14 @@ var photoBatch = 21;
 var infoOn = [];
 var timeouts = [];
 
+var imgs;
+var figures;
+var iTags;
+var t = 0;
+var x = 0;
+var height = [];
+var width = [];
+
 if(userData.getAttribute("data-username") != undefined){
     user = userData.getAttribute("data-username");
 }
@@ -74,12 +82,12 @@ function applyPosts(res, ajax, loadMore){
 }
 
 function setupLayout(i){
-    var images = document.querySelectorAll("img");
-    var figures = document.querySelectorAll("figure");
-    var iTags = document.querySelectorAll("i");
+    imgs = document.querySelectorAll("img");
+    figures = document.querySelectorAll("figure");
+    iTags = document.querySelectorAll("i");
 
-    var t = i - photoBatch;
-    var x = i - photoBatch;
+    t = i - photoBatch;
+    x = i - photoBatch;
     if((i - photoBatch) < 0 ){
         t = 0;
         x = 0;
@@ -88,41 +96,49 @@ function setupLayout(i){
         x = i - photoBatch;
     }
 
-    var height = [];
-    var width = [];
-
-    for(t; t < images.length; t++){
-        var count = 0;
-        do {
-            height[t] = parseInt(images[t].naturalHeight);
-            width[t] = parseInt(images[t].naturalWidth);
-            count++;
-        } while((height[t] == 0 || width[t] == 0) && count < 100)
+    for(t; t < imgs.length; t++){
+        checkNaturalDimensions(t);
     }
-    for(x; x < images.length; x++){
-        var h = height[x];
-        var w = width[x];
-        var flexGrow = (w * 100) / h;
-        var size = 200;
-        if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi)')){
-            size = 280;
-        }
-        if(userData.getAttribute("data-rowSize") != undefined){
-            size = parseInt(userData.getAttribute("data-rowSize"));
-        }
-        var flexBasis = (w * size) / h;
-        var paddingBottom = (h / w) * 100;
-        var src = images[x].getAttribute("src");
+}
 
-        images[x].style.opacity = 0;
+function checkNaturalDimensions(i){
+    height[i] = parseInt(imgs[i].naturalHeight);
+    width[i] = parseInt(imgs[i].naturalWidth);
 
-        figures[x].style.flexGrow = flexGrow;
-        figures[x].style.flexBasis = flexBasis + "px";
-        figures[x].style.backgroundImage = 'url('+src+')';
-        iTags[x].style.paddingBottom = paddingBottom + '%';
+    if(height[i] == 0 || width[i] == 0){
+        setTimeout(function(){
+            checkNaturalDimensions(i);
+        }, 250)
+    } else {
+        applyImageProperties(i);
     }
+}
 
-    configureHoverEffects();
+function applyImageProperties(x){
+    var h = height[x];
+    var w = width[x];
+    var flexGrow = (w * 100) / h;
+    var size = 200;
+    if(window.matchMedia('(max-width: 1150px) and (orientation: portrait) and (max-resolution: 220dpi), (max-width: 1150px) and (max-resolution: 220dpi) and (max-aspect-ratio: 13/9), (min-width: 1151px) and (orientation: portrait) and (min-resolution: 221dpi), (min-width: 1151px) and (min-resolution: 221dpi) and (max-aspect-ratio: 13/9)')){
+        size = 250;
+    } else if(window.matchMedia('(max-width: 1150px) and (min-resolution: 220dpi) and (orientation: portrait)')){
+        size = 300;
+    }
+    if(userData.getAttribute("data-rowSize") != undefined){
+        size = parseInt(userData.getAttribute("data-rowSize"));
+    }
+    var flexBasis = (w * size) / h;
+    var paddingBottom = (h / w) * 100;
+    var src = imgs[x].getAttribute("src");
+
+    imgs[x].style.opacity = 0;
+
+    figures[x].style.flexGrow = flexGrow;
+    figures[x].style.flexBasis = flexBasis + "px";
+    figures[x].style.backgroundImage = 'url('+src+')';
+    iTags[x].style.paddingBottom = paddingBottom + '%';
+
+    configureHoverEffects(x);
     //grid.classList.remove('grid-default');
     if(usingPhotosList == false){
         window.scrollTo(window.pageXOffset, pagePosition);
@@ -144,10 +160,9 @@ function unpauseRequests(extendWait){
     }
 }
 
-function configureHoverEffects(){
+function configureHoverEffects(n){
     var newlyLoaded = document.querySelectorAll(".newly-loaded");
 
-    for(let n = 0; n < newlyLoaded.length; n++){
         infoOn.push(false);
 
         var header = newlyLoaded[n].querySelector(".post-hover-header");
@@ -157,7 +172,6 @@ function configureHoverEffects(){
         var footerRight = newlyLoaded[n].querySelector(".hover-footer-right");
 
         infoSetup(newlyLoaded[n], n, info, header, footer, footerLeft, footerRight);
-    }
 }
 
 function infoSetup(post, index, info, header, footer, footerLeft, footerRight){
